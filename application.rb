@@ -49,7 +49,7 @@ class Package < Sequel::Model
 end
 
 get '/packages' do
-  Package.order(:name.desc).all.to_json
+  Package.order(:name).all.to_json
 end
 
 post '/packages' do
