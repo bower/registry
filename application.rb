@@ -76,6 +76,6 @@ get '/packages/:name' do
 end
 
 get '/packages/search/:name' do
-  packages = Package.filter(:name.like("%#{params[:name]}%")).order(:hits.desc)
+  packages = Package.filter(:name.ilike("%#{params[:name]}%")).order(:hits.desc)
   packages.all.to_json
 end
