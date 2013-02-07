@@ -75,6 +75,11 @@ get '/packages/:name' do
   package.to_json
 end
 
+delete '/packages/:name' do
+  package = Package[:name => params[:name]]
+  package.delete
+end
+
 get '/packages/search/:name' do
   packages = Package.filter(:name.ilike("%#{params[:name]}%")).order(:hits.desc)
   packages.all.to_json
