@@ -1,4 +1,4 @@
-# Bower Server
+# Bower registry
 
 ## Create package
 
