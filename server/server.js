@@ -10,7 +10,7 @@ var express   = require('express'),
     _         = require('lodash'),
     app       = module.exports = express(),
     path      = require('path'),
-    config    = require('konphyg')(path.normalize(__dirname + '/../config/'));
+    config    = require('konphyg')(path.normalize(__dirname, '..', 'config/'));
 
 var setHeaders = require(path.normalize(__dirname + '/../lib/middleware/headers'));
 
