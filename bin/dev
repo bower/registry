@@ -2,5 +2,5 @@
 
 server = require('../server/server.js');
 
-server({ port : 3333, dev : true });
+server();
 
