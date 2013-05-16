@@ -13,7 +13,7 @@
     "lodash": "~1.2.1"
   },
   "scripts": {
-    "test": "NODE_ENV=testing mocha --ignore-leaks test/unit/*-test.js -R spec",
+    "test": "NODE_ENV=testing mocha --ignore-leaks test/**/*-test.js -R spec",
     "start": "node bin/dev"
   },
   "devDependencies": {
