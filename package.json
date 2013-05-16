@@ -1,0 +1,30 @@
+{
+  "name": "node-bower-registry",
+  "version": "0.0.1",
+  "author": "Sven Lito <me@svenlito.com>",
+  "main": "./index.js",
+  "private": true,
+  "dependencies": {
+    "express": "3.0.x",
+    "express-resource": "1.0.x",
+    "konphyg": "~1.2.0",
+    "validotron": "~0.3.0",
+    "nano": "~3.3.4",
+    "lodash": "~1.2.1"
+  },
+  "scripts": {
+    "test": "NODE_ENV=testing mocha --ignore-leaks test/unit/*-test.js -R spec",
+    "start": "node bin/dev"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "0.1.1",
+    "grunt-mocha-test": "0.2.0",
+    "grunt-contrib-watch": "0.2.0",
+    "grunt": "0.4.1",
+    "couchapp": "0.9.1",
+    "mocha": "1.6.0"
+  },
+  "engine": {
+    "node": ">= 0.8.x"
+  }
+}

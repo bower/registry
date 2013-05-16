@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+server = require('../server/server.js');
+
+server({ port : 3333, dev : true });
+
