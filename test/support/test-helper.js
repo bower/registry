@@ -11,7 +11,7 @@ module.exports = {
 
     before(function(done) {
       this.timeout(3000);
-      couchapp(function(err, ok) {
+      couchapp.setup(function(err, ok) {
         if (ok) {done();}
       });
     });
@@ -35,7 +35,10 @@ module.exports = {
 
     'use strict';
 
-    after(function() {
+    after(function(done) {
+      couchapp.teardown(function(err, ok) {
+        if (ok) {done();}
+      });
     });
 
   }()),

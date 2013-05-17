@@ -29,7 +29,7 @@ var docs = [
 ];
 
 
-module.exports = function(cb) {
+exports.setup = function(cb) {
 
   'use strict';
 
@@ -43,10 +43,21 @@ module.exports = function(cb) {
           app.push();
         });
       });
-      cb(null, true);
+       return cb(null, true);
 
     });
 
   });
 
 };
+
+exports.teardown = function(cb) {
+
+  'use strict';
+
+  nano.db.destroy('bower-registry-testing', function() {
+    return cb(null, true);
+  });
+
+};
+
