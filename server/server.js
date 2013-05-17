@@ -11,7 +11,8 @@ var express   = require('express'),
     path      = require('path'),
     config    = require('konphyg')(path.normalize(__dirname, '..', 'config/'));
 
-var setHeaders = require(path.normalize(__dirname + '/../lib/middleware/headers'));
+var setHeaders = require(path.normalize(__dirname + '/../lib/middleware/headers')),
+    setOptions = require(path.normalize(__dirname + '/../lib/middleware/options'));
 
 
 module.exports = function(opts) {
@@ -29,6 +30,7 @@ module.exports = function(opts) {
   //
   app.configure(function() {
     app.use(setHeaders());
+    app.use(setOptions());
     app.use(express.compress());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
