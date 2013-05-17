@@ -12,7 +12,7 @@ var docs = [
         map: function (doc) { if (doc.resource === 'packages') { emit(doc.date, doc); } }
       },
       by_name: {
-        map: function (doc) { if (doc.resource === 'packages') { emit(doc.name, doc); } }
+        map: function (doc) { if (doc.resource === 'packages') { emit(doc._id, doc); } }
       }
     }
   }
