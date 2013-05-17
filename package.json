@@ -22,7 +22,8 @@
     "grunt-contrib-watch": "0.2.0",
     "grunt": "0.4.1",
     "couchapp": "0.9.1",
-    "mocha": "1.6.0"
+    "mocha": "1.6.0",
+    "chai": "~1.6.0"
   },
   "engine": {
     "node": ">= 0.8.x"
