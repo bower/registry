@@ -41,9 +41,9 @@ exports.setup = function(cb) {
       docs.forEach(function(doc) {
         couchapp.createApp(doc, 'http://localhost:5984/bower-registry-testing', function(app) {
           app.push();
+          return cb(null, true);
         });
       });
-       return cb(null, true);
 
     });
 

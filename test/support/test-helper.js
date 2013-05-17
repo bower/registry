@@ -36,6 +36,7 @@ module.exports = {
     'use strict';
 
     after(function(done) {
+      this.timeout(3000);
       couchapp.teardown(function(err, ok) {
         if (ok) {done();}
       });
