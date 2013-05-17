@@ -39,7 +39,7 @@ module.exports = function(cb) {
     nano.db.create('bower-registry-testing', function() {
 
       docs.forEach(function(doc) {
-        couchapp.createApp(doc, 'http://localhost:5984/bower-registry', function(app) {
+        couchapp.createApp(doc, 'http://localhost:5984/bower-registry-testing', function(app) {
           app.push();
         });
       });
