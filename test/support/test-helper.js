@@ -1,7 +1,7 @@
 /*globals before:true, after:true*/
 
 var server = require('../../bin/dev'),
-    couchapp = require('../../couchapp/dev'),
+    couchapp = require('../../couchapp/testing'),
     factories = require('./factories');
 
 module.exports = {
