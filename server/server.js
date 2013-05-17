@@ -74,19 +74,9 @@ module.exports = function(opts) {
     pkgs.search(req, res);
   });
 
-
   app.post('/packages', function(req, res) {
     pkgs.create(req, res);
   });
-
-  app.put('/packages', function(req, res) {
-    pkgs.create(req, res);
-  });
-
-  app.del('/packages', function(req, res) {
-    pkgs.create(req, res);
-  });
-
 
   // Actually listen
   app.listen(opts.port || null);
