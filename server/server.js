@@ -5,7 +5,6 @@
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
 var express   = require('express'),
-    resource  = require('express-resource'),
     fs        = require('fs'),
     _         = require('lodash'),
     app       = module.exports = express(),
@@ -56,7 +55,36 @@ module.exports = function(opts) {
     app.use(express.errorHandler());
   });
 
-  app.resource('packages', require(opts.baseDir + 'lib/controllers/packages'));
+  //
+  // routes
+  //
+  var pkgs = require(opts.baseDir + 'lib/controllers/packages');
+
+  app.get('/packages', function(req, res) {
+    pkgs.index(req, res);
+  });
+
+  app.get('/packages/:name', function(req, res) {
+    pkgs.show(req, res);
+  });
+
+  app.get('/packages/search/:name', function(req, res) {
+    pkgs.search(req, res);
+  });
+
+
+  app.post('/packages', function(req, res) {
+    pkgs.create(req, res);
+  });
+
+  app.put('/packages', function(req, res) {
+    pkgs.create(req, res);
+  });
+
+  app.del('/packages', function(req, res) {
+    pkgs.create(req, res);
+  });
+
 
   // Actually listen
   app.listen(opts.port || null);
