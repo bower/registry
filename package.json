@@ -2,14 +2,14 @@
   "name": "node-bower-registry",
   "version": "0.0.1",
   "author": "Sven Lito <me@svenlito.com>",
-  "main": "./index.js",
+  "main": "./server/server.js",
   "private": true,
   "dependencies": {
     "express": "3.0.x",
     "express-resource": "1.0.x",
     "konphyg": "~1.2.0",
     "validotron": "~0.3.0",
-    "nano": "~3.3.4",
+    "nano": "git+ssh://git@github.com:svnlto/nano.git#3.3.9",
     "lodash": "~1.2.1"
   },
   "scripts": {
