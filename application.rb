@@ -1,5 +1,5 @@
 # ==========================================
-# BOWER: Server
+# BOWER: Registry
 # ==========================================
 # Copyright 2012 Twitter, Inc
 # Licensed under The MIT License
