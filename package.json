@@ -14,7 +14,7 @@
   },
   "scripts": {
     "test": "grunt test --verbose",
-    "start": "node bin/dev"
+    "start": "node bin/app"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "0.1.1",
