@@ -5,11 +5,9 @@
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
 var express   = require('express'),
-    fs        = require('fs'),
     _         = require('lodash'),
     app       = module.exports = express(),
-    path      = require('path'),
-    config    = require('konphyg')(path.normalize(__dirname, '..', 'config/'));
+    path      = require('path');
 
 var setHeaders = require(path.normalize(__dirname + '/../lib/middleware/headers')),
     setOptions = require(path.normalize(__dirname + '/../lib/middleware/options'));
@@ -34,7 +32,7 @@ module.exports = function(opts) {
     app.use(express.compress());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use(function(err, req, res, next){
+    app.use(function(err, req, res) {
       console.error(err.stack);
       res.send(500, 'Something broke!');
     });
