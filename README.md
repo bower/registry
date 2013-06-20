@@ -2,11 +2,11 @@
 
 ## Create package
 
-    curl http://twitter-nest.heroku.com/packages -v -F 'name=jquery' -F 'url=git://github.com/jquery/jquery.git'
+    curl http://bower.heroku.com/packages -v -F 'name=jquery' -F 'url=git://github.com/jquery/jquery.git'
 
 ## Find package
 
-    curl http://twitter-nest.heroku.com/packages/jquery
+    curl http://bower.heroku.com/packages/jquery
       {"name":"jquery","url":"git://github.com/jquery/jquery.git"}
 
 ## License
