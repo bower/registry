@@ -1,6 +1,6 @@
 /*globals before:true, after:true*/
 
-var server = require('../../bin/dev'),
+var server = require('../../bin/app'),
     couchapp = require('../../couchapp/testing'),
     factories = require('./factories');
 
