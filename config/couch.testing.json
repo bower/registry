@@ -4,5 +4,6 @@
   "host": "localhost",
   "password": "",
   "username": "",
-  "database": "bower-registry-testing"
+  "database": "bower-registry-testing",
+  "temporary": true
 }

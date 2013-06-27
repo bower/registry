@@ -1,18 +1,16 @@
 #!/usr/bin/env node
 
-server = require('../server/server.js');
-server();
+var server = require('../server/server.js');
+var path = require('path');
+var fs = require('fs');
+var config = require('konphyg')(path.normalize(__dirname + '/../config'));
 
 process.env.NODE_ENV = process.env.NODE_ENV || "testing";
 
-var couchapp = require('couchapp');
-var docs = require('./ddocs');
-var path = require('path');
-var fs = require('fs');
-var Nano = require('nano');
-var config = require('konphyg')(path.normalize(__dirname + '/../config'));
-
 // configuration information
+// `node bin/app ../settings/config.json` => load specific config file
+// `node bin/app '{"host"....'` => use passed json
+// `node bin/app testing` => load testing.json profile in ./config
 var options = (function() {
   var arg1 = process.argv[2];
 
@@ -35,16 +33,10 @@ var options = (function() {
       return parsedJSON;
     }
 
-  } else {
-    arg1 || process.env.NODE_ENV;
-  }
+  } 
 
   console.log('Loading ' + arg1 + ' configuration data');
   return config(arg1 || process.env.NODE_ENV);
 }());
 
-var nano = Nano(options.protocol + '://' +
-                options.username +
-                ':' + options.password +
-                '@' + options.host +
-                ':' + options.port);
+server(options);

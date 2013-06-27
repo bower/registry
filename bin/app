@@ -1,6 +1,0 @@
-#!/usr/bin/env node
-
-server = require('../server/server.js');
-
-server();
-
