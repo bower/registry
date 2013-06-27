@@ -37,6 +37,6 @@ var options = (function() {
 
   console.log('Loading ' + arg1 + ' configuration data');
   return config(arg1 || process.env.NODE_ENV);
-}());
+}();
 
 server(options);
