@@ -10,7 +10,8 @@
     "konphyg": "~1.2.0",
     "validotron": "~0.3.0",
     "nano": "git://github.com/svnlto/nano.git#3.3.9",
-    "lodash": "~1.2.1"
+    "lodash": "~1.2.1",
+    "q": "~0.9.6"
   },
   "scripts": {
     "test": "grunt test --verbose",
