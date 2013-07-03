@@ -1,8 +1,0 @@
-{
-  "port": 5984,
-  "protocol": "http",
-  "host": "localhost",
-  "password": "",
-  "username": "",
-  "database": "bower-registry"
-}
