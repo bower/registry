@@ -59,24 +59,46 @@ var server = function(registry, opts) {
   //
   // routes
   //
-
   
+  function routeRegistryQuery(query, res) {
+    query.then(function(packages) {
+      res.send(data, 200);
+    }, function(err) {
+      res.send(err.message || 'Error', err['status-code'] || 400);
+    });
+  }
+    
 
   app.get('/packages', function(req, res) {
-    pkgs.index(req, res);
+    var query = Packages.all();
+    routeRegistryQuery(query, res);
   });
 
   app.get('/packages/:name', function(req, res) {
-    pkgs.show(req, res);
+    if (!req || req.params || req.params.name) {
+      res.send('Missing package name', 400);
+    }
+
+    var query = Packages.show(req.params.name);
+    routeRegistryQuery(query, res);
   });
 
   app.get('/packages/search/:name', function(req, res) {
-    pkgs.search(req, res);
+    if (!req || req.params || req.params.name) {
+      res.send('Missing search parameter', 400);
+    }
+
+    var query = Packages.search(req.params.name);
+    routeRegistryQuery(query, res);
   });
 
   app.post('/packages', function(req, res) {
-    console.log('create');
-    pkgs.create(req, res);
+    var package = new Package(req.body);
+    package.save().then(function(data) {
+      res.send(data, 201);
+    }, function(err) {
+      res.json(err, 400);
+    });
   });
 
   // Actually listen
