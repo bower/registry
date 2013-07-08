@@ -4,7 +4,6 @@ var server = require('../server/server.js');
 var path = require('path');
 var fs = require('fs');
 var config = require('konphyg')(path.normalize(__dirname + '/../config'));
-var nano = require('nano');
 var Registry = require('../lib/registry');
 
 process.env.NODE_ENV = process.env.NODE_ENV || "testing";
@@ -41,11 +40,7 @@ var options = (function() {
   return config(arg1 || process.env.NODE_ENV);
 }());
 
-var couch = nano(options.protocol + '://' +
-              options.username + ':' + options.password +
-              '@' + options.host +
-              ':' + options.port);
-var registry = new Registry(couch, options);
+var registry = new Registry(options);
 
 // fire up the server
 server(registry);
