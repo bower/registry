@@ -12,8 +12,9 @@ describe('Registry', function() {
 
   var opts = require('../../config/testing.json');
   var registry = new Registry(opts);
-  mocks(registry.url(), opts, ddocs);
 
+  mocks(registry.url(), opts, ddocs);
+  
   describe('Constructor', function() {
 
     describe("makes a registry object", function() {
@@ -29,8 +30,11 @@ describe('Registry', function() {
         expect(registry.attachment).to.have.property('insert');
         expect(registry.attachment).to.have.property('get');
       });
-      it('should resolve', function(done) {
-        registry.promise.then(done);
+      it('should resolve with correct database', function(done) {
+        registry.promise.then(function(db){
+          expect(db.config.db).to.be.equal(opts.database);
+          done();
+        });
       });
     });
 
