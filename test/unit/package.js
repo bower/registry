@@ -7,7 +7,7 @@ var Model = require('../../lib/models/package'),
     couch = require('../../lib/db/couch'),
     factories = require('../support/factories'),
     _ = require('lodash'),
-    expect = require('chai').expect;
+    expect = require('expect.js');
 
 
 describe('Package Model', function() {
@@ -22,9 +22,9 @@ describe('Package Model', function() {
 
     describe("instantiating an package object", function() {
       it('should set properties correctly', function() {
-        expect(this.pkg._model).to.have.ownProperty('resource');
-        expect(this.pkg._model).to.have.ownProperty('name');
-        expect(this.pkg._model).to.have.ownProperty('url');
+        expect(this.pkg._model).to.have.property('resource');
+        expect(this.pkg._model).to.have.property('name');
+        expect(this.pkg._model).to.have.property('url');
       });
     });
 
@@ -40,7 +40,7 @@ describe('Package Model', function() {
         });
 
         pkg.validate();
-        expect(JSON.stringify(pkg.errors)).to.equal("{\"name\":[\"can't be blank\"]}");
+        expect(JSON.stringify(pkg.errors)).to.eql("{\"name\":[\"can't be blank\"]}");
         done();
       });
 
@@ -54,7 +54,7 @@ describe('Package Model', function() {
         }, test_helper.redisClient);
 
         pkg.validate();
-        expect(JSON.stringify(pkg.errors)).to.equal("{\"url\":[\"is invalid\"]}");
+        expect(JSON.stringify(pkg.errors)).to.eql("{\"url\":[\"is invalid\"]}");
         done();
       });
 
@@ -68,7 +68,7 @@ describe('Package Model', function() {
       it('should should have a factory method', function() {
         var pkg = Model.factory({});
 
-        expect(Model).to.have.ownProperty('factory');
+        expect(Model).to.have.property('factory');
       });
     });
 
@@ -83,7 +83,7 @@ describe('Package Model', function() {
 
         pkg.save(function(err, data) {
           self._savedID = data._id;
-          expect(data).to.be.ok;
+          expect(data).to.be.ok();
           done();
         });
       });
@@ -106,14 +106,14 @@ describe('Package Model', function() {
       it('should should have a find method', function() {
         var pkg = Model.factory({});
 
-        expect(Model).to.have.ownProperty('find');
+        expect(Model).to.have.property('find');
       });
 
       xit('should return results from the find method', function(done) {
         var self = this;
 
         Model.find(self._savedID, function(err, data) {
-          expect(data._id).to.equal(self._savedID);
+          expect(data._id).to.eql(self._savedID);
           done();
         });
       });
@@ -122,7 +122,7 @@ describe('Package Model', function() {
         var pkgId = 123;
 
         Model.find(pkgId, function(err, data) {
-          expect(data).to.be.falsy;
+          expect(data).to.not.be(true);
           done();
         });
       });
@@ -139,9 +139,9 @@ describe('Package Model', function() {
 
       xit('should return results from the list method', function(done) {
         Model.list(function(err, data) {
-          expect(_.keys(data).length).to.equal(1);
-          expect(typeof(data[0])).to.equal('object');
-          expect(data[0].resource).to.equal('package');
+          expect(_.keys(data).length).to.eql(1);
+          expect(typeof(data[0])).to.eql('object');
+          expect(data[0].resource).to.eql('package');
           done();
         });
       });

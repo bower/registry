@@ -1,6 +1,6 @@
 var Registry = require('../../lib/registry.js');
 var _ = require('lodash');
-var expect = require('chai').expect;
+var expect = require('expect.js');
 var http = require('http');
 var ddocs = require('../../couchapp/ddocs.js');
 var mocks = require('../support/couch-mocks');
@@ -14,13 +14,13 @@ describe('Registry', function() {
   var registry = new Registry(opts);
 
   mocks(registry.url(), opts, ddocs);
-  
+
   describe('Constructor', function() {
 
     describe("makes a registry object", function() {
       it('should instanciate and create properties', function() {
-        expect(registry).to.be.an.instanceof(Registry);
-        expect(registry).to.have.ownProperty('couch');
+        expect(registry).to.be.a(Registry);
+        expect(registry).to.have.property('couch');
       });
       it('should inherit prototype methods', function() {
         expect(registry).to.have.property('get');
@@ -32,7 +32,7 @@ describe('Registry', function() {
       });
       it('should resolve with correct database', function(done) {
         registry.promise.then(function(db){
-          expect(db.config.db).to.be.equal(opts.database);
+          expect(db.config.db).to.eql(opts.database);
           done();
         });
       });
