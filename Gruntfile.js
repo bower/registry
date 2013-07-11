@@ -19,15 +19,12 @@ module.exports = function(grunt) {
     },
 
     mochaTest: {
-      all: [ 'test/**/*-test.js' ],
-    },
-
-    mochaTestConfig: {
-      options: {
-        reporter: 'tap',
-        node_env: 'testing',
-        ignoreLeaks: true
-      }
+      all: {
+        src: ['test/**/*-test.js'],
+        options: {
+          ui: 'bdd'
+        },
+      },
     },
 
     watch: {
