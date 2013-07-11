@@ -18,14 +18,15 @@ module.exports = function(grunt) {
       }
     },
 
-    mochaTest: {
-      all: {
-        src: ['test/**/*-test.js'],
-        options: {
-          ui: 'bdd'
-        },
+    simplemocha: {
+      options: {
+        reporter: 'spec',
+        node_env: 'testing',
+        ignoreLeaks: true
       },
+      full: { src: ['test/**/*-test.js'] },
     },
+
 
     watch: {
       files: '**/*',
