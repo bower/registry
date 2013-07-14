@@ -41,6 +41,5 @@ describe('Registry', function() {
   });
 
 
-
 });
 

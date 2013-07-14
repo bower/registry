@@ -33,8 +33,8 @@ module.exports = function(url, options, ddocs) {
     var path = '/' + options.database + '/' + doc['_id'];
 
     var rev = '1-510f49198b34aeeadec0ebd28e20c20c';
-    var put = JSON.stringify(doc);
-    var get = JSON.stringify(_.extend({}, doc, {rev: rev}));
+    var payload = JSON.stringify(doc);
+    var payloadWithRev = JSON.stringify(_.extend({}, doc, {rev: rev}));
 
     // get [missing] docs
     nock(url)
@@ -47,9 +47,22 @@ module.exports = function(url, options, ddocs) {
         'cache-control': 'must-revalidate' 
       });
 
-    // put docs
+    // put docs - no rev
     nock(url)
-      .put(path, put)
+      .put(path, payload)
+      .reply(201, "{\"ok\":true,\"id\":\"" + doc['_id'] + "\",\"rev\":\"" + rev + "\"}\n", { 
+        server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
+        location: url + '/' + options.database + '/_design/packages',
+        etag: '"' + rev + '"',
+        date: couchDateNow(),
+        'content-type': 'text/plain; charset=utf-8',
+        'content-length': '79',
+        'cache-control': 'must-revalidate' 
+      });
+
+    // put docs - with rev
+    nock(url)
+      .put(path, payloadWithRev)
       .reply(201, "{\"ok\":true,\"id\":\"" + doc['_id'] + "\",\"rev\":\"" + rev + "\"}\n", { 
         server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
         location: url + '/' + options.database + '/_design/packages',
@@ -63,7 +76,7 @@ module.exports = function(url, options, ddocs) {
     // get [now present] docs
     nock(url)
       .get(path)
-      .reply(200, get, {
+      .reply(200, payloadWithRev, {
         server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
         etag: '"' + rev + '"',
         date: couchDateNow(),
