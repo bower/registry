@@ -9,8 +9,8 @@ var express   = require('express'),
     app       = module.exports = express(),
     path      = require('path');
 
-var setHeaders = require(path.normalize(__dirname + '/../lib/middleware/headers')),
-    setOptions = require(path.normalize(__dirname + '/../lib/middleware/options'));
+var setHeaders = require('./middleware/headers'),
+    setOptions = require('./middleware/options');
 
 
 
@@ -33,9 +33,9 @@ var server = function(registry, opts) {
     app.use(express.compress());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use(function(err, req, res) {
-       console.dir(err);
-        req.send(500, 'Something broke!');
+    app.use(function(err, req, res, next) {
+      console.dir(err.stack);
+      req.send(500, 'Something broke!');
     });
   });
   
@@ -70,6 +70,7 @@ var server = function(registry, opts) {
     
 
   app.get('/packages', function(req, res) {
+    console.log('getting packages');
     var query = Packages.all();
     routeRegistryQuery(query, res);
   });
@@ -93,8 +94,10 @@ var server = function(registry, opts) {
   });
 
   app.post('/packages', function(req, res) {
-    var package = new Package(req.body);
-    package.save().then(function(data) {
+    var p = new Package(req.body);
+    console.log('post-packages');
+    console.log(req.body, p);
+    p.save().then(function(data) {
       res.send(data, 201);
     }, function(err) {
       res.json(err, 400);
