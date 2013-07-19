@@ -9,7 +9,7 @@
     "express-resource": "1.0.x",
     "konphyg": "~1.2.0",
     "validotron": "~0.3.0",
-    "nano": "git://github.com/svnlto/nano.git#3.3.9",
+    "nano": "4.1.1",
     "lodash": "~1.2.1",
     "q": "~0.9.6"
   },
