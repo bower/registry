@@ -65,7 +65,7 @@ var server = function(registry, opts) {
   
   function routeRegistryQuery(query, res) {
     query.then(function(packages) {
-      res.send(packages, 200);
+      res.send(packages.toArray(), 200);
     }, function(err) {
       res.send(err.message || 'Error', err['status-code'] || 400);
     }).done();
