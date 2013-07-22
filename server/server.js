@@ -12,6 +12,9 @@ var express   = require('express'),
 var setHeaders = require('./middleware/headers'),
     setOptions = require('./middleware/options');
 
+var Packages = require('../lib/collections/packages');
+var Package = require('../lib/models/package');
+
 
 
 var server = function(registry, opts) {
@@ -62,16 +65,16 @@ var server = function(registry, opts) {
   
   function routeRegistryQuery(query, res) {
     query.then(function(packages) {
-      res.send(data, 200);
+      res.send(packages, 200);
     }, function(err) {
       res.send(err.message || 'Error', err['status-code'] || 400);
-    });
+    }).done();
   }
     
 
   app.get('/packages', function(req, res) {
-    console.log('getting packages');
-    var query = Packages.all();
+    var packages = new Packages(registry);
+    var query = packages.all();
     routeRegistryQuery(query, res);
   });
 
@@ -94,19 +97,22 @@ var server = function(registry, opts) {
   });
 
   app.post('/packages', function(req, res) {
-    var p = new Package(req.body);
-    console.log('post-packages');
-    console.log(req.body, p);
+    var p = new Package(registry, req.body);
     p.save().then(function(data) {
       res.send(data, 201);
     }, function(err) {
       res.json(err, 400);
-    });
+    }).done();
   });
 
-  // Actually listen
-  app.listen(opts.port || null);
-  console.log("Serving at http://localhost:" + (opts.port || ''));
+  // Actually listen when ready
+  registry.promise.then(function() {
+    app.listen(opts.port || null);
+    console.log("Serving at http://localhost:" + (opts.port || ''));
+  }, function(err) {
+    console.log('Error starting connection to DB');
+    console.log(err);
+  });
   return server;
 };
 module.exports = server;
