@@ -67,6 +67,7 @@ var server = function(registry, opts) {
     query.then(function(packages) {
       res.send(packages.toArray(), 200);
     }, function(err) {
+      console.log(err.stack);
       res.send(err.message || 'Error', err['status-code'] || 400);
     }).done();
   }
@@ -79,11 +80,8 @@ var server = function(registry, opts) {
   });
 
   app.get('/packages/:name', function(req, res) {
-    if (!req || req.params || req.params.name) {
-      res.send('Missing package name', 400);
-    }
-
-    var query = Packages.show(req.params.name);
+    var packages = new Packages(registry);
+    var query = packages.fetch(req.params.name);
     routeRegistryQuery(query, res);
   });
 
@@ -92,6 +90,7 @@ var server = function(registry, opts) {
       res.send('Missing search parameter', 400);
     }
 
+    var packages = new Packages(registry);
     var query = Packages.search(req.params.name);
     routeRegistryQuery(query, res);
   });
