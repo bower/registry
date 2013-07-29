@@ -1,7 +1,7 @@
 var nock = require('nock');
 var _ = require('lodash');
 
-module.exports = function(url, options, ddocs) {
+module.exports = function (url, options, ddocs) {
 
   // delete attempt
   nock(url)
@@ -23,8 +23,8 @@ module.exports = function(url, options, ddocs) {
     'cache-control': 'must-revalidate' });
 
   // create ddocs (couchApp)
-  ddocs.forEach(function(ddocument) {
- 
+  ddocs.forEach(function (ddocument) {
+
     // default attachment objects
     var doc = prepareDdoc(ddocument);
     doc['attachments_md5'] = doc['attachments_md5'] || {};
@@ -39,38 +39,38 @@ module.exports = function(url, options, ddocs) {
     // get [missing] docs
     nock(url)
       .get(path)
-      .reply(404, "{\"error\":\"not_found\",\"reason\":\"missing\"}\n", { 
+      .reply(404, "{\"error\":\"not_found\",\"reason\":\"missing\"}\n", {
         server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
         date: couchDateNow(),
         'content-type': 'text/plain; charset=utf-8',
         'content-length': '41',
-        'cache-control': 'must-revalidate' 
+        'cache-control': 'must-revalidate'
       });
 
     // put docs - no rev
     nock(url)
       .put(path, payload)
-      .reply(201, "{\"ok\":true,\"id\":\"" + doc['_id'] + "\",\"rev\":\"" + rev + "\"}\n", { 
+      .reply(201, "{\"ok\":true,\"id\":\"" + doc['_id'] + "\",\"rev\":\"" + rev + "\"}\n", {
         server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
         location: url + '/' + options.database + '/_design/packages',
         etag: '"' + rev + '"',
         date: couchDateNow(),
         'content-type': 'text/plain; charset=utf-8',
         'content-length': '79',
-        'cache-control': 'must-revalidate' 
+        'cache-control': 'must-revalidate'
       });
 
     // put docs - with rev
     nock(url)
       .put(path, payloadWithRev)
-      .reply(201, "{\"ok\":true,\"id\":\"" + doc['_id'] + "\",\"rev\":\"" + rev + "\"}\n", { 
+      .reply(201, "{\"ok\":true,\"id\":\"" + doc['_id'] + "\",\"rev\":\"" + rev + "\"}\n", {
         server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
         location: url + '/' + options.database + '/_design/packages',
         etag: '"' + rev + '"',
         date: couchDateNow(),
         'content-type': 'text/plain; charset=utf-8',
         'content-length': '79',
-        'cache-control': 'must-revalidate' 
+        'cache-control': 'must-revalidate'
       });
 
     // get [now present] docs
@@ -82,20 +82,20 @@ module.exports = function(url, options, ddocs) {
         date: couchDateNow(),
         'content-type': 'text/plain; charset=utf-8',
         'content-length': '386',
-        'cache-control': 'must-revalidate' 
+        'cache-control': 'must-revalidate'
       });
   });
 };
 
 
 
-var couchDateNow = module.exports.couchDateNow = function() {
+var couchDateNow = module.exports.couchDateNow = function () {
   return new Date().toString().replace(/GMT(.*)$/, 'GMT').replace('2013', '2015');
 };
 
-var prepareDdoc = module.exports.couchDateNow = function(ddocument) {
+var prepareDdoc = module.exports.couchDateNow = function (ddocument) {
   var ddoc = _.extend({}, ddocument);
-  var recurse = function(obj) {
+  var recurse = function (obj) {
     for (var key in obj) {
       var item = obj[key];
       if (typeof item === 'object') {

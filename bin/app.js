@@ -6,13 +6,14 @@ var fs = require('fs');
 var config = require('konphyg')(path.normalize(__dirname + '/../config'));
 var Registry = require('../lib/registry');
 
-process.env.NODE_ENV = process.env.NODE_ENV || "testing";
+process.env.NODE_ENV = process.env.NODE_ENV || 'testing';
 
 // configuration information
 // `node bin/app ../settings/config.json` => load specific config file
 // `node bin/app '{"host"....'` => use passed json
 // `node bin/app testing` => load testing.json profile in ./config
-var options = (function() {
+
+var options = (function () {
   var arg1 = process.argv[2];
 
   if (arg1) {
@@ -28,13 +29,13 @@ var options = (function() {
 
     try {
       parsedJSON = JSON.parse(json);
-    } catch(e){}
+    } catch (e) {}
 
     if (parsedJSON) {
       return parsedJSON;
     }
 
-  } 
+  }
 
   console.log('Loading ' + arg1 + ' configuration data');
   return config(arg1 || process.env.NODE_ENV);

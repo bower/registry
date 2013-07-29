@@ -1,8 +1,4 @@
-/*global module:false*/
-
-module.exports = function(grunt) {
-
-  "use strict";
+module.exports = function (grunt) {
 
   // Project configuration.
   grunt.initConfig({
@@ -40,8 +36,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-simple-mocha');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'simplemocha:full'] );
-  grunt.registerTask('test', ['jshint', 'simplemocha:full'] );
+  grunt.registerTask('default', ['jshint', 'simplemocha:full']);
+  grunt.registerTask('test', ['jshint', 'simplemocha:full']);
 
 };
 

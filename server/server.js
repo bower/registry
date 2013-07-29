@@ -2,7 +2,7 @@
 // # server/server
 //
 
-process.env.NODE_ENV = process.env.NODE_ENV || "development";
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var express   = require('express'),
     _         = require('lodash'),
@@ -17,7 +17,7 @@ var Package = require('../lib/models/package');
 
 
 
-var server = function(registry, opts) {
+var server = function (registry, opts) {
 
   'use strict';
 
@@ -30,22 +30,22 @@ var server = function(registry, opts) {
   //
   // configure express middleware
   //
-  app.configure(function() {
+  app.configure(function () {
     app.use(setHeaders());
     app.use(setOptions());
     app.use(express.compress());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req) {
       console.dir(err.stack);
       req.send(500, 'Something broke!');
     });
   });
-  
+
   //
   // setup environment
   //
-  app.configure("development", function() {
+  app.configure('development', function () {
     app.use(express.errorHandler({
       dumpExceptions: true,
       showStack: true
@@ -55,60 +55,71 @@ var server = function(registry, opts) {
     app.use(express.logger(({ format: ':method :status :url' })));
   });
 
-  app.configure("production", function() {
+  app.configure('production', function () {
     app.use(express.errorHandler());
   });
 
   //
   // routes
   //
-  
+
   function routeRegistryQuery(query, res) {
-    query.then(function(packages) {
+    query.then(function (packages) {
       res.send(packages.toArray(), 200);
-    }, function(err) {
+    }, function (err) {
       console.log(err.stack);
       res.send(err.message || 'Error', err['status-code'] || 400);
     }).done();
   }
-    
 
-  app.get('/packages', function(req, res) {
+  app.get('/', function (req, res) {
+    res.send('{\'content\': \'print registry info here\'}', 200);
+  });
+
+
+  app.get('/packages', function (req, res) {
     var packages = new Packages(registry);
     var query = packages.all();
+
     routeRegistryQuery(query, res);
   });
 
-  app.get('/packages/:name', function(req, res) {
+
+  app.get('/packages/:name', function (req, res) {
     var packages = new Packages(registry);
     var query = packages.fetch(req.params.name);
+
     routeRegistryQuery(query, res);
   });
 
-  app.get('/packages/search/:name', function(req, res) {
+
+  app.get('/packages/search/:name', function (req, res) {
     if (!req || req.params || req.params.name) {
       res.send('Missing search parameter', 400);
     }
 
-    var packages = new Packages(registry);
+    //var packages = new Packages(registry);
     var query = Packages.search(req.params.name);
+
     routeRegistryQuery(query, res);
   });
 
-  app.post('/packages', function(req, res) {
+  app.post('/packages', function (req, res) {
     var p = new Package(registry, req.body);
-    p.save().then(function(data) {
+
+    p.save().then(function (data) {
       res.send(data, 201);
-    }, function(err) {
+    }, function (err) {
       res.json(err, 400);
     }).done();
+
   });
 
   // Actually listen when ready
-  registry.promise.then(function() {
+  registry.promise.then(function () {
     app.listen(opts.port || null);
-    console.log("Serving at http://localhost:" + (opts.port || ''));
-  }, function(err) {
+    console.log('Serving at http://localhost:' + (opts.port || ''));
+  }, function (err) {
     console.log('Error starting connection to DB');
     console.log(err);
   });

@@ -1,4 +1,4 @@
-process.env.NODE_ENV = process.env.NODE_ENV || "testing";
+process.env.NODE_ENV = process.env.NODE_ENV || 'testing';
 
 var couchapp = require('couchapp'),
     path = require('path'),
@@ -12,17 +12,17 @@ var couchapp = require('couchapp'),
         '@' + options.host +
         ':' + options.port);
 
-exports.setup = function(cb) {
+exports.setup = function (cb) {
 
   'use strict';
 
   // clean up the database we created previously
-  nano.db.destroy('bower-registry-testing', function() {
+  nano.db.destroy('bower-registry-testing', function () {
 
-    nano.db.create('bower-registry-testing', function() {
+    nano.db.create('bower-registry-testing', function () {
 
-      docs.forEach(function(doc) {
-        couchapp.createApp(doc, 'http://localhost:5984/bower-registry-testing', function(app) {
+      docs.forEach(function (doc) {
+        couchapp.createApp(doc, 'http://localhost:5984/bower-registry-testing', function (app) {
           app.push();
           return cb(null, true);
         });
@@ -34,11 +34,11 @@ exports.setup = function(cb) {
 
 };
 
-exports.teardown = function(cb) {
+exports.teardown = function (cb) {
 
   'use strict';
 
-  nano.db.destroy('bower-registry-testing', function() {
+  nano.db.destroy('bower-registry-testing', function () {
     return cb(null, true);
   });
 

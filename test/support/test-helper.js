@@ -5,14 +5,14 @@ var server = require('../../bin/app'),
     factories = require('./factories');
 
 module.exports = {
-  before: (function() {
+  before: (function () {
 
     'use strict';
 
-    before(function(done) {
+    before(function (done) {
       this.timeout(3000);
-      couchapp.setup(function(err, ok) {
-        if (ok) {done();}
+      couchapp.setup(function (err, ok) {
+        if (ok) {done(); }
       });
     });
 
@@ -26,7 +26,7 @@ module.exports = {
 
     'use strict';
 
-    afterEach(function() {
+    afterEach(function () {
 
 
     });
@@ -35,10 +35,10 @@ module.exports = {
 
     'use strict';
 
-    after(function(done) {
+    after(function (done) {
       this.timeout(3000);
-      couchapp.teardown(function(err, ok) {
-        if (ok) {done();}
+      couchapp.teardown(function (err, ok) {
+        if (ok) {done(); }
       });
     });
 
