@@ -72,11 +72,6 @@ var server = function (registry, opts) {
     }).done();
   }
 
-  app.get('/', function (req, res) {
-    res.send('{\'content\': \'print registry info here\'}', 200);
-  });
-
-
   app.get('/packages', function (req, res) {
     var packages = new Packages(registry);
     var query = packages.all();
