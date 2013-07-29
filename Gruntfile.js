@@ -20,7 +20,7 @@ module.exports = function (grunt) {
         node_env: 'testing',
         ignoreLeaks: true
       },
-      full: { src: ['test/**/*-test.js'] },
+      full: { src: ['test/**/*-test.js'] }
     },
 
 
