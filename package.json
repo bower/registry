@@ -2,7 +2,7 @@
   "name": "node-bower-registry",
   "version": "0.0.1",
   "author": "Sven Lito <me@svenlito.com>",
-  "main": "./server/server.js",
+  "main": "./bin/app",
   "private": true,
   "dependencies": {
     "express": "3.0.x",

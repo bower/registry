@@ -9,6 +9,7 @@ var Registry = require('../lib/registry');
 process.env.NODE_ENV = process.env.NODE_ENV || 'testing';
 
 // configuration information
+//
 // `node bin/app ../settings/config.json` => load specific config file
 // `node bin/app '{"host"....'` => use passed json
 // `node bin/app testing` => load testing.json profile in ./config
@@ -38,7 +39,9 @@ var options = (function () {
   }
 
   console.log('Loading ' + arg1 + ' configuration data');
+
   return config(arg1 || process.env.NODE_ENV);
+
 }());
 
 var registry = new Registry(options);
