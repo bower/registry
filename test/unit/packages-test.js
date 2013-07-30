@@ -2,17 +2,17 @@
 // test/unit/packages-test
 //
 
-var Registry = require('../../lib/registry.js');
 var Packages = require('../../lib/collections/packages');
 var Package = require('../../lib/models/package');
 var expect = require('expect.js');
 var ddocs = require('../../couchapp/ddocs.js');
 var mocks = require('../support/couch-mocks');
 
+var testHelper = require('../support/test-helper');
+var registry = testHelper.registry;
+
 describe('Packages', function () {
 
-  var opts = require('../../config/testing.json');
-  var registry = new Registry(opts);
   var mockData = [{
     name: 'thename',
     version: '1.2.3',
@@ -23,7 +23,7 @@ describe('Packages', function () {
     url: 'http://github.com/bower/bower.git'
   }];
 
-  mocks(registry.url(), opts, ddocs);
+  mocks(registry.url(), testHelper.opts, ddocs);
 
   beforeEach(function (done) {
 

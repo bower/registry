@@ -6,16 +6,13 @@ var cfg = opts.app;
 var url = cfg.protocol + '://' + cfg.host + ':' + cfg.port + '/';
 var Registry = require('../../lib/registry');
 var server = require('../../server/server.js');
+var registry = new Registry(opts);
 
 module.exports = {
   before: (function () {
 
-    before(function (done) {
-      var registry = new Registry(opts);
-      registry.promise.then(function () {
-        server(registry);
-        done();
-      });
+    before(function () {
+      server(registry);
     });
 
   }()),
@@ -35,5 +32,7 @@ module.exports = {
 
   }()),
   url: url,
-  factories: factories
+  factories: factories,
+  registry: registry,
+  opts: opts
 };
