@@ -1,5 +1,6 @@
 {
   "name": "node-bower-registry",
+  "description": "bower registry with couchdb persistence layer",
   "version": "0.0.1",
   "author": "Sven Lito <me@svenlito.com>",
   "main": "./bin/app",

@@ -7,7 +7,6 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var express   = require('express'),
     _         = require('lodash'),
     app       = module.exports = express(),
-    path      = require('path');
 
 var setHeaders = require('./middleware/headers'),
     setOptions = require('./middleware/options');
@@ -19,12 +18,9 @@ var Package = require('../lib/models/package');
 
 var server = function (registry, opts) {
 
-  'use strict';
-
   opts = _.extend({
-    port :      3333,
-    protocol : 'http',
-    baseDir :   path.normalize(__dirname + '/../')
+    port :      registry.options.app.port,
+    protocol :  registry.options.app.protocol
   }, opts || {});
 
   //
@@ -33,10 +29,10 @@ var server = function (registry, opts) {
   app.configure(function () {
     app.use(setHeaders());
     app.use(setOptions());
-    app.use(express.compress());
     app.use(express.bodyParser());
+    app.use(express.compress());
     app.use(express.methodOverride());
-    app.use(function (err, req) {
+    app.use(function (err, req, res, next) {
       console.dir(err.stack);
       req.send(500, 'Something broke!');
     });
@@ -62,14 +58,15 @@ var server = function (registry, opts) {
   //
   // routes
   //
-
   function routeRegistryQuery(query, res) {
+
     query.then(function (packages) {
       res.send(packages.toArray(), 200);
     }, function (err) {
       console.log(err.stack);
       res.send(err.message || 'Error', err['status-code'] || 400);
     }).done();
+
   }
 
   app.get('/packages', function (req, res) {
@@ -118,6 +115,8 @@ var server = function (registry, opts) {
     console.log('Error starting connection to DB');
     console.log(err);
   });
+
   return server;
 };
+
 module.exports = server;
