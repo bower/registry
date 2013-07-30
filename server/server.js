@@ -7,6 +7,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var express   = require('express'),
     _         = require('lodash'),
     app       = module.exports = express(),
+    pkg = require('../package.json');
 
 var setHeaders = require('./middleware/headers'),
     setOptions = require('./middleware/options');
@@ -68,6 +69,15 @@ var server = function (registry, opts) {
     }).done();
 
   }
+
+  app.get('/', function (req, res) {
+    var payload = {
+      version: pkg.version,
+      description: pkg.description
+    };
+
+    res.json(JSON.stringify(payload), 200);
+  });
 
   app.get('/packages', function (req, res) {
     var packages = new Packages(registry);
