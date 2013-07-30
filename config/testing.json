@@ -1,9 +1,16 @@
 {
-  "port": 5984,
-  "protocol": "http",
-  "host": "localhost",
-  "password": "",
-  "username": "",
-  "database": "bower-registry-testing",
-  "temporary": true
+  "app": {
+    "port": 5984,
+    "protocol": "http",
+    "host": "localhost"
+  },
+  "db": {
+    "port": 5984,
+    "protocol": "http",
+    "host": "localhost",
+    "password": "",
+    "username": "",
+    "name": "bower-registry",
+    "temporary": true
+  }
 }

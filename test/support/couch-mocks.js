@@ -5,7 +5,7 @@ module.exports = function (url, options, ddocs) {
 
   // delete attempt
   nock(url)
-    .delete('/' + options.database)
+    .delete('/' + options.db.name)
     .reply(404, "{\"error\":\"not_found\",\"reason\":\"missing\"}\n", { server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
     date: couchDateNow(),
     'content-type': 'application/json',
@@ -14,9 +14,9 @@ module.exports = function (url, options, ddocs) {
 
   // creation of db
   nock(url)
-    .put('/' + options.database)
+    .put('/' + options.db.name)
     .reply(201, "{\"ok\":true}\n", { server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
-    location: url + '/' + options.database,
+    location: url + '/' + options.db.name,
     date: couchDateNow(),
     'content-type': 'application/json',
     'content-length': '12',
@@ -30,7 +30,7 @@ module.exports = function (url, options, ddocs) {
     doc['attachments_md5'] = doc['attachments_md5'] || {};
     doc._attachments = doc._attachments || {};
 
-    var path = '/' + options.database + '/' + doc['_id'];
+    var path = '/' + options.db.name + '/' + doc['_id'];
 
     var rev = '1-510f49198b34aeeadec0ebd28e20c20c';
     var payload = JSON.stringify(doc);
@@ -52,7 +52,7 @@ module.exports = function (url, options, ddocs) {
       .put(path, payload)
       .reply(201, "{\"ok\":true,\"id\":\"" + doc['_id'] + "\",\"rev\":\"" + rev + "\"}\n", {
         server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
-        location: url + '/' + options.database + '/_design/packages',
+        location: url + '/' + options.db.name + '/_design/packages',
         etag: '"' + rev + '"',
         date: couchDateNow(),
         'content-type': 'text/plain; charset=utf-8',
@@ -65,7 +65,7 @@ module.exports = function (url, options, ddocs) {
       .put(path, payloadWithRev)
       .reply(201, "{\"ok\":true,\"id\":\"" + doc['_id'] + "\",\"rev\":\"" + rev + "\"}\n", {
         server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
-        location: url + '/' + options.database + '/_design/packages',
+        location: url + '/' + options.db.name + '/_design/packages',
         etag: '"' + rev + '"',
         date: couchDateNow(),
         'content-type': 'text/plain; charset=utf-8',
