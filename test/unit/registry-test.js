@@ -6,12 +6,12 @@ var ddocs = require('../../couchapp/ddocs.js');
 var mocks = require('../support/couch-mocks');
 
 
+var opts = require('../../config/testing.json');
+var registry = new Registry(opts);
+
+mocks(registry.url(), opts, ddocs);
+
 describe('Registry', function () {
-
-  var opts = require('../../config/testing.json');
-  var registry = new Registry(opts);
-
-  mocks(registry.url(), opts, ddocs);
 
   describe('Constructor', function () {
 
