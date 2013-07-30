@@ -1,6 +1,6 @@
 {
   "app": {
-    "port": 5984,
+    "port": 3333,
     "protocol": "http",
     "host": "localhost"
   },
