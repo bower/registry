@@ -46,7 +46,7 @@ describe('Packages', function () {
       });
 
       it('should have normal exposed props', function () {
-        expect(this.p.registry).to.equal(registry);
+        expect(this.p.registry).to.eql(registry);
       });
 
     });
@@ -73,7 +73,7 @@ describe('Packages', function () {
           expect(this.p[1]).to.be.a(Package);
           expect(this.p[2]).to.be(undefined);
           var out = this.p[0].toObject();
-          expect(out.name).to.equal(mockData[0].name);
+          expect(out.name).to.eql(mockData[0].name);
         });
 
       });

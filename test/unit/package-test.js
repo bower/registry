@@ -30,7 +30,6 @@ describe('Package', function () {
       this.p = new Package(registry, mockData);
     });
 
-
     describe('Constructor', function () {
 
       it('should be an instance of Package', function () {
@@ -38,7 +37,7 @@ describe('Package', function () {
       });
 
       it('should have normal exposed props', function () {
-        expect(this.p.registry).to.equal(registry);
+        expect(this.p.registry).to.eql(registry);
         expect(this.p._model).to.be.a(Object);
       });
 
@@ -47,9 +46,9 @@ describe('Package', function () {
     describe('Property initialization and retrieval', function () {
 
       it('should happen on construction', function () {
-        expect(this.p.get('name')).to.equal(mockData.name);
-        expect(this.p.get('version')).to.equal(mockData.version);
-        expect(this.p.get('url')).to.equal(mockData.url);
+        expect(this.p.get('name')).to.eql(mockData.name);
+        expect(this.p.get('version')).to.eql(mockData.version);
+        expect(this.p.get('url')).to.eql(mockData.url);
       });
 
     });
@@ -68,9 +67,9 @@ describe('Package', function () {
       it('should have public properties', function () {
         var obj = this.p.toObject();
 
-        expect(obj.name).to.equal(this.p.get('name'));
-        expect(obj.version).to.equal(this.p.get('version'));
-        expect(obj.url).to.equal(this.p.get('url'));
+        expect(obj.name).to.eql(this.p.get('name'));
+        expect(obj.version).to.eql(this.p.get('version'));
+        expect(obj.url).to.eql(this.p.get('url'));
       });
 
       it('should not have private properties', function () {
