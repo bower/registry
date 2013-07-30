@@ -14,7 +14,7 @@ You must have node installed.
 
 Clone and setup this repo:
 
-```
+```bash
 git clone git@github.com:bower/registry.git -b node_rewrite
 cd registry
 npm install
@@ -33,27 +33,34 @@ node bin/app development
 
 To use any file:
 
-```
+```bash
 node bin/app /path/to/the/settings/file.json
 ```
 
 Or lastly, pass the JSON settings in directly:
 
-```
+```bash
 node bin/app $(cat easier/than/typing/it.json)
 ```
 
 ## Configuration
 
-```
+```json
 {
-  "port": 5984,
-  "protocol": "http",
-  "host": "localhost",
-  "password": "",
-  "username": "",
-  "database": "bower-registry-testing",
-  "temporary": true
+  "app": {
+    "port": 3333,
+    "protocol": "http",
+    "host": "localhost"
+  },
+  "db": {
+    "port": 5984,
+    "protocol": "http",
+    "host": "localhost",
+    "password": "",
+    "username": "",
+    "name": "bower-registry",
+    "temporary": true
+  }
 }
 ```
 
