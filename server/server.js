@@ -4,13 +4,14 @@
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-var express   = require('express'),
-    _         = require('lodash'),
-    app       = module.exports = express(),
-    pkg = require('../package.json');
+var express   = require('express');
+var _         = require('lodash');
+var app       = express();
+var pkg       = require('../package.json');
+var http      = require('http');
 
-var setHeaders = require('./middleware/headers'),
-    setOptions = require('./middleware/options');
+var setHeaders = require('./middleware/headers');
+var setOptions = require('./middleware/options');
 
 var Packages = require('../lib/collections/packages');
 var Package = require('../lib/models/package');
