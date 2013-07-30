@@ -12,8 +12,6 @@ var Model = require('../../lib/models/package'),
 
 describe('Package Model', function () {
 
-  'use strict';
-
   beforeEach(function () {
     this.pkg = Model.factory(new factories.package());
   });

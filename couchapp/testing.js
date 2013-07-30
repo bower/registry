@@ -14,8 +14,6 @@ var couchapp = require('couchapp'),
 
 exports.setup = function (cb) {
 
-  'use strict';
-
   // clean up the database we created previously
   nano.db.destroy('bower-registry-testing', function () {
 

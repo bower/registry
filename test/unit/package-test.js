@@ -8,8 +8,6 @@ var mocks = require('../support/couch-mocks');
 
 describe('Package', function () {
 
-  'use strict';
-
   var opts = require('../../config/testing.json');
   var registry = new Registry(opts);
   var mockData = {
