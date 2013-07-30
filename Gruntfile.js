@@ -25,8 +25,8 @@ module.exports = function (grunt) {
 
 
     watch: {
-      files: '**/*',
-      tasks: ['jshint', 'mochaTest']
+      files: ['<%= jshint.files %>'],
+      tasks: ['jshint', 'simplemocha:full']
     }
 
   });
