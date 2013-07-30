@@ -1,19 +1,16 @@
 /*globals before:true, after:true*/
 
-var server = require('../../bin/app'),
-    couchapp = require('../../couchapp/testing'),
-    factories = require('./factories');
+var opts = require('../../config/testing.json');
+var cfg = opts.app;
+var url = cfg.protocol + '://' + cfg.host + ':' + cfg.port + '/';
 
 module.exports = {
   before: (function () {
 
     'use strict';
 
-    before(function (done) {
-      this.timeout(3000);
-      couchapp.setup(function (err, ok) {
-        if (ok) {done(); }
-      });
+    before(function () {
+      console.log('before');
     });
 
   }()),
@@ -35,13 +32,9 @@ module.exports = {
 
     'use strict';
 
-    after(function (done) {
-      this.timeout(3000);
-      couchapp.teardown(function (err, ok) {
-        if (ok) {done(); }
-      });
+    after(function () {
     });
 
   }()),
-  factories: factories
+  url: url
 };

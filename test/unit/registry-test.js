@@ -1,7 +1,5 @@
 var Registry = require('../../lib/registry.js');
-var _ = require('lodash');
 var expect = require('expect.js');
-var http = require('http');
 var ddocs = require('../../couchapp/ddocs.js');
 var mocks = require('../support/couch-mocks');
 
