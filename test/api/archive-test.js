@@ -4,12 +4,28 @@ var testHelper = require('../support/test-helper');
 
 describe('/archive/:name/:version', function () {
 
-  describe('PUT', function () {
+  describe('GET', function () {
 
-    it.skip('should create a user', function (done) {
+    it.skip('should respond with archive info', function (done) {
       request.put({
         headers: {'content-type' : 'application/json'},
-        url: testHelper.url + 'user/test',
+        url: testHelper.url + 'archive/name',
+        body: 'somezipfile'
+      }, function (err, res) {
+        expect(res.statusCode).to.eql(201);
+        done();
+      });
+
+    });
+
+  });
+
+  describe('PUT', function () {
+
+    it.skip('should create an archive', function (done) {
+      request.put({
+        headers: {'content-type' : 'application/json'},
+        url: testHelper.url + 'archive/name',
         body: 'somezipfile'
       }, function (err, res) {
         expect(res.statusCode).to.eql(201);

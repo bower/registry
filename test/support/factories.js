@@ -10,11 +10,11 @@ module.exports = {
     this.versions = versions || [];
   },
 
-  user: function (name, email, url, packages) {
+  user: function (name, password, email, url) {
     this.name = name || '';
+    this.password = password || [];
     this.email = email || '';
     this.url = url || '';
-    this.packages = packages || [];
   },
 
   info: function (registry, name, description) {

@@ -49,6 +49,21 @@ describe('/user/:name', function () {
 
   });
 
+  describe('UPDATE', function () {
+
+    it.skip('should create a user', function (done) {
+      request.update({
+        headers: {'content-type' : 'application/json'},
+        url: testHelper.url + 'user/' + user.name
+      }, function (err, res) {
+        expect(res.statusCode).to.eql(200);
+        done();
+      });
+
+    });
+
+  });
+
   describe('DELETE', function () {
 
     it.skip('should create a user', function (done) {
