@@ -110,10 +110,11 @@ var server = function (registry, opts) {
     routeRegistryQuery(query, res);
   });
 
-  app.post('/packages', function (req, res) {
-    var p = new Package(registry, req.body);
 
-    p.save().then(function (data) {
+  app.post('/packages', function (req, res) {
+    var pkg = new Package(registry, req.body);
+
+    pkg.save().then(function (data) {
       res.send(data, 201);
     }, function (err) {
       res.json(err, 400);
