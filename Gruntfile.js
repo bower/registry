@@ -1,6 +1,5 @@
 module.exports = function (grunt) {
 
-  // Project configuration.
   grunt.initConfig({
 
     jshint: {
@@ -40,4 +39,3 @@ module.exports = function (grunt) {
   grunt.registerTask('test', ['jshint', 'simplemocha:full']);
 
 };
-

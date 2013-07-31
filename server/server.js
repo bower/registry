@@ -101,7 +101,6 @@ var server = function (registry, opts) {
       res.send('Missing search parameter', 400);
     }
 
-    //var packages = new Packages(registry);
     var query = Packages.search(req.params.name);
 
     routeRegistryQuery(query, res);

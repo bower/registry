@@ -32,7 +32,6 @@ describe('/', function () {
       }, function () {
         done();
       });
-
     });
 
   });
