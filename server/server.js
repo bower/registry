@@ -9,6 +9,7 @@ var _         = require('lodash');
 var app       = express();
 var fs        = require('fs');
 var path      = require('path');
+var pkgJson   = require('../package.json');
 var http      = require('http');
 var https     = require('https');
 
@@ -75,11 +76,12 @@ var server = function (registry, opts) {
 
   app.get('/', function (req, res) {
     var payload = {
-      version: pkg.version,
-      description: pkg.description
+      'registry': pkgJson.version,
+      'name': pkgJson.name,
+      'description': pkgJson.description
     };
 
-    res.json(JSON.stringify(payload), 200);
+    res.json(payload, 200);
   });
 
   app.get('/packages', function (req, res) {
