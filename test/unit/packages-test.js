@@ -5,25 +5,24 @@
 var Packages = require('../../lib/collections/packages');
 var Package = require('../../lib/models/package');
 var expect = require('expect.js');
-var ddocs = require('../../couchapp/ddocs.js');
-var mocks = require('../support/couch-mocks');
 
 var testHelper = require('../support/test-helper');
 var registry = testHelper.registry;
 
+
+var mockData = [{
+  name: 'thename',
+  version: '1.2.3',
+  url: 'https://github.com/bower/registry.git'
+}, {
+  name: 'anothername',
+  version: '3.2.1',
+  url: 'http://github.com/bower/bower.git'
+}];
+
+testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
+
 describe('Packages', function () {
-
-  var mockData = [{
-    name: 'thename',
-    version: '1.2.3',
-    url: 'https://github.com/bower/registry.git'
-  }, {
-    name: 'anothername',
-    version: '3.2.1',
-    url: 'http://github.com/bower/bower.git'
-  }];
-
-  mocks(registry.url(), testHelper.opts, ddocs);
 
   beforeEach(function (done) {
 

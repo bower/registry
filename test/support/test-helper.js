@@ -2,10 +2,12 @@
 
 var opts = require('../../config/testing.json');
 var factories = require('./factories');
-var cfg = opts.app;
-var url = cfg.https ? 'https' : 'http' +  '://' + cfg.host + ':' + cfg.port + '/';
-var Registry = require('../../lib/registry');
+var url = opts.app.https ? 'https' : 'http' +  '://' + opts.app.host + ':' + opts.app.port + '/';
 var server = require('../../server/server.js');
+var mocks = require('./couch-mocks');
+var ddocs = require('../../couchapp/ddocs');
+
+var Registry = require('../../lib/registry');
 var registry = new Registry(opts);
 
 module.exports = {
@@ -37,5 +39,7 @@ module.exports = {
   url: url,
   factories: factories,
   registry: registry,
-  opts: opts
+  opts: opts,
+  mocks: mocks,
+  ddocs: ddocs
 };

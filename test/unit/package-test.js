@@ -1,18 +1,16 @@
 var Package = require('../../lib/models/package');
 var expect = require('expect.js');
-var ddocs = require('../../couchapp/ddocs.js');
-var mocks = require('../support/couch-mocks');
 
 var testHelper = require('../support/test-helper');
-
 var registry = testHelper.registry;
+
 var mockData = {
   name: 'thename',
   version: '1.2.3',
   url: 'https://github.com/bower/registry.git'
 };
 
-mocks(registry.url(), testHelper.opts, ddocs);
+testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 
 describe('Package', function () {
 

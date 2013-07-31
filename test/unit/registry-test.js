@@ -1,12 +1,10 @@
 var expect = require('expect.js');
-
 var Registry = require('../../lib/registry.js');
-var ddocs = require('../../couchapp/ddocs.js');
-var mocks = require('../support/couch-mocks');
-var opts = require('../../config/testing.json');
-var registry = new Registry(opts);
 
-mocks(registry.url(), opts, ddocs);
+var testHelper = require('../support/test-helper');
+var registry = testHelper.registry;
+
+testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 
 describe('Registry', function () {
 
@@ -30,7 +28,7 @@ describe('Registry', function () {
 
       it('should resolve with correct database', function (done) {
         registry.promise.then(function (db) {
-          expect(db.config.db).to.eql(opts.db.name);
+          expect(db.config.db).to.eql(testHelper.opts.db.name);
           done();
         });
       });
