@@ -24,7 +24,7 @@ describe('Package', function () {
 
   });
 
-  describe('Collection', function () {
+  describe('Model', function () {
 
     beforeEach(function () {
       this.p = new Package(registry, mockData);
