@@ -132,6 +132,17 @@ var server = function (registry, opts) {
 
   });
 
+  app.get('/users/:name', function (req, res) {
+    var user = new User(registry, req.params);
+
+    user.find().then(function (data) {
+      res.send(data, 201);
+    }, function (err) {
+      res.json(err, 400);
+    }).done();
+
+  });
+
   app.post('/users/:name', function (req, res) {
     var user = new User(registry, req.body);
 
