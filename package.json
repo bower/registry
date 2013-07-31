@@ -7,7 +7,6 @@
   "private": true,
   "dependencies": {
     "express": "3.0.x",
-    "express-resource": "1.0.x",
     "konphyg": "~1.2.0",
     "validotron": "~0.3.0",
     "nano": "4.1.1",
