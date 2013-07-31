@@ -36,17 +36,17 @@ describe('Packages', function () {
   describe('Collection', function () {
 
     beforeEach(function () {
-      this.p = new Packages(registry);
+      this.pkg = new Packages(registry);
     });
 
     describe('Constructor', function () {
 
       it('should be an instance of Packages', function () {
-        expect(this.p).to.be.a(Packages);
+        expect(this.pkg).to.be.a(Packages);
       });
 
       it('should have normal exposed props', function () {
-        expect(this.p.registry).to.eql(registry);
+        expect(this.pkg.registry).to.eql(registry);
       });
 
     });
@@ -54,10 +54,10 @@ describe('Packages', function () {
     describe('Instance', function () {
 
       it('should have array methods', function () {
-        expect(this.p.forEach).to.be.a(Function);
-        expect(this.p.map).to.be.a(Function);
-        expect(this.p.slice).to.be.a(Function);
-        expect(this.p.length).to.be(0);
+        expect(this.pkg.forEach).to.be.a(Function);
+        expect(this.pkg.map).to.be.a(Function);
+        expect(this.pkg.slice).to.be.a(Function);
+        expect(this.pkg.length).to.be(0);
       });
 
     });
@@ -67,12 +67,12 @@ describe('Packages', function () {
       describe('An Array of Data', function () {
 
         it('should create models', function () {
-          this.p.reset(mockData);
-          expect(this.p.length).to.be(2);
-          expect(this.p[0]).to.be.a(Package);
-          expect(this.p[1]).to.be.a(Package);
-          expect(this.p[2]).to.be(undefined);
-          var out = this.p[0].toObject();
+          this.pkg.reset(mockData);
+          expect(this.pkg.length).to.be(2);
+          expect(this.pkg[0]).to.be.a(Package);
+          expect(this.pkg[1]).to.be.a(Package);
+          expect(this.pkg[2]).to.be(undefined);
+          var out = this.pkg[0].toObject();
           expect(out.name).to.eql(mockData[0].name);
         });
 
@@ -81,15 +81,15 @@ describe('Packages', function () {
       describe('An Array of Models', function () {
 
         it('should populate the controller with models', function () {
-          this.p.reset([
+          this.pkg.reset([
             new Package(registry, mockData[0]),
             new Package(registry, mockData[1])
           ]);
 
-          expect(this.p.length).to.be(2);
-          expect(this.p[0]).to.be.a(Package);
-          expect(this.p[1]).to.be.a(Package);
-          expect(this.p[2]).to.be(undefined);
+          expect(this.pkg.length).to.be(2);
+          expect(this.pkg[0]).to.be.a(Package);
+          expect(this.pkg[1]).to.be.a(Package);
+          expect(this.pkg[2]).to.be(undefined);
         });
 
       });
