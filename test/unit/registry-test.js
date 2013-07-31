@@ -1,9 +1,8 @@
-var Registry = require('../../lib/registry.js');
 var expect = require('expect.js');
+
+var Registry = require('../../lib/registry.js');
 var ddocs = require('../../couchapp/ddocs.js');
 var mocks = require('../support/couch-mocks');
-
-
 var opts = require('../../config/testing.json');
 var registry = new Registry(opts);
 
