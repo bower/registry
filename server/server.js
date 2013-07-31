@@ -9,10 +9,10 @@ var _         = require('lodash');
 var app       = express();
 var fs        = require('fs');
 var path      = require('path');
-var pkgJson   = require('../package.json');
 var http      = require('http');
 var https     = require('https');
 
+var pkgJson   = require('../package.json');
 var setHeaders = require('./middleware/headers');
 var setOptions = require('./middleware/options');
 
