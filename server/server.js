@@ -7,8 +7,10 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var express   = require('express');
 var _         = require('lodash');
 var app       = express();
-var pkg       = require('../package.json');
+var fs        = require('fs');
+var path      = require('path');
 var http      = require('http');
+var https     = require('https');
 
 var setHeaders = require('./middleware/headers');
 var setOptions = require('./middleware/options');
@@ -117,16 +119,52 @@ var server = function (registry, opts) {
 
   });
 
+
   // Actually listen when ready
   registry.promise.then(function () {
-    app.listen(opts.port || null);
-    console.log('Serving at http://localhost:' + (opts.port || ''));
+    var ca, privateKey, certificate, node;
+
+    if (!registry.options.app.https) {
+      node = http.createServer(app);
+      node.listen(opts.port || null);
+
+      console.log('Serving at http://localhost:' + (opts.port || ''));
+    } else {
+
+      try {
+        privateKey = fs.readFileSync(path.resolve(__dirname + '/cert/key.pem')).toString();
+      }
+      catch (err) {
+        console.error('For an https server please add a private key in /cert/key.pem');
+        console.log(err);
+        return;
+      }
+
+      try {
+        certificate = fs.readFileSync(path.resolve(__dirname + '/cert/certificate.pem')).toString();
+      }
+      catch (err) {
+        console.error('For an https server please add a certificate in /cert/certificate.pem');
+        console.log(err);
+        return;
+      }
+
+      node = https.createServer({
+        key: privateKey,
+        cert: certificate,
+        ca: ca
+      }, app);
+      node.listen(opts.port || null);
+
+      console.log('Serving at https://localhost:' + (opts.port || ''));
+    }
+
   }, function (err) {
     console.log('Error starting connection to DB');
     console.log(err);
   });
 
-  return server;
+  return;
 };
 
 module.exports = server;
