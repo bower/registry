@@ -1,7 +1,5 @@
 var User = require('../../lib/models/user');
 var expect = require('expect.js');
-var ddocs = require('../../couchapp/ddocs.js');
-var mocks = require('../support/couch-mocks');
 
 var testHelper = require('../support/test-helper');
 
@@ -13,7 +11,7 @@ var mockData = {
   url: 'https://github.com/bower/registry.git'
 };
 
-mocks(registry.url(), testHelper.opts, ddocs);
+testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 
 describe('User', function () {
 
