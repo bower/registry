@@ -20,60 +20,64 @@ var Packages = require('../lib/collections/packages');
 var Package = require('../lib/models/package');
 
 
+//
+// configure express middleware
+//
+app.configure(function () {
+  app.use(setHeaders());
+  app.use(setOptions());
+  app.use(express.bodyParser());
+  app.use(express.compress());
+  app.use(express.methodOverride());
+  app.use(function (err, req, res, next) {
+    console.dir(err.stack);
+    req.send(500, 'Something broke!');
+  });
+});
+
+//
+// setup environment
+//
+app.configure('development', function () {
+  app.use(express.errorHandler({
+    dumpExceptions: true,
+    showStack: true
+  }));
+
+  // log verbosely
+  app.use(express.logger(({ format: ':method :status :url' })));
+});
+
+app.configure('production', function () {
+  app.use(express.errorHandler());
+});
+
+
+function routeRegistryQuery(query, res) {
+
+  query.then(function (packages) {
+    res.send(packages.toArray(), 200);
+  }, function (err) {
+    console.log(err.stack);
+    res.send(err.message || 'Error', err['status-code'] || 400);
+  }).done();
+
+}
+
 
 var server = function (registry, opts) {
 
+  //
+  // server options
+  //
   opts = _.extend({
     port :      registry.options.app.port,
     protocol :  registry.options.app.https ? 'https' : 'http' +  '://'
   }, opts || {});
 
   //
-  // configure express middleware
-  //
-  app.configure(function () {
-    app.use(setHeaders());
-    app.use(setOptions());
-    app.use(express.bodyParser());
-    app.use(express.compress());
-    app.use(express.methodOverride());
-    app.use(function (err, req, res, next) {
-      console.dir(err.stack);
-      req.send(500, 'Something broke!');
-    });
-  });
-
-  //
-  // setup environment
-  //
-  app.configure('development', function () {
-    app.use(express.errorHandler({
-      dumpExceptions: true,
-      showStack: true
-    }));
-
-    // log verbosely
-    app.use(express.logger(({ format: ':method :status :url' })));
-  });
-
-  app.configure('production', function () {
-    app.use(express.errorHandler());
-  });
-
-  //
   // routes
   //
-  function routeRegistryQuery(query, res) {
-
-    query.then(function (packages) {
-      res.send(packages.toArray(), 200);
-    }, function (err) {
-      console.log(err.stack);
-      res.send(err.message || 'Error', err['status-code'] || 400);
-    }).done();
-
-  }
-
   app.get('/', function (req, res) {
     var payload = {
       'registry': pkgJson.version,
@@ -84,6 +88,7 @@ var server = function (registry, opts) {
     res.json(payload, 200);
   });
 
+
   app.get('/packages', function (req, res) {
     var packages = new Packages(registry);
     var query = packages.all();
@@ -93,6 +98,10 @@ var server = function (registry, opts) {
 
 
   app.get('/packages/:name', function (req, res) {
+    if (!req || req.params || req.params.name) {
+      res.send('Missing search parameter', 400);
+    }
+
     var packages = new Packages(registry);
     var query = packages.fetch(req.params.name);
 
