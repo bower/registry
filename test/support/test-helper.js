@@ -11,7 +11,7 @@ var registry = new Registry(opts);
 module.exports = {
   before: (function () {
 
-    before(function () {
+    before(function (done) {
       registry.promise.then(function () {
         server(registry);
         done();
