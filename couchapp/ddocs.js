@@ -12,6 +12,17 @@ var docs = [
         map: function (doc) { if (doc.resource === 'packages') { emit(doc._id, doc); } }
       }
     }
+  },
+  {
+    _id: '_design/users',
+    views: {
+      all: {
+        map: function (doc) { if (doc.resource === 'users') { emit(doc._id, doc); } }
+      },
+      by_name: {
+        map: function (doc) { if (doc.resource === 'users') { emit(doc._id, doc); } }
+      }
+    }
   }
 ];
 

@@ -18,6 +18,7 @@ var setOptions = require('./middleware/options');
 
 var Packages = require('../lib/collections/packages');
 var Package = require('../lib/models/package');
+var User = require('../lib/models/user');
 
 
 //
@@ -129,6 +130,16 @@ var server = function (registry, opts) {
       res.json(err, 400);
     }).done();
 
+  });
+
+  app.post('/users/:name', function (req, res) {
+    var user = new User(registry, req.body);
+
+    user.save().then(function (data) {
+      res.send(data, 201);
+    }, function (err) {
+      res.json(err, 400);
+    }).done();
   });
 
 
