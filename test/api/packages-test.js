@@ -2,6 +2,7 @@ var request = require('request');
 var expect  = require('expect.js');
 var testHelper = require('../support/test-helper');
 
+var pkg = new testHelper.factories.package();
 
 describe('/packages', function () {
 
@@ -28,9 +29,11 @@ describe('/packages/:name', function () {
 
     it.skip('should respond with a single package', function (done) {
       request.get({
-        url: testHelper.url + 'packages/test'
+        url: testHelper.url + 'packages/test',
+        headers: { 'accept': 'application/json' }
       }, function (err, res) {
         expect(res.statusCode).to.eql(200);
+        expect(res.body).to.eql(pkg);
         done();
       });
 
