@@ -30,7 +30,9 @@ var options = (function () {
 
     try {
       parsedJSON = JSON.parse(json);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e.message);
+    }
 
     if (parsedJSON) {
       return parsedJSON;
