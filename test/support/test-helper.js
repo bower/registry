@@ -3,7 +3,7 @@
 var opts = require('../../config/testing.json');
 var factories = require('./factories');
 var cfg = opts.app;
-var url = cfg.protocol + '://' + cfg.host + ':' + cfg.port + '/';
+var url = cfg.https ? 'https' : 'http' +  '://' + cfg.host + ':' + cfg.port + '/';
 var Registry = require('../../lib/registry');
 var server = require('../../server/server.js');
 var registry = new Registry(opts);

@@ -22,7 +22,7 @@ var server = function (registry, opts) {
 
   opts = _.extend({
     port :      registry.options.app.port,
-    protocol :  registry.options.app.protocol
+    protocol :  registry.options.app.https ? 'https' : 'http' +  '://'
   }, opts || {});
 
   //
