@@ -12,7 +12,10 @@ module.exports = {
   before: (function () {
 
     before(function () {
-      server(registry);
+      registry.promise.then(function () {
+        server(registry);
+        done();
+      });
     });
 
   }()),
