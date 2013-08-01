@@ -11,7 +11,8 @@
     "validotron": "~0.3.0",
     "nano": "4.1.1",
     "lodash": "~1.2.1",
-    "q": "~0.9.6"
+    "q": "~0.9.6",
+    "bcrypt": "~0.7.6"
   },
   "scripts": {
     "test": "grunt test --verbose",
