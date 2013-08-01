@@ -151,9 +151,12 @@ var server = function (registry, opts) {
     }, function (err) {
       res.json(err, 400);
     }).done();
+
   });
 
-
+  // TODO:
+  // maybe move this elsewhere.
+  //
   // Actually listen when ready
   registry.promise.then(function () {
     var ca, privateKey, certificate, node;
