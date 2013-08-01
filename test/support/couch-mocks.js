@@ -108,4 +108,4 @@ var prepareDdoc = module.exports.couchDateNow = function (ddocument) {
   };
   recurse(ddoc.views || {});
   return ddoc;
-}
+};
