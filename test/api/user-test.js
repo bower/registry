@@ -4,13 +4,13 @@ var testHelper = require('../support/test-helper');
 
 var user = new testHelper.factories.user();
 
-describe('/user/:name', function () {
+describe('/users/:name', function () {
 
   describe('GET', function () {
 
     it.skip('should respond with a user', function (done) {
       request.get({
-        url: testHelper.url + 'user/test'
+        url: testHelper.url + 'users/test'
       }, function (err, res) {
         expect(res.statusCode).to.eql(200);
         done();
@@ -25,11 +25,10 @@ describe('/user/:name', function () {
     it.skip('should create a user', function (done) {
       request.put({
         headers: {'content-type' : 'application/json'},
-        url: testHelper.url + 'user/test',
+        url: testHelper.url + 'users/test',
         body: JSON.stringify(user)
       }, function (err, res) {
         expect(res.statusCode).to.eql(201);
-        expect(res.body).to.eql({"ok": "User created"});
         done();
       });
 
