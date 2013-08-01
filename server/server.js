@@ -2,71 +2,76 @@
 // # server/server
 //
 
+
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-var express   = require('express');
-var _         = require('lodash');
-var app       = express();
-var fs        = require('fs');
-var path      = require('path');
-var http      = require('http');
-var https     = require('https');
+module.exports = function (registry, opts) {
 
-var pkgJson   = require('../package.json');
-var setHeaders = require('./middleware/headers');
-var setOptions = require('./middleware/options');
+  var express   = require('express');
+  var _         = require('lodash');
+  var app       = express();
+  var fs        = require('fs');
+  var path      = require('path');
+  var http      = require('http');
+  var https     = require('https');
+  var passport  = require('passport');
 
-var Packages = require('../lib/collections/packages');
-var Package = require('../lib/models/package');
-var User = require('../lib/models/user');
+  var pkgJson   = require('../package.json');
+  var setHeaders = require('./middleware/headers');
+  var setOptions = require('./middleware/options');
+  var setAuth = require('../lib/helpers/passport');
 
+  var Packages = require('../lib/collections/packages');
+  var Package = require('../lib/models/package');
+  var User = require('../lib/models/user');
 
-//
-// configure express middleware
-//
-app.configure(function () {
-  app.use(setHeaders());
-  app.use(setOptions());
-  app.use(express.bodyParser());
-  app.use(express.compress());
-  app.use(express.methodOverride());
-  app.use(function (err, req, res, next) {
-    console.dir(err.stack);
-    req.send(500, 'Something broke!');
+  //
+  // configure express middleware
+  //
+  app.configure(function () {
+    app.use(setHeaders());
+    app.use(setOptions());
+    app.use(setAuth(passport, registry));
+    app.use(passport.initialize());
+    app.use(express.bodyParser());
+    app.use(express.compress());
+    app.use(express.methodOverride());
+    app.use(function (err, req, res, next) {
+      console.dir(err.stack);
+      req.send(500, 'Something broke!');
+    });
   });
-});
 
-//
-// setup environment
-//
-app.configure('development', function () {
-  app.use(express.errorHandler({
-    dumpExceptions: true,
-    showStack: true
-  }));
+  //
+  // setup environment
+  //
+  app.configure('development', function () {
+    app.use(express.errorHandler({
+      dumpExceptions: true,
+      showStack: true
+    }));
 
-  // log verbosely
-  app.use(express.logger(({ format: ':method :status :url' })));
-});
+    // log verbosely
+    app.use(express.logger(({ format: ':method :status :url' })));
+  });
 
-app.configure('production', function () {
-  app.use(express.errorHandler());
-});
-
-
-function routeRegistryQuery(query, res) {
-
-  query.then(function (packages) {
-    res.send(packages.toArray(), 200);
-  }, function (err) {
-    console.log(err.stack);
-    res.send(err.message || 'Error', err['status-code'] || 400);
-  }).done();
-
-}
+  app.configure('production', function () {
+    app.use(express.errorHandler());
+  });
 
 
-var server = function (registry, opts) {
+  function routeRegistryQuery(query, res) {
+
+    query.then(function (packages) {
+      res.send(packages.toArray(), 200);
+    }, function (err) {
+      console.log(err.stack);
+      res.send(err.message || 'Error', err['status-code'] || 400);
+    }).done();
+
+  }
+
+
 
   //
   // server options
@@ -143,7 +148,7 @@ var server = function (registry, opts) {
 
   });
 
-  app.post('/users/:name', function (req, res) {
+  app.post('/users/:name', passport.authenticate('digest', { session: false }), function (req, res) {
     var user = new User(registry, req.body);
 
     user.save().then(function (data) {
@@ -204,4 +209,3 @@ var server = function (registry, opts) {
   return;
 };
 
-module.exports = server;

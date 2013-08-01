@@ -12,7 +12,9 @@
     "nano": "4.1.1",
     "lodash": "~1.2.1",
     "q": "~0.9.6",
-    "bcrypt": "~0.7.6"
+    "bcrypt": "~0.7.6",
+    "passport-http": "~0.2.2",
+    "passport": "~0.1.17"
   },
   "scripts": {
     "test": "grunt test --verbose",
