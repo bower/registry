@@ -1,0 +1,170 @@
+--- bower-registry ---
+
+--
+Root Resources
+--
+
+GET /
+< 200
+< Content-Type: application/json
+{
+  "registry": "x.x.x",
+  "name": "bower-registry",
+  "description": "some description”
+}
+
+--
+Packages Resources
+--
+
+GET /packages
+< 200
+< Content-Type: application/json
+[{
+  "name": "<name>",
+  "description": "<description>",
+  "keywords": ["<keyword>","<keyword>" ]
+  "type": "<type>",
+  "url": "<url>",
+  "version": ["<version>","<version>" ]
+},
+{
+  "name": "<name>",
+  "description": "<description>",
+  "keywords": ["<keyword>","<keyword>" ]
+  "type": "<type>",
+  "url": "<url>",
+  "version": ["<version>","<version>" ]
+}]
+
+
+GET /packages/:name
+< 200
+< Content-Type: application/json
+{
+  "name": "<name>",
+  "description": "<description>",
+  "keywords": ["<keyword>","<keyword>" ]
+  "type": "<type>",
+  "url": "<url>",
+  "version": ["<version>","<version>" ]
+}
+
+GET /packages/search/:name
+< 200
+< Content-Type: application/json
+{}
+
+PUT /packages/:name
+> Content-Type: application/json
+{
+  "name": "<name>",
+  "description": "<description>",
+  "keywords": ["<keyword>","<keyword>" ]
+  "type": "<type>",
+  "url": "<url>"
+}
+< 204
+< Content-Type: application/json
+{
+  "ok": "Package created"   
+}
+
+DELETE /packages/:name
+> Content-Type: application/json
+{}
+< 204
+< Content-Type: application/json
+
+--
+Archives Resources
+--
+
+GET /archives/:name
+< 200
+< Content-Type: application/json
+{}
+
+GET /archives/:name/:version
+< 200
+< Content-Type: application/json
+{}
+
+PUT /archives/:name/:version
+> Content-Type: application/json
+{}
+< 204
+< Content-Type: application/json
+{}
+
+--
+Users Resources
+--
+GET /users/:name
+< 200
+< Content-Type: application/json
+{
+  "name": "<name>",
+  "email": "<email>",
+  "url": "<url>",
+  "packages": ["<package>", "<package>"]
+}
+
+Creates a user account. If the user named <name> alread exists this method will respond
+a '409 Conflict' error with a message along the lines of "User already exsists"
+
+POST /users/:name
+> Content-Type: application/json
+{
+  "name": "<name>",
+  "password": "<password>,
+  "email": "<email>",
+  "url": "<url>"
+}
+< 201
+< Content-Type: application/json
+{
+  "ok": "User created"   
+}
++++++
+< 409
+< Content-Type: application/json; charset=utf-8
+{
+  "error": "Conflict"
+}
+
+__Authenticated.__ Similar to the above PUT require for the same resource.
+However, users can only update themselves. If the user to be updated is someone else
+the response will be a '401 Unauthorized' with a message "Users may only update their
+own details".
+PUT /users/:name
+> Content-Type: application/json; charset=utf-8
+{
+  "name": "<name>",
+  "password": "<password>,
+  "email": "<email>"
+}
+< 204
+< Content-Type: application/json; charset=utf-8
+{
+  "ok": "User updated"   
+}
++++++
+< 401
+< Content-Type: application/json; charset=utf-8
+{
+  "error": "Users may only update their own details"
+}
+
+
+DELETE /users/:name
+> Content-Type: application/json; charset=utf-8
+{}
+< 200
+< Content-Type: application/json; charset=utf-8
++++++
+< 401
+< Content-Type: application/json; charset=utf-8
+{
+  "error": ""
+}
