@@ -1,0 +1,323 @@
+--- bower-registry ---
+
+--
+Root Resource
+
+__"registry"__ is the version of the registry server code.
+
+__"name"__ is the name of the registry, e.g., bower-registry
+
+__"description"__ is an arbitrary human readable string. Intended to provide
+direction to anyone who gets lost and ends up looking at the server with a browser.
+--
+
+GET /
+< 200
+< Content-Type: application/json; charset=utf-8
+{
+  "registry": "protocol-version",
+  "name": "bower-registry",
+  "description": "some description”
+}
++++++
+< 400
++++++
+< 404
++++++
+< 500
+
+
+--
+Packages Resource
+
+The __"name"__ in the response is always the same as the __"name"__ in the request.
+ _(Required.)_
+
+__"description"__ and __"keywords"__ have the same meaning as in bower.json.
+ _(Both optional.)_
+
+__"owners"__ lists the usernames of the users who own the package.
+_(Required.)_
+
+__"url"__ is the location of the package. _(Required.)_
+ - _May be a relative URL in the case of a hosted package._
+
+__"type"__ describes the url type - __git__ when the url points to a git repo,
+__file__ when it is a single file, and __archive__ when it is a compressed archive.
+_(Required.)_
+
+__"versions"__ lists the available versions of the package.
+_(Optional.)_
+
+Ignored for git packages. Otherwise, this implies that a specific version of a
+package can be retrieved from __"url"/"version"__ for any version listed,
+while __"url"__ on its own points to the latest.
+
+This mechanism exists for packages published to the registry but can in theory
+be implemented by anyone else who wants to do so.
+
+--
+
+GET /packages
+< 200
+< Content-Type: application/json; charset=utf-8
+[{
+  "name": "name-1",
+  "description": "description",
+  "keywords": ["keyword","keyword" ],
+  "type": "git"|"file"|"archive",
+  "url": "url",
+  "owners": ["username","username" ],
+  "version": ["version","version" ]
+},
+{
+  "name": "name-2",
+  "description": "description",
+  "keywords": ["keyword","keyword" ],
+  "type": "git"|"file"|"archive",
+  "url": "url",
+  "owners": ["username","username" ],
+  "versions": ["version","version" ]
+}]
++++++
+< 400
+< Content-Type: application/json; charset=utf-8
++++++
+< 404
+< Content-Type: application/json; charset=utf-8
++++++
+< 500
+< Content-Type: application/json; charset=utf-8
+
+
+
+GET /packages/{name}
+< 200
+< Content-Type: application/json; charset=utf-8
+{
+  "name": "name",
+  "description": "description",
+  "keywords": ["keyword","keyword" ]
+  "type": "type",
+  "url": "url",
+  "version": ["version","version" ]
+}
++++++
+< 400
+< Content-Type: application/json; charset=utf-8
++++++
+< 404
+< Content-Type: application/json; charset=utf-8
++++++
+< 500
+< Content-Type: application/json; charset=utf-8
+
+
+Returns a Packages Result for each name matching __name__ provided in a comma
+separated list.
+
+
+GET /packages/{list*}
+< 200
+< Content-Type: application/json; charset=utf-8
+
+Returns a Packages Result with a filtered list of packages with names or
+descriptions containing __{query}__.
+
+
+GET /packages/search/{name}/{?q}
+< 200
+< Content-Type: application/json; charset=utf-8
++++++
+< 400
+< Content-Type: application/json; charset=utf-8
++++++
+< 404
+< Content-Type: application/json; charset=utf-8
++++++
+< 500
+< Content-Type: application/json; charset=utf-8
+
+
+Returns a Packages Result with a filtered list of packages with keywords
+matching __{keyword}__
+
+
+GET /packages/search/{keyword}/{?q}
+< 200
+< Content-Type: application/json; charset=utf-8
+
+
+__Authenticated.__
+
+Creates new package.
+
+Ownership of the new package will be assigned to the user that creates it.
+
+A package object should be passed as JSON.
+
+
+POST /packages/{name}
+> Content-Type: application/json; charset=utf-8
+{
+  "name": "name",
+  "description": "description",
+  "keywords": ["keyword","keyword"]
+  "type": "type",
+  "url": "url"
+}
+< 204
+< Content-Type: application/json; charset=utf-8
+{ "ok": "Package created" }
++++++
+< 409
+< Content-Type: application/json; charset=utf-8
+{ "error": "Package already exists" }
+
+DELETE /packages/{name}
+> Content-Type: application/json; charset=utf-8
+{}
+< 204
+< Content-Type: application/json; charset=utf-8
+
+
+
+
+--
+Archives Resource
+--
+
+GET /archives/{name}
+< 200
+< Content-Type: application/json; charset=utf-8
+{}
+
+GET /archives/{name}/{version}
+< 200
+< Content-Type: application/json; charset=utf-8
+{}
++++++
+< 400
+< Content-Type: application/json; charset=utf-8
++++++
+< 404
+< Content-Type: application/json; charset=utf-8
++++++
+< 500
+< Content-Type: application/json; charset=utf-8
+
+
+Authenticated. Upload a new tar.gz compressed version of a package you own.
+Returns a Status Result.
+
+POST /archives/{name}/{version}
+< 200
+< Content-Type: application/json; charset=utf-8
+{}
++++++
+< 401
+< Content-Type: application/json; charset=utf-8
+{ "error": "" }
+
+PUT /archives/{name}/{version}
+> Content-Type: application/json; charset=utf-8
+{}
+< 204
+< Content-Type: application/json; charset=utf-8
+{}
++++++
+< 401
+< Content-Type: application/json; charset=utf-8
+{ "error": "" }
+
+
+
+--
+Users Resource
+
+__"name"__ in the response should always be the same as <name> in the request. _(Required.)_
+
+__"email"__ and __"url"__ are both contact details that the user may optionally provide. Neither is guaranteed to be valid.
+
+__"packages"__ is a list of _package-object's_ for which this user is listed as an owner.
+--
+
+
+GET /users/{name}
+< 200
+< Content-Type: application/json; charset=utf-8
+{
+  "name": "name",
+  "email": "email",
+  "url": "url",
+  "packages": ["package", "package"]
+}
++++++
+< 400
+< Content-Type: application/json; charset=utf-8
++++++
+< 404
+< Content-Type: application/json; charset=utf-8
++++++
+< 500
+< Content-Type: application/json; charset=utf-8
+
+
+
+Creates a user account. If the user named <name> alread exists this method will respond
+a '409 Conflict' error with a message along the lines of "User already exsists"
+
+POST /users/{name}
+> Content-Type: application/json; charset=utf-8
+{
+  "name": "name",
+  "password": "password,
+  "email": "email",
+  "url": "url"
+}
+< 201
+< Content-Type: application/json; charset=utf-8
+{ "ok": "User created" }
++++++
+< 409
+< Content-Type: application/json; charset=utf-8
+{ "error": "Conflict" }
+
+__Authenticated.__ Similar to the above POST require for the same resource.
+
+However, users can only update themselves.
+
+__"name"__, __"email"__ and __"url"__ are as they are for the GET request of the same resource.
+
+__"password"__ is the password to set for the user.
+
+Only __"password"__ is required but if __"name"__ is supplied it MUST match the __"name"__ in the request URI.
+
+
+
+
+PUT /users/{name}
+> Content-Type: application/json; charset=utf-8
+{}
+< 204
+< Content-Type: application/json; charset=utf-8
+{
+  "ok": "User updated"
+}
++++++
+< 401
+< Content-Type: application/json; charset=utf-8
+{ "error": "Users may only update their own details" }
+
+
+
+DELETE /users/{name}
+> Content-Type: application/json; charset=utf-8
+{}
+< 200
+< Content-Type: application/json; charset=utf-8
++++++
+< 401
+< Content-Type: application/json; charset=utf-8
+{ "error": "" }
+
