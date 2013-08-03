@@ -8,6 +8,7 @@ describe('/packages', function () {
 
   describe('GET', function () {
 
+
     it.skip('should respond with a list of packages', function (done) {
       request.get({
         url: testHelper.url + 'packages',
@@ -16,7 +17,6 @@ describe('/packages', function () {
         expect(res.statusCode).to.eql(200);
         done();
       });
-
     });
 
   });

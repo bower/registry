@@ -6,6 +6,16 @@ describe('/archive/:name/:version', function () {
 
   describe('GET', function () {
 
+    it.skip('should return a 200 response', function (done) {
+      request.get({
+        url: testHelper.url + 'archive/name',
+        headers: { 'accept': 'application/json' }
+      }, function (err, res) {
+        expect(res.statusCode).to.eql(200);
+        done();
+      });
+    });
+
     it.skip('should respond with archive info', function (done) {
       request.put({
         headers: {'content-type' : 'application/json'},
