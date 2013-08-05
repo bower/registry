@@ -5,13 +5,22 @@ var path = require('path');
 var config = require('konphyg')(path.normalize(__dirname + '/../config'));
 var Registry = require('../lib/registry');
 
+
+// configuration
 process.env.NODE_ENV = process.env.NODE_ENV || 'testing';
 
 console.log('Loading ' + process.env.NODE_ENV + ' configuration data');
 var options = config(process.env.NODE_ENV);
 
-
+// server setup
 var registry = new Registry(options);
+var server = new Server(registry, options.app);
 
-// fire up the server
-var server = new Server(registry);
+// server components
+var packageRoutes = require('../lib/routes/package.js');
+var userRoutes = require('../lib/routes/user.js'); 
+
+server.applyRoutes(packageRoutes);
+server.applyRoutes(userRoutes);
+
+server.start();
