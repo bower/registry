@@ -79,7 +79,7 @@ module.exports = function Server(registry, options) {
     router(app);
   };
 
-  this.start = function (srvSettings) {
+  this.start = function (srvSettings, callback) {
 
     var defaults = {
       //key: path.join(__dirname + '/../' + srvSettings.app.ssl.key),
@@ -92,8 +92,11 @@ module.exports = function Server(registry, options) {
       var ca, privateKey, certificate, node;
 
       if (!options.https) {
+
         node = http.createServer(app);
         node.listen(options.port || null);
+
+        callback(null);
 
         console.log('Serving at http://localhost:' + (options.port || ''));
 
@@ -128,9 +131,11 @@ module.exports = function Server(registry, options) {
       }
 
     }, function (err) {
+      callback(err);
       console.log('Error starting connection to DB');
       console.log(err);
     }).done();
+
   };
 
   return this;

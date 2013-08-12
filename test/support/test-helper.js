@@ -18,8 +18,12 @@ var server = new Server(registry, opts.app);
 module.exports = {
   before: (function () {
 
-    before(function () {
-      server.start();
+    before(function (done) {
+      server.start(opts, function (err) {
+        if (!err) {
+          done();
+        }
+      });
     });
 
   }()),
