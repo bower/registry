@@ -2,7 +2,11 @@
   "app": {
     "port": 3333,
     "https": false,
-    "host": "localhost"
+    "host": "localhost",
+    "ssl": {
+      "key" : "config/cert/key.pem",
+      "cert" : "config/cert/certificate.pem"
+    }
   },
   "db": {
     "port": 5984,

@@ -75,22 +75,18 @@ module.exports = function Server(registry, options) {
   });
 
   // expose the ability to add routes
-  this.applyRoutes = function (router, registry) {
+  this.applyRoutes = function (router) {
     router(app);
   };
 
+  this.start = function (srvSettings) {
 
-
-  // TODO:
-  // maybe move this elsewhere.
-  //
-  this.start = function (serverSettings) {
     var defaults = {
-      key: path.resolve(__dirname + '/config/cert/key.pem'),
-      certificate: path.resolve(__dirname + '/cert/certificate.pem')
+      //key: path.join(__dirname + '/../' + srvSettings.app.ssl.key),
+      //certificate: path.join(__dirname + '/../' + srvSettings.app.ssl.cert)
     };
 
-    var settings = _.extend({}, defaults, serverSettings);
+    var settings = _.extend({}, defaults, srvSettings);
 
     registry.promise.then(function () {
       var ca, privateKey, certificate, node;
@@ -100,6 +96,7 @@ module.exports = function Server(registry, options) {
         node.listen(options.port || null);
 
         console.log('Serving at http://localhost:' + (options.port || ''));
+
       } else {
 
         try {
