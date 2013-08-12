@@ -2,32 +2,23 @@
 // # server/server
 //
 
+var express   = require('express');
+var _         = require('lodash');
+var fs        = require('fs');
+var path      = require('path');
+var http      = require('http');
+var https     = require('https');
+var passport  = require('passport');
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+var pkgJson   = require('../package.json');
+var setHeaders = require('../lib/middleware/headers');
+var setOptions = require('../lib/middleware/options');
+var setAuth = require('../lib/helpers/passport');
 
-module.exports = function (registry, opts) {
+module.exports = function Server(registry, options) {
 
-  var express   = require('express');
-  var _         = require('lodash');
-  var app       = express();
-  var fs        = require('fs');
-  var path      = require('path');
-  var http      = require('http');
-  var https     = require('https');
-  var passport  = require('passport');
+  var app = express();
 
-  var pkgJson   = require('../package.json');
-  var setHeaders = require('./middleware/headers');
-  var setOptions = require('./middleware/options');
-  var setAuth = require('../lib/helpers/passport');
-
-  var Packages = require('../lib/collections/packages');
-  var Package = require('../lib/models/package');
-  var User = require('../lib/models/user');
-
-  //
-  // configure express middleware
-  //
   app.configure(function () {
     app.use(setHeaders());
     app.use(setOptions());
@@ -60,29 +51,18 @@ module.exports = function (registry, opts) {
   });
 
 
-  function routeRegistryQuery(query, res) {
-
-    query.then(function (packages) {
-      res.send(packages.toArray(), 200);
-    }, function (err) {
-      console.log(err.stack);
-      res.send(err.message || 'Error', err['status-code'] || 400);
-    }).done();
-
-  }
-
-
-
   //
   // server options
   //
-  opts = _.extend({
-    port :      registry.options.app.port,
-    protocol :  registry.options.app.https ? 'https' : 'http' +  '://'
-  }, opts || {});
+  options = _.extend({
+    port :      options.port,
+    protocol :  options.https ? 'https' : 'http' +  '://'
+  }, options);
+
+
 
   //
-  // routes
+  // server information route
   //
   app.get('/', function (req, res) {
     var payload = {
@@ -94,118 +74,68 @@ module.exports = function (registry, opts) {
     res.json(payload, 200);
   });
 
-
-  app.get('/packages', function (req, res) {
-    var packages = new Packages(registry);
-    var query = packages.all();
-
-    routeRegistryQuery(query, res);
-  });
+  // expose the ability to add routes
+  this.applyRoutes = function (router, registry) {
+    router(app);
+  };
 
 
-  app.get('/packages/:name', function (req, res) {
-    if (!req || req.params || req.params.name) {
-      res.send('Missing search parameter', 400);
-    }
-
-    var packages = new Packages(registry);
-    var query = packages.fetch(req.params.name);
-
-    routeRegistryQuery(query, res);
-  });
-
-
-  app.get('/packages/search/:name', function (req, res) {
-    if (!req || req.params || req.params.name) {
-      res.send('Missing search parameter', 400);
-    }
-
-    var query = Packages.search(req.params.name);
-
-    routeRegistryQuery(query, res);
-  });
-
-
-  app.post('/packages', function (req, res) {
-    var pkg = new Package(registry, req.body);
-
-    pkg.save().then(function (data) {
-      res.send(data, 201);
-    }, function (err) {
-      res.json(err, 400);
-    }).done();
-
-  });
-
-  app.get('/users/:name', function (req, res) {
-    var user = new User(registry, req.params);
-
-    user.find().then(function (data) {
-      res.send(data, 201);
-    }, function (err) {
-      res.json(err, 400);
-    }).done();
-
-  });
-
-  app.post('/users/:name', passport.authenticate('digest', { session: false }), function (req, res) {
-    var user = new User(registry, req.body);
-
-    user.save().then(function (data) {
-      res.send(data, 201);
-    }, function (err) {
-      res.json(err, 400);
-    }).done();
-
-  });
 
   // TODO:
   // maybe move this elsewhere.
   //
-  // Actually listen when ready
-  registry.promise.then(function () {
-    var ca, privateKey, certificate, node;
+  this.start = function (serverSettings) {
+    var defaults = {
+      key: path.resolve(__dirname + '/config/cert/key.pem'),
+      certificate: path.resolve(__dirname + '/cert/certificate.pem')
+    };
 
-    if (!registry.options.app.https) {
-      node = http.createServer(app);
-      node.listen(opts.port || null);
+    var settings = _.extend({}, defaults, serverSettings);
 
-      console.log('Serving at http://localhost:' + (opts.port || ''));
-    } else {
+    registry.promise.then(function () {
+      var ca, privateKey, certificate, node;
 
-      try {
-        privateKey = fs.readFileSync(path.resolve(__dirname + '/cert/key.pem')).toString();
+      if (!options.https) {
+        node = http.createServer(app);
+        node.listen(options.port || null);
+
+        console.log('Serving at http://localhost:' + (options.port || ''));
+      } else {
+
+        try {
+          privateKey = fs.readFileSync(settings.key).toString();
+        }
+        catch (err) {
+          console.error('https server expected a private key in ' + settings.key);
+          console.log(err);
+          return;
+        }
+
+        try {
+          certificate = fs.readFileSync(path.resolve(settings.certificate).toString());
+        }
+        catch (err) {
+          console.error('https server expected a certificate in ' + settings.certificate);
+          console.log(err);
+          return;
+        }
+
+        node = https.createServer({
+          key: privateKey,
+          cert: certificate,
+          ca: ca
+        }, app);
+        node.listen(options.port || null);
+
+        console.log('Serving at https://localhost:' + (options.port || ''));
       }
-      catch (err) {
-        console.error('For an https server please add a private key in /cert/key.pem');
-        console.log(err);
-        return;
-      }
 
-      try {
-        certificate = fs.readFileSync(path.resolve(__dirname + '/cert/certificate.pem')).toString();
-      }
-      catch (err) {
-        console.error('For an https server please add a certificate in /cert/certificate.pem');
-        console.log(err);
-        return;
-      }
+    }, function (err) {
+      console.log('Error starting connection to DB');
+      console.log(err);
+    }).done();
+  };
 
-      node = https.createServer({
-        key: privateKey,
-        cert: certificate,
-        ca: ca
-      }, app);
-      node.listen(opts.port || null);
-
-      console.log('Serving at https://localhost:' + (opts.port || ''));
-    }
-
-  }, function (err) {
-    console.log('Error starting connection to DB');
-    console.log(err);
-  });
-
-  return;
+  return this;
 };
 
