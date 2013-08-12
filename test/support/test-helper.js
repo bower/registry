@@ -3,21 +3,23 @@
 var opts = require('../../config/testing.json');
 var factories = require('./factories');
 var url = opts.app.https ? 'https' : 'http' +  '://' + opts.app.host + ':' + opts.app.port + '/';
-var server = require('../../server/server.js');
+
+var Server = require('../../server/server.js');
 var mocks = require('./couch-mocks');
 var ddocs = require('../../couchapp/ddocs');
 
 var Registry = require('../../lib/registry');
+
 var registry = new Registry(opts);
+var server = new Server(registry, opts.app);
+
+
 
 module.exports = {
   before: (function () {
 
-    before(function (done) {
-      registry.promise.then(function () {
-        server(registry);
-        done();
-      });
+    before(function () {
+      server.start();
     });
 
   }()),
