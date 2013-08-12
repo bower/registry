@@ -15,11 +15,6 @@ var setHeaders = require('../lib/middleware/headers');
 var setOptions = require('../lib/middleware/options');
 var setAuth = require('../lib/helpers/passport');
 
-var Packages = require('../lib/collections/packages');
-var Package = require('../lib/models/package');
-var User = require('../lib/models/user');
-
-
 module.exports = function Server(registry, options) {
 
   var app = express();
