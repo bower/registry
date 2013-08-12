@@ -19,10 +19,8 @@ module.exports = {
   before: (function () {
 
     before(function (done) {
-      server.start(opts, function (err) {
-        if (!err) {
-          done();
-        }
+      server.start(opts).then(function () {
+        done();
       });
     });
 

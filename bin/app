@@ -10,6 +10,7 @@ var Registry = require('../lib/registry');
 process.env.NODE_ENV = process.env.NODE_ENV || 'testing';
 
 console.log('Loading ' + process.env.NODE_ENV + ' configuration data');
+
 var options = config(process.env.NODE_ENV);
 
 // server setup

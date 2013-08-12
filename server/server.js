@@ -9,6 +9,7 @@ var path      = require('path');
 var http      = require('http');
 var https     = require('https');
 var passport  = require('passport');
+var q         = require('q');
 
 var pkgJson   = require('../package.json');
 var setHeaders = require('../lib/middleware/headers');
@@ -79,7 +80,9 @@ module.exports = function Server(registry, options) {
     router(app);
   };
 
-  this.start = function (srvSettings, callback) {
+  this.start = function (srvSettings) {
+
+    var dfd = q.defer();
 
     var defaults = {
       //key: path.join(__dirname + '/../' + srvSettings.app.ssl.key),
@@ -96,7 +99,7 @@ module.exports = function Server(registry, options) {
         node = http.createServer(app);
         node.listen(options.port || null);
 
-        callback(null);
+        dfd.resolve();
 
         console.log('Serving at http://localhost:' + (options.port || ''));
 
@@ -131,10 +134,12 @@ module.exports = function Server(registry, options) {
       }
 
     }, function (err) {
-      callback(err);
       console.log('Error starting connection to DB');
       console.log(err);
+      return dfd.reject();
     }).done();
+
+    return dfd.promise;
 
   };
 
