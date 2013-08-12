@@ -23,4 +23,4 @@ var userRoutes = require('../lib/routes/user.js');
 server.applyRoutes(packageRoutes);
 server.applyRoutes(userRoutes);
 
-server.start();
+server.start(options);
