@@ -18,7 +18,7 @@ var server = new Server(registry, options.app);
 
 // server components
 var packageRoutes = require('../lib/routes/package.js');
-var userRoutes = require('../lib/routes/user.js'); 
+var userRoutes = require('../lib/routes/user.js');
 
 server.applyRoutes(packageRoutes);
 server.applyRoutes(userRoutes);

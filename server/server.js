@@ -11,8 +11,8 @@ var https     = require('https');
 var passport  = require('passport');
 
 var pkgJson   = require('../package.json');
-var setHeaders = require('./middleware/headers');
-var setOptions = require('./middleware/options');
+var setHeaders = require('../lib/middleware/headers');
+var setOptions = require('../lib/middleware/options');
 var setAuth = require('../lib/helpers/passport');
 
 var Packages = require('../lib/collections/packages');
@@ -80,7 +80,7 @@ module.exports = function Server(registry, options) {
   });
 
   // expose the ability to add routes
-  this.applyRoutes = function(router, registry) {
+  this.applyRoutes = function (router, registry) {
     router(app);
   };
 
@@ -89,10 +89,10 @@ module.exports = function Server(registry, options) {
   // TODO:
   // maybe move this elsewhere.
   //
-  this.start = function(serverSettings) {
+  this.start = function (serverSettings) {
     var defaults = {
-      key: path.resolve(__dirname + '/config/cert/key.pem')),
-      certificate: path.resolve(__dirname + '/cert/certificate.pem')),
+      key: path.resolve(__dirname + '/config/cert/key.pem'),
+      certificate: path.resolve(__dirname + '/cert/certificate.pem')
     };
 
     var settings = _.extend({}, defaults, serverSettings);
@@ -111,13 +111,13 @@ module.exports = function Server(registry, options) {
           privateKey = fs.readFileSync(settings.key).toString();
         }
         catch (err) {
-          console.error('https server expected a private key in ' +settings.key);
+          console.error('https server expected a private key in ' + settings.key);
           console.log(err);
           return;
         }
 
         try {
-          certificate = fs.readFileSync(path.resolve(settings.certificate).toString();
+          certificate = fs.readFileSync(path.resolve(settings.certificate).toString());
         }
         catch (err) {
           console.error('https server expected a certificate in ' + settings.certificate);
