@@ -18,9 +18,11 @@ var registry = new Registry(options);
 var server = new Server(registry, options.app);
 
 // server components
+var rootRoutes = require('../lib/routes/root.js');
 var packageRoutes = require('../lib/routes/package.js');
 var userRoutes = require('../lib/routes/user.js');
 
+server.applyRoutes(rootRoutes);
 server.applyRoutes(packageRoutes, registry);
 server.applyRoutes(userRoutes, registry);
 

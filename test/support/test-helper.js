@@ -14,14 +14,21 @@ var registry = new Registry(opts);
 var server = new Server(registry, opts.app);
 
 
+// server components
+var rootRoutes = require('../../lib/routes/root.js');
+var packageRoutes = require('../../lib/routes/package.js');
+var userRoutes = require('../../lib/routes/user.js');
+
+server.applyRoutes(rootRoutes);
+server.applyRoutes(packageRoutes, registry);
+server.applyRoutes(userRoutes, registry);
 
 module.exports = {
   before: (function () {
 
     before(function (done) {
-      server.start(opts).then(function () {
-        done();
-      });
+      server.start(opts);
+      done();
     });
 
   }()),

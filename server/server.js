@@ -60,21 +60,6 @@ module.exports = function Server(registry, options) {
     protocol :  options.https ? 'https' : 'http' +  '://'
   }, options);
 
-
-
-  //
-  // server information route
-  //
-  app.get('/', function (req, res) {
-    var payload = {
-      'registry': pkgJson.version,
-      'name': pkgJson.name,
-      'description': pkgJson.description
-    };
-
-    res.json(payload, 200);
-  });
-
   // expose the ability to add routes
   this.applyRoutes = function (router, registry) {
     router(app, registry);

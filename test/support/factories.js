@@ -18,9 +18,9 @@ module.exports = {
   },
 
   info: function (registry, name, description) {
-    this.registry = registry || '';
-    this.name = name || '';
-    this.description = description || '';
+    this.registry = registry || '0.0.1';
+    this.name = name || 'bower-registry';
+    this.description = description || 'bower registry with couchdb persistence layer';
   }
 
 };
