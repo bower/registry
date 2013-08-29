@@ -1,14 +1,10 @@
-var Package = require('../../lib/models/package');
 var expect = require('expect.js');
 
+var Package = require('../../lib/models/package');
 var testHelper = require('../support/test-helper');
 var registry = testHelper.registry;
 
-var mockData = {
-  name: 'thename',
-  versions: ['1.2.3'],
-  url: 'https://github.com/bower/registry.git'
-};
+var mockData = new testHelper.factories.package();
 
 testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 

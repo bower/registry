@@ -1,13 +1,13 @@
 module.exports = {
 
   package: function (name, description, keywords, owners, type, url, versions) {
-    this.name = name || '';
-    this.description = description || '',
-    this.keywords = keywords || [];
-    this.owners = owners || [];
-    this.type = type || '';
-    this.url = url || '';
-    this.versions = versions || [];
+    this.name = name || 'thename';
+    this.description = description || 'the package',
+    this.keywords = keywords || ['keyword1', 'keyword2'];
+    this.owners = owners || ['owner1', 'owner2'];
+    this.type = type || 'git';
+    this.url = url || 'https://github.com/bower/registry.git';
+    this.versions = versions || ['1.2.3', '1.2.4'];
   },
 
   user: function (name, password, email, url) {
