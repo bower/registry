@@ -25,7 +25,8 @@ var docs = [{
       }
     }
   }
-}, {
+},
+{
   _id: '_design/users',
   views: {
     all: {

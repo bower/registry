@@ -9,7 +9,7 @@ describe('/packages', function () {
   describe('GET', function () {
 
 
-    it.skip('should respond with a list of packages', function (done) {
+    it.skip('should respond with an array of packages', function (done) {
       request.get({
         url: testHelper.url + 'packages',
         headers: { 'accept': 'application/json' }
