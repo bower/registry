@@ -9,9 +9,7 @@ var path      = require('path');
 var http      = require('http');
 var https     = require('https');
 var passport  = require('passport');
-var q         = require('q');
 
-var pkgJson   = require('../package.json');
 var setHeaders = require('../lib/middleware/headers');
 var setOptions = require('../lib/middleware/options');
 var setAuth = require('../lib/helpers/passport');
@@ -23,11 +21,12 @@ module.exports = function Server(registry, options) {
   app.configure(function () {
     app.use(setHeaders());
     app.use(setOptions());
-    app.use(setAuth(passport, registry));
     app.use(passport.initialize());
+    app.use(setAuth(passport, registry));
     app.use(express.bodyParser());
     app.use(express.compress());
     app.use(express.methodOverride());
+    app.use(app.router);
     app.use(function (err, req, res, next) {
       console.dir(err.stack);
       req.send(500, 'Something broke!');
@@ -61,13 +60,12 @@ module.exports = function Server(registry, options) {
   }, options);
 
   // expose the ability to add routes
-  this.applyRoutes = function (router, registry) {
-    router(app, registry);
+  this.applyRoutes = function (module) {
+    return module(app, registry);
   };
 
-  this.start = function (srvSettings) {
 
-    var dfd = q.defer();
+  this.start = function (srvSettings) {
 
     var defaults = {
       //key: path.join(__dirname + '/../' + srvSettings.app.ssl.key),
@@ -83,8 +81,6 @@ module.exports = function Server(registry, options) {
 
         node = http.createServer(app);
         node.listen(options.port || null);
-
-        dfd.resolve();
 
         console.log('Serving at http://localhost:' + (options.port || ''));
 
@@ -113,18 +109,14 @@ module.exports = function Server(registry, options) {
           cert: certificate,
           ca: ca
         }, app);
-        node.listen(options.port || null);
 
-        console.log('Serving at https://localhost:' + (options.port || ''));
+        node.listen(options.port || null);
       }
 
     }, function (err) {
       console.log('Error starting connection to DB');
       console.log(err);
-      return dfd.reject();
     }).done();
-
-    return dfd.promise;
 
   };
 
