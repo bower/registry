@@ -14,6 +14,8 @@ var setHeaders = require('../lib/middleware/headers');
 var setOptions = require('../lib/middleware/options');
 var setAuth = require('../lib/helpers/passport');
 
+/*jshint unused:false */
+
 module.exports = function Server(registry, options) {
 
   var app = express();
@@ -65,16 +67,17 @@ module.exports = function Server(registry, options) {
   };
 
 
-  this.start = function (srvSettings) {
+  this.start = function (cfg) {
 
     var defaults = {
       //key: path.join(__dirname + '/../' + srvSettings.app.ssl.key),
       //certificate: path.join(__dirname + '/../' + srvSettings.app.ssl.cert)
     };
 
-    var settings = _.extend({}, defaults, srvSettings);
+    var settings = _.extend({}, defaults, cfg);
 
     registry.promise.then(function () {
+
       var ca, privateKey, certificate, node;
 
       if (!options.https) {

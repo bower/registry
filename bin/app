@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 
-var Server = require('../server/server.js');
-var path = require('path');
-var config = require('konphyg')(path.normalize(__dirname + '/../config'));
-var Registry = require('../lib/registry');
-
-
 // configuration
 process.env.NODE_ENV = process.env.NODE_ENV || 'testing';
 
+var path = require('path');
+
+var Server = require('../server/server.js');
+var config = require('konphyg')(path.normalize(__dirname + '/../config'));
+var Registry = require('../lib/registry');
+
 console.log('Loading ' + process.env.NODE_ENV + ' configuration data');
 
-var options = config(process.env.NODE_ENV);
+var cfg = config(process.env.NODE_ENV);
 
 // server setup
-var registry = new Registry(options);
-var server = new Server(registry, options.app);
+var registry = new Registry(cfg);
+var server = new Server(registry, cfg.app);
 
 // server components
 var rootRoutes = require('../lib/routes/root.js');
@@ -26,4 +26,4 @@ server.applyRoutes(rootRoutes);
 server.applyRoutes(packageRoutes, registry);
 server.applyRoutes(userRoutes, registry);
 
-server.start(options);
+server.start(cfg);
