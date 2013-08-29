@@ -76,8 +76,8 @@ module.exports = function Server(registry, options) {
   });
 
   // expose the ability to add routes
-  this.applyRoutes = function (router) {
-    router(app);
+  this.applyRoutes = function (router, registry) {
+    router(app, registry);
   };
 
   this.start = function (srvSettings) {
