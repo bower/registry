@@ -45,8 +45,36 @@ describe('Package', function () {
 
       it('should happen on construction', function () {
         expect(this.pkg.get('name')).to.eql(mockData.name);
-        expect(this.pkg.get('version')).to.eql(mockData.version);
+        expect(this.pkg.get('versions')).to.eql(mockData.versions);
         expect(this.pkg.get('url')).to.eql(mockData.url);
+      });
+
+      it('should have a \'name\' property', function () {
+        expect(this.pkg._model).to.have.property('name');
+      });
+
+      it('should have a \'description\' property', function () {
+        expect(this.pkg._model).to.have.property('description');
+      });
+
+      it('should have a \'type\' property', function () {
+        expect(this.pkg._model).to.have.property('type');
+      });
+
+      it('should have a \'owners\' property', function () {
+        expect(this.pkg._model).to.have.property('owners');
+      });
+
+      it('should have a \'versions\' property', function () {
+        expect(this.pkg._model).to.have.property('versions');
+      });
+
+      it('should have a \'keywords\' property', function () {
+        expect(this.pkg._model).to.have.property('keywords');
+      });
+
+      it('should have a \'url\' property', function () {
+        expect(this.pkg._model).to.have.property('url');
       });
 
     });
@@ -66,7 +94,7 @@ describe('Package', function () {
         var obj = this.pkg.toObject();
 
         expect(obj.name).to.eql(this.pkg.get('name'));
-        expect(obj.version).to.eql(this.pkg.get('version'));
+        expect(obj.versions).to.eql(this.pkg.get('versions'));
         expect(obj.url).to.eql(this.pkg.get('url'));
       });
 
