@@ -6,7 +6,7 @@ var registry = testHelper.registry;
 
 var mockData = {
   name: 'thename',
-  version: '1.2.3',
+  versions: ['1.2.3'],
   url: 'https://github.com/bower/registry.git'
 };
 
