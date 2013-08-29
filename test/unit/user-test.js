@@ -4,12 +4,7 @@ var expect = require('expect.js');
 var testHelper = require('../support/test-helper');
 
 var registry = testHelper.registry;
-var mockData = {
-  name: 'thename',
-  password: 'somepassword',
-  email: 'some@email.com',
-  url: 'https://github.com/bower/registry.git'
-};
+var mockData = new testHelper.factories.user();
 
 testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 

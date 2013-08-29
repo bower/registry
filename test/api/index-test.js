@@ -1,8 +1,9 @@
 var request = require('request');
 var expect  = require('expect.js');
+
 var testHelper = require('../support/test-helper');
 
-var regInfo = new testHelper.factories.info();
+var mockData = new testHelper.factories.info();
 
 describe('/', function () {
 
@@ -24,7 +25,7 @@ describe('/', function () {
         headers: { 'accept': 'application/json' },
         json: true
       }, function (err, res) {
-        expect(res.body.registry).to.eql(regInfo.registry);
+        expect(res.body.registry).to.eql(mockData.registry);
         done();
       });
     });
@@ -35,7 +36,7 @@ describe('/', function () {
         headers: { 'accept': 'application/json' },
         json: true
       }, function (err, res) {
-        expect(res.body.name).to.eql(regInfo.name);
+        expect(res.body.name).to.eql(mockData.name);
         done();
       });
     });
@@ -46,7 +47,7 @@ describe('/', function () {
         headers: { 'accept': 'application/json' },
         json: true
       }, function (err, res) {
-        expect(res.body.description).to.eql(regInfo.description);
+        expect(res.body.description).to.eql(mockData.description);
         done();
       });
     });

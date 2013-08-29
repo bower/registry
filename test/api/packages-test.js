@@ -1,7 +1,7 @@
 var request = require('request');
 var expect  = require('expect.js');
-var testHelper = require('../support/test-helper');
 
+var testHelper = require('../support/test-helper');
 var pkg = new testHelper.factories.package();
 
 describe('/packages', function () {

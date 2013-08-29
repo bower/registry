@@ -1,5 +1,6 @@
 var request = require('request');
 var expect  = require('expect.js');
+
 var testHelper = require('../support/test-helper');
 
 var user = new testHelper.factories.user();

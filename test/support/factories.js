@@ -10,11 +10,15 @@ module.exports = {
     this.versions = versions || ['1.2.3', '1.2.4'];
   },
 
+  packages: function () {
+
+  },
+
   user: function (name, password, email, url) {
-    this.name = name || '';
-    this.password = password || [];
-    this.email = email || '';
-    this.url = url || '';
+    this.name = name || 'thename';
+    this.password = password || 'somepassword';
+    this.email = email || 'some@email.com';
+    this.url = url || 'https://github.com/bower/registry.git';
   },
 
   info: function (registry, name, description) {
