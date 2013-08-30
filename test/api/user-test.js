@@ -27,7 +27,8 @@ describe('/users/:name', function () {
       request.put({
         headers: {'content-type' : 'application/json'},
         url: testHelper.url + 'users/test',
-        body: JSON.stringify(user)
+        body: JSON.stringify(user),
+        json: true
       }, function (err, res) {
         expect(res.statusCode).to.eql(201);
         done();
