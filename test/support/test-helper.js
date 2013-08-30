@@ -26,9 +26,8 @@ server.applyRoutes(userRoutes, registry);
 module.exports = {
   before: (function () {
 
-    before(function (done) {
+    before(function () {
       server.start(opts);
-      done();
     });
 
   }()),
