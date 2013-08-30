@@ -1,4 +1,5 @@
 var expect = require('expect.js');
+var _ = require('lodash');
 
 var Package = require('../../lib/models/package');
 var testHelper = require('../support/test-helper');
@@ -30,6 +31,38 @@ describe('Package', function () {
         expect(this.pkg).to.be.a(Package);
       });
 
+      it('should have expose a \'search\' method', function () {
+        expect(Package).to.have.property('search');
+      });
+
+      it('should have a \'get\' prototype method', function () {
+        expect(this.pkg).to.have.property('get');
+      });
+
+      it('should have a \'set\' prototype method', function () {
+        expect(this.pkg).to.have.property('set');
+      });
+
+      it('should have a \'toObject\' prototype method', function () {
+        expect(this.pkg).to.have.property('toObject');
+      });
+
+      it('should have a \'toJSON\' prototype method', function () {
+        expect(this.pkg).to.have.property('toJSON');
+      });
+
+      it('should have a \'validate\' prototype method', function () {
+        expect(this.pkg).to.have.property('validate');
+      });
+
+      it('should have a \'save\' prototype method', function () {
+        expect(this.pkg).to.have.property('save');
+      });
+
+      it('should have a \'destroy\' prototype method', function () {
+        expect(this.pkg).to.have.property('destroy');
+      });
+
       it('should have normal exposed props', function () {
         expect(this.pkg.registry).to.eql(registry);
         expect(this.pkg._model).to.be.a(Object);
@@ -43,6 +76,10 @@ describe('Package', function () {
         expect(this.pkg.get('name')).to.eql(mockData.name);
         expect(this.pkg.get('versions')).to.eql(mockData.versions);
         expect(this.pkg.get('url')).to.eql(mockData.url);
+        expect(this.pkg.get('type')).to.eql(mockData.type);
+        expect(this.pkg.get('keywords')).to.eql(mockData.keywords);
+        expect(this.pkg.get('owners')).to.eql(mockData.owners);
+        expect(this.pkg.get('description')).to.eql(mockData.description);
       });
 
       it('should have a \'name\' property', function () {
@@ -78,8 +115,8 @@ describe('Package', function () {
     describe('Property assignment', function () {
 
       it('should work using .set()', function () {
-        this.pkg.set('main', ['file.js']);
-        expect(this.pkg.get('main')).to.eql(['file.js']);
+        this.pkg.set('type', ['archive']);
+        expect(this.pkg.get('type')).to.eql(['archive']);
       });
 
     });
@@ -89,8 +126,13 @@ describe('Package', function () {
       it('should have public properties', function () {
         var obj = this.pkg.toObject();
 
+        expect(_.size(obj)).to.eql(7);
+
         expect(obj.name).to.eql(this.pkg.get('name'));
+        expect(obj.description).to.eql(this.pkg.get('description'));
+        expect(obj.type).to.eql(this.pkg.get('type'));
         expect(obj.versions).to.eql(this.pkg.get('versions'));
+        expect(obj.keywords).to.eql(this.pkg.get('keywords'));
         expect(obj.url).to.eql(this.pkg.get('url'));
       });
 
