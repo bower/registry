@@ -10,8 +10,19 @@ module.exports = {
     this.versions = versions || ['1.2.3', '1.2.4'];
   },
 
-  packages: function () {
+  packages: function (length) {
+    var counter = length || 2;
+    var index = 0;
+    var arr = [];
 
+    while (counter !== 0) {
+      counter--;
+      index++;
+
+      arr.push(new module.exports.package(index));
+    }
+
+    return arr;
   },
 
   user: function (name, password, email, url) {
