@@ -17,10 +17,19 @@ describe('Registry', function () {
         expect(registry).to.have.property('couch');
       });
 
-      it('should inherit prototype methods', function () {
+      it('should provide a \'get\' method', function () {
         expect(registry).to.have.property('get');
-        expect(registry).to.have.property('show');
+      });
+
+      it('should provide a \'list\' method', function () {
         expect(registry).to.have.property('list');
+      });
+
+      it('should provide a \'destroy\' method', function () {
+        expect(registry).to.have.property('destroy');
+      });
+
+      it('should provide a \'attachment\' method', function () {
         expect(registry).to.have.property('attachment');
         expect(registry.attachment).to.have.property('insert');
         expect(registry.attachment).to.have.property('get');
