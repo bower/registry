@@ -13,7 +13,7 @@ var docs = [{
     byDate: {
       map: function (doc) {
         if (doc.resource === 'packages') {
-          emit(doc.date, doc);
+          emit(doc.ctime, doc);
         }
       }
     },
