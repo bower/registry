@@ -31,7 +31,7 @@ module.exports = function Server(registry, options) {
     app.use(app.router);
     app.use(function (err, req, res, next) {
       console.dir(err.stack);
-      req.send(500, 'Something broke!');
+      res.send(500, 'Something broke!');
     });
   });
 
