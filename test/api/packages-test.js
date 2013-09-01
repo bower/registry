@@ -4,12 +4,12 @@ var expect  = require('expect.js');
 var testHelper = require('../support/test-helper');
 var pkg = new testHelper.factories.package();
 
+
 describe('/packages', function () {
 
   describe('GET', function () {
 
-
-    it.skip('should respond with an array of packages', function (done) {
+    it('should respond with an array of packages', function (done) {
       request.get({
         url: testHelper.url + 'packages',
         headers: { 'accept': 'application/json' }
@@ -29,7 +29,7 @@ describe('/packages/:name', function () {
 
     it.skip('should respond with a single package', function (done) {
       request.get({
-        url: testHelper.url + 'packages/test',
+        url: testHelper.url + 'packages/test1',
         headers: { 'accept': 'application/json' }
       }, function (err, res) {
         expect(res.statusCode).to.eql(200);
