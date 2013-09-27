@@ -4,7 +4,7 @@ var expect = require('expect.js');
 var testHelper = require('../support/test-helper');
 
 var registry = testHelper.registry;
-var mockData = new testHelper.factories.user();
+var mockData = new testHelper.factories.User();
 
 testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 

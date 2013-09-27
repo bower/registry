@@ -1,7 +1,3 @@
-//
-// # server/server
-//
-
 var express   = require('express');
 var _         = require('lodash');
 var fs        = require('fs');
@@ -14,10 +10,7 @@ var setHeaders = require('../lib/middleware/headers');
 var setOptions = require('../lib/middleware/options');
 var setAuth = require('../lib/helpers/passport');
 
-/*jshint unused:false */
-
 module.exports = function Server(registry, options) {
-
     var app = express();
 
     app.configure(function () {
@@ -35,9 +28,7 @@ module.exports = function Server(registry, options) {
         });
     });
 
-    //
     // setup environment
-    //
     app.configure('development', function () {
         app.use(express.errorHandler({
             dumpExceptions: true,
@@ -52,10 +43,7 @@ module.exports = function Server(registry, options) {
         app.use(express.errorHandler());
     });
 
-
-    //
     // server options
-    //
     options = _.extend({
         port :      options.port,
         protocol :  options.https ? 'https' : 'http' +  '://'
@@ -66,9 +54,7 @@ module.exports = function Server(registry, options) {
         return module(app, registry);
     };
 
-
     this.start = function (cfg) {
-
         var defaults = {
             //key: path.join(__dirname + '/../' + srvSettings.app.ssl.key),
             //certificate: path.join(__dirname + '/../' + srvSettings.app.ssl.cert)
@@ -77,18 +63,14 @@ module.exports = function Server(registry, options) {
         var settings = _.extend({}, defaults, cfg);
 
         registry.promise.then(function () {
-
             var ca, privateKey, certificate, node;
 
             if (!options.https) {
-
                 node = http.createServer(app);
                 node.listen(options.port || null);
 
                 console.log('Serving at http://localhost:' + (options.port || ''));
-
             } else {
-
                 try {
                     privateKey = fs.readFileSync(settings.key).toString();
                 }
@@ -120,7 +102,6 @@ module.exports = function Server(registry, options) {
             console.log('Error starting connection to DB');
             console.log(err);
         }).done();
-
     };
 
     return this;

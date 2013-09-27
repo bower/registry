@@ -9,7 +9,7 @@ var Package = require('../../lib/models/package');
 var testHelper = require('../support/test-helper');
 var registry = testHelper.registry;
 
-var mockData = new testHelper.factories.packages(2);
+var mockData = new testHelper.factories.Packages(2);
 
 testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 

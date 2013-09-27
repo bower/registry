@@ -5,7 +5,7 @@ var Package = require('../../lib/models/package');
 var testHelper = require('../support/test-helper');
 var registry = testHelper.registry;
 
-var mockData = new testHelper.factories.package();
+var mockData = new testHelper.factories.Package();
 
 testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 

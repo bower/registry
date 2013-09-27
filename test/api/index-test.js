@@ -3,12 +3,11 @@ var expect  = require('expect.js');
 
 var testHelper = require('../support/test-helper');
 
-var mockData = new testHelper.factories.info();
+var mockData = new testHelper.factories.Info();
 
 describe('/', function () {
 
     describe('GET', function () {
-
         it('should return a 200 response', function (done) {
             request.get({
                 url: testHelper.url,

@@ -6,7 +6,6 @@ var testHelper = require('../support/test-helper');
 describe('/archive/:name/:version', function () {
 
     describe('GET', function () {
-
         it.skip('should return a 200 response', function (done) {
             request.get({
                 url: testHelper.url + 'archive/name',
@@ -28,11 +27,9 @@ describe('/archive/:name/:version', function () {
             });
 
         });
-
     });
 
     describe('PUT', function () {
-
         it.skip('should create an archive', function (done) {
             request.put({
                 headers: {'content-type' : 'application/json'},
@@ -44,7 +41,6 @@ describe('/archive/:name/:version', function () {
             });
 
         });
-
     });
 
 });

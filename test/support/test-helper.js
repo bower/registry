@@ -1,4 +1,4 @@
-/*globals before:true, after:true*/
+/*global before:true, after:true*/
 
 var opts = require('../../config/testing.json');
 var factories = require('./factories');
