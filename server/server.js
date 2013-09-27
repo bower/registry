@@ -1,7 +1,3 @@
-//
-// # server/server
-//
-
 var express   = require('express');
 var _         = require('lodash');
 var fs        = require('fs');
@@ -14,115 +10,100 @@ var setHeaders = require('../lib/middleware/headers');
 var setOptions = require('../lib/middleware/options');
 var setAuth = require('../lib/helpers/passport');
 
-/*jshint unused:false */
-
 module.exports = function Server(registry, options) {
+    var app = express();
 
-  var app = express();
-
-  app.configure(function () {
-    app.use(setHeaders());
-    app.use(setOptions());
-    app.use(passport.initialize());
-    app.use(setAuth(passport, registry));
-    app.use(express.bodyParser());
-    app.use(express.compress());
-    app.use(express.methodOverride());
-    app.use(app.router);
-    app.use(function (err, req, res, next) {
-      console.dir(err.stack);
-      res.send(500, 'Something broke!');
+    app.configure(function () {
+        app.use(setHeaders());
+        app.use(setOptions());
+        app.use(passport.initialize());
+        app.use(setAuth(passport, registry));
+        app.use(express.bodyParser());
+        app.use(express.compress());
+        app.use(express.methodOverride());
+        app.use(app.router);
+        app.use(function (err, req, res, next) {
+            console.dir(err.stack);
+            res.send(500, 'Something broke!');
+        });
     });
-  });
 
-  //
-  // setup environment
-  //
-  app.configure('development', function () {
-    app.use(express.errorHandler({
-      dumpExceptions: true,
-      showStack: true
-    }));
+    // setup environment
+    app.configure('development', function () {
+        app.use(express.errorHandler({
+            dumpExceptions: true,
+            showStack: true
+        }));
 
-    // log verbosely
-    app.use(express.logger(({ format: ':method :status :url' })));
-  });
+        // log verbosely
+        app.use(express.logger(({ format: ':method :status :url' })));
+    });
 
-  app.configure('production', function () {
-    app.use(express.errorHandler());
-  });
+    app.configure('production', function () {
+        app.use(express.errorHandler());
+    });
 
+    // server options
+    options = _.extend({
+        port :      options.port,
+        protocol :  options.https ? 'https' : 'http' +  '://'
+    }, options);
 
-  //
-  // server options
-  //
-  options = _.extend({
-    port :      options.port,
-    protocol :  options.https ? 'https' : 'http' +  '://'
-  }, options);
-
-  // expose the ability to add routes
-  this.applyRoutes = function (module) {
-    return module(app, registry);
-  };
-
-
-  this.start = function (cfg) {
-
-    var defaults = {
-      //key: path.join(__dirname + '/../' + srvSettings.app.ssl.key),
-      //certificate: path.join(__dirname + '/../' + srvSettings.app.ssl.cert)
+    // expose the ability to add routes
+    this.applyRoutes = function (module) {
+        return module(app, registry);
     };
 
-    var settings = _.extend({}, defaults, cfg);
+    this.start = function (cfg) {
+        var defaults = {
+            //key: path.join(__dirname + '/../' + srvSettings.app.ssl.key),
+            //certificate: path.join(__dirname + '/../' + srvSettings.app.ssl.cert)
+        };
 
-    registry.promise.then(function () {
+        var settings = _.extend({}, defaults, cfg);
 
-      var ca, privateKey, certificate, node;
+        registry.promise.then(function () {
+            var ca, privateKey, certificate, node;
 
-      if (!options.https) {
+            if (!options.https) {
+                node = http.createServer(app);
+                node.listen(options.port || null);
 
-        node = http.createServer(app);
-        node.listen(options.port || null);
+                console.log('Serving at http://localhost:' + (options.port || ''));
+            } else {
+                try {
+                    privateKey = fs.readFileSync(settings.key).toString();
+                }
+                catch (err) {
+                    console.error('https server expected a private key in ' + settings.key);
+                    console.log(err);
+                    return;
+                }
 
-        console.log('Serving at http://localhost:' + (options.port || ''));
+                try {
+                    certificate = fs.readFileSync(path.resolve(settings.certificate).toString());
+                }
+                catch (err) {
+                    console.error('https server expected a certificate in ' + settings.certificate);
+                    console.log(err);
+                    return;
+                }
 
-      } else {
+                node = https.createServer({
+                    key: privateKey,
+                    cert: certificate,
+                    ca: ca
+                }, app);
 
-        try {
-          privateKey = fs.readFileSync(settings.key).toString();
-        }
-        catch (err) {
-          console.error('https server expected a private key in ' + settings.key);
-          console.log(err);
-          return;
-        }
+                node.listen(options.port || null);
+            }
 
-        try {
-          certificate = fs.readFileSync(path.resolve(settings.certificate).toString());
-        }
-        catch (err) {
-          console.error('https server expected a certificate in ' + settings.certificate);
-          console.log(err);
-          return;
-        }
+        }, function (err) {
+            console.log('Error starting connection to DB');
+            console.log(err);
+        }).done();
+    };
 
-        node = https.createServer({
-          key: privateKey,
-          cert: certificate,
-          ca: ca
-        }, app);
-
-        node.listen(options.port || null);
-      }
-
-    }, function (err) {
-      console.log('Error starting connection to DB');
-      console.log(err);
-    }).done();
-
-  };
-
-  return this;
+    return this;
 };
 

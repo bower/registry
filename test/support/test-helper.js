@@ -1,4 +1,4 @@
-/*globals before:true, after:true*/
+/*global before:true, after:true*/
 
 var opts = require('../../config/testing.json');
 var factories = require('./factories');
@@ -24,32 +24,32 @@ server.applyRoutes(packageRoutes, registry);
 server.applyRoutes(userRoutes, registry);
 
 module.exports = {
-  before: (function () {
+    before: (function () {
 
-    before(function () {
-      server.start(opts);
-    });
+        before(function () {
+            server.start(opts);
+        });
 
-  }()),
-  beforeEach: (function () {
+    }()),
+    beforeEach: (function () {
 
-    beforeEach(function () {});
+        beforeEach(function () {});
 
-  }()),
-  afterEach: (function () {
+    }()),
+    afterEach: (function () {
 
-    afterEach(function () {});
+        afterEach(function () {});
 
-  }()),
-  after: (function () {
+    }()),
+    after: (function () {
 
-    after(function () {});
+        after(function () {});
 
-  }()),
-  url: url,
-  factories: factories,
-  registry: registry,
-  opts: opts,
-  mocks: mocks,
-  ddocs: ddocs
+    }()),
+    url: url,
+    factories: factories,
+    registry: registry,
+    opts: opts,
+    mocks: mocks,
+    ddocs: ddocs
 };

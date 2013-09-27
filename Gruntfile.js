@@ -1,41 +1,41 @@
 module.exports = function (grunt) {
 
-  grunt.initConfig({
+    grunt.initConfig({
 
-    jshint: {
-      files: [
-        'Gruntfile.js',
-        'index.js',
-        'lib/**/*.js'
-      ],
-      options: {
-        jshintrc: '.jshintrc'
-      }
-    },
+        jshint: {
+            files: [
+                'Gruntfile.js',
+                'index.js',
+                'lib/**/*.js',
+                'test/**/*.js'
+            ],
+            options: {
+                jshintrc: '.jshintrc'
+            }
+        },
 
-    simplemocha: {
-      options: {
-        reporter: 'spec',
-        node_env: 'testing',
-        ignoreLeaks: true
-      },
-      full: { src: ['test/**/*-test.js'] }
-    },
+        simplemocha: {
+            options: {
+                reporter: 'spec',
+                NODE_ENV: 'testing',
+                ignoreLeaks: true
+            },
+            full: { src: ['test/**/*-test.js'] }
+        },
 
+        watch: {
+            files: ['<%= jshint.files %>'],
+            tasks: ['jshint', 'simplemocha:full']
+        }
 
-    watch: {
-      files: ['<%= jshint.files %>'],
-      tasks: ['jshint', 'simplemocha:full']
-    }
+    });
 
-  });
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-simple-mocha');
 
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-simple-mocha');
-
-  // Default task.
-  grunt.registerTask('default', ['jshint', 'simplemocha:full']);
-  grunt.registerTask('test', ['jshint', 'simplemocha:full']);
+    // Default task.
+    grunt.registerTask('default', ['jshint', 'simplemocha:full']);
+    grunt.registerTask('test', ['jshint', 'simplemocha:full']);
 
 };
