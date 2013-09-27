@@ -1,19 +1,19 @@
 {
-  "app": {
-    "port": 3333,
-    "https": false,
-    "host": "localhost",
-    "ssl": {
-      "key" : "config/cert/key.pem",
-      "cert" : "config/cert/certificate.pem"
+    "app": {
+        "port": 3333,
+        "https": false,
+        "host": "localhost",
+        "ssl": {
+            "key" : "config/cert/key.pem",
+            "cert" : "config/cert/certificate.pem"
+        }
+    },
+    "db": {
+        "port": 5984,
+        "https": false,
+        "host": "localhost",
+        "password": "",
+        "username": "",
+        "name": "bower-registry"
     }
-  },
-  "db": {
-    "port": 5984,
-    "https": false,
-    "host": "localhost",
-    "password": "",
-    "username": "",
-    "name": "bower-registry"
-  }
 }

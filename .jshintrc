@@ -9,7 +9,7 @@
         "beforeEach"
     ],
 
-    "indent": 2,
+    "indent": 4,
     "node": true,
     "devel": true,
 
@@ -26,18 +26,20 @@
     "plusplus": false,
     "regexp": false,
     "undef": true,
-    "unused": true,
+    "unused": "vars",
     "quotmark": "single",
     "strict": false,
     "trailing": true,
+    "camelcase": true,
 
     "asi": false,
     "boss": true,
     "debug": false,
     "eqnull": true,
+    "es5": false,
     "esnext": false,
     "evil": false,
-    "expr": true,
+    "expr": false,
     "funcscope": false,
     "globalstrict": false,
     "iterator": false,
