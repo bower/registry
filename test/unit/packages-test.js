@@ -26,17 +26,13 @@ describe('Packages', function () {
     describe('Collection', function () {
 
         beforeEach(function () {
-            this.pkg = new Packages(registry);
+            this.pkg = new Packages();
         });
 
         describe('Constructor', function () {
 
             it('should be an instance of Packages', function () {
                 expect(this.pkg).to.be.a(Packages);
-            });
-
-            it('should have normal exposed props', function () {
-                expect(this.pkg.registry).to.eql(registry);
             });
 
             it('should have a \'constructor\' prototype method', function () {
@@ -100,8 +96,8 @@ describe('Packages', function () {
 
                 it('should populate the controller with models', function () {
                     this.pkg.reset([
-                        new Package(registry, mockData[0]),
-                        new Package(registry, mockData[1])
+                        new Package(mockData[0]),
+                        new Package(mockData[1])
                     ]);
 
                     expect(this.pkg.length).to.be(2);

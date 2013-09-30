@@ -22,7 +22,7 @@ describe('Package', function () {
     describe('Model', function () {
 
         beforeEach(function () {
-            this.pkg = new Package(registry, mockData);
+            this.pkg = new Package(mockData);
         });
 
         describe('Constructor', function () {
@@ -64,7 +64,6 @@ describe('Package', function () {
             });
 
             it('should have normal exposed props', function () {
-                expect(this.pkg.registry).to.eql(registry);
                 expect(this.pkg._model).to.be.a(Object);
             });
 

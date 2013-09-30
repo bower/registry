@@ -11,7 +11,7 @@ var ddocs = require('../../couchapp/ddocs');
 var registry = require('../../lib/registry');
 
 registry.configure(opts);
-var server = new Server(registry, opts.app);
+var server = new Server(opts.app);
 
 
 // server components
@@ -20,8 +20,8 @@ var packageRoutes = require('../../lib/routes/package.js');
 var userRoutes = require('../../lib/routes/user.js');
 
 server.applyRoutes(rootRoutes);
-server.applyRoutes(packageRoutes, registry);
-server.applyRoutes(userRoutes, registry);
+server.applyRoutes(packageRoutes);
+server.applyRoutes(userRoutes);
 
 module.exports = {
     before: (function () {

@@ -10,14 +10,16 @@ var setHeaders = require('../lib/middleware/headers');
 var setOptions = require('../lib/middleware/options');
 var setAuth = require('../lib/helpers/passport');
 
-module.exports = function Server(registry, options) {
+var registry = require('../lib/registry');
+
+module.exports = function Server(options) {
     var app = express();
 
     app.configure(function () {
         app.use(setHeaders());
         app.use(setOptions());
         app.use(passport.initialize());
-        app.use(setAuth(passport, registry));
+        app.use(setAuth(passport));
         app.use(express.bodyParser());
         app.use(express.compress());
         app.use(express.methodOverride());
@@ -51,7 +53,7 @@ module.exports = function Server(registry, options) {
 
     // expose the ability to add routes
     this.applyRoutes = function (module) {
-        return module(app, registry);
+        return module(app);
     };
 
     this.start = function (cfg) {

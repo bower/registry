@@ -15,7 +15,7 @@ var cfg = config(process.env.NODE_ENV);
 
 // server setup
 registry.configure(cfg);
-var server = new Server(registry, cfg.app);
+var server = new Server(cfg.app);
 
 // server components
 var rootRoutes = require('../lib/routes/root.js');
@@ -23,7 +23,7 @@ var packageRoutes = require('../lib/routes/package.js');
 var userRoutes = require('../lib/routes/user.js');
 
 server.applyRoutes(rootRoutes);
-server.applyRoutes(packageRoutes, registry);
-server.applyRoutes(userRoutes, registry);
+server.applyRoutes(packageRoutes);
+server.applyRoutes(userRoutes);
 
 server.start(cfg);

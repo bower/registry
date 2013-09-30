@@ -21,7 +21,7 @@ describe('User', function () {
     describe('Model', function () {
 
         beforeEach(function () {
-            this.user = new User(registry, mockData);
+            this.user = new User(mockData);
         });
 
         describe('Constructor', function () {
@@ -31,7 +31,6 @@ describe('User', function () {
             });
 
             it('should have normal exposed props', function () {
-                expect(this.user.registry).to.eql(registry);
                 expect(this.user._model).to.be.a(Object);
             });
 
