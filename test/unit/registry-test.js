@@ -6,7 +6,6 @@ var registry = testHelper.registry;
 testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 
 describe('Registry', function () {
-
     describe('Object', function () {
 
         describe('should be a registry object', function () {
@@ -32,11 +31,8 @@ describe('Registry', function () {
                 expect(registry.attachment).to.have.property('get');
             });
 
-            it('should resolve with correct database', function (done) {
-                registry.promise.then(function (db) {
-                    expect(db.config.db).to.eql(testHelper.opts.db.name);
-                    done();
-                });
+            it('should resolve with correct database', function () {
+                expect(registry.db.config.db).to.eql(testHelper.opts.db.name);
             });
 
         });

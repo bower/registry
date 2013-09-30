@@ -10,15 +10,6 @@ var mockData = new testHelper.factories.Package();
 testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 
 describe('Package', function () {
-
-    beforeEach(function (done) {
-
-        registry.promise.then(function () {
-            done();
-        });
-
-    });
-
     describe('Model', function () {
         var pkg;
 

@@ -9,15 +9,6 @@ var mockData = new testHelper.factories.User();
 testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 
 describe('User', function () {
-
-    beforeEach(function (done) {
-
-        registry.promise.then(function () {
-            done();
-        });
-
-    });
-
     describe('Model', function () {
         var user;
 

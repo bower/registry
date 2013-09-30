@@ -9,25 +9,28 @@ var mocks = require('./couch-mocks');
 var ddocs = require('../../couchapp/ddocs');
 
 var registry = require('../../lib/registry');
+var promise = registry.configure(opts)
+.then(function () {
+    var server = new Server(opts.app);
+    // server components
+    var rootRoutes = require('../../lib/routes/root.js');
+    var packageRoutes = require('../../lib/routes/package.js');
+    var userRoutes = require('../../lib/routes/user.js');
 
-registry.configure(opts);
-var server = new Server(opts.app);
+    server.applyRoutes(rootRoutes);
+    server.applyRoutes(packageRoutes);
+    server.applyRoutes(userRoutes);
 
-
-// server components
-var rootRoutes = require('../../lib/routes/root.js');
-var packageRoutes = require('../../lib/routes/package.js');
-var userRoutes = require('../../lib/routes/user.js');
-
-server.applyRoutes(rootRoutes);
-server.applyRoutes(packageRoutes);
-server.applyRoutes(userRoutes);
+    server.start(opts);
+}, function (err) {
+    console.log(err, err.stack);
+});
 
 module.exports = {
     before: (function () {
 
-        before(function () {
-            server.start(opts);
+        before(function (done) {
+            promise.then(done);
         });
 
     }()),

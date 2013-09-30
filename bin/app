@@ -14,16 +14,21 @@ console.log('Loading ' + process.env.NODE_ENV + ' configuration data');
 var cfg = config(process.env.NODE_ENV);
 
 // server setup
-registry.configure(cfg);
-var server = new Server(cfg.app);
+registry.configure(cfg)
+.then(function () {
+    var server = new Server(cfg.app);
 
-// server components
-var rootRoutes = require('../lib/routes/root.js');
-var packageRoutes = require('../lib/routes/package.js');
-var userRoutes = require('../lib/routes/user.js');
+    // server components
+    var rootRoutes = require('../lib/routes/root.js');
+    var packageRoutes = require('../lib/routes/package.js');
+    var userRoutes = require('../lib/routes/user.js');
 
-server.applyRoutes(rootRoutes);
-server.applyRoutes(packageRoutes);
-server.applyRoutes(userRoutes);
+    server.applyRoutes(rootRoutes);
+    server.applyRoutes(packageRoutes);
+    server.applyRoutes(userRoutes);
 
-server.start(cfg);
+    server.start(cfg);
+}, function (err) {
+    console.log('Error starting connection to DB');
+    console.log(err);
+}).done();
