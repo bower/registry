@@ -1,5 +1,4 @@
 var expect = require('expect.js');
-var Registry = require('../../lib/registry.js');
 
 var testHelper = require('../support/test-helper');
 var registry = testHelper.registry;
@@ -8,12 +7,10 @@ testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 
 describe('Registry', function () {
 
-    describe('Constructor', function () {
+    describe('Object', function () {
 
-        describe('makes a registry object', function () {
-
-            it('should instanciate and create properties', function () {
-                expect(registry).to.be.a(Registry);
+        describe('should be a registry object', function () {
+            it('should have properties', function () {
                 expect(registry).to.have.property('couch');
             });
 

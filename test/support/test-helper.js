@@ -8,9 +8,9 @@ var Server = require('../../server/server.js');
 var mocks = require('./couch-mocks');
 var ddocs = require('../../couchapp/ddocs');
 
-var Registry = require('../../lib/registry');
+var registry = require('../../lib/registry');
 
-var registry = new Registry(opts);
+registry.configure(opts);
 var server = new Server(registry, opts.app);
 
 
