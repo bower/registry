@@ -65,7 +65,7 @@ describe('Package', function () {
             });
 
             it('should have normal exposed props', function () {
-                expect(pkg._model).to.be.a(Object);
+                expect(pkg.model).to.be.a(Object);
             });
 
         });
@@ -83,31 +83,31 @@ describe('Package', function () {
             });
 
             it('should have a \'name\' property', function () {
-                expect(pkg._model).to.have.property('name');
+                expect(pkg.model).to.have.property('name');
             });
 
             it('should have a \'description\' property', function () {
-                expect(pkg._model).to.have.property('description');
+                expect(pkg.model).to.have.property('description');
             });
 
             it('should have a \'type\' property', function () {
-                expect(pkg._model).to.have.property('type');
+                expect(pkg.model).to.have.property('type');
             });
 
             it('should have a \'owners\' property', function () {
-                expect(pkg._model).to.have.property('owners');
+                expect(pkg.model).to.have.property('owners');
             });
 
             it('should have a \'versions\' property', function () {
-                expect(pkg._model).to.have.property('versions');
+                expect(pkg.model).to.have.property('versions');
             });
 
             it('should have a \'keywords\' property', function () {
-                expect(pkg._model).to.have.property('keywords');
+                expect(pkg.model).to.have.property('keywords');
             });
 
             it('should have a \'url\' property', function () {
-                expect(pkg._model).to.have.property('url');
+                expect(pkg.model).to.have.property('url');
             });
 
         });

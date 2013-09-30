@@ -32,7 +32,7 @@ describe('User', function () {
             });
 
             it('should have normal exposed props', function () {
-                expect(user._model).to.be.a(Object);
+                expect(user.model).to.be.a(Object);
             });
 
         });
