@@ -7,23 +7,28 @@ var path = require('path');
 
 var Server = require('../server/server.js');
 var config = require('konphyg')(path.normalize(__dirname + '/../config'));
-var Registry = require('../lib/registry');
+var registry = require('../lib/registry');
 
 console.log('Loading ' + process.env.NODE_ENV + ' configuration data');
 
 var cfg = config(process.env.NODE_ENV);
 
 // server setup
-var registry = new Registry(cfg);
-var server = new Server(registry, cfg.app);
+registry.configure(cfg)
+.then(function () {
+    var server = new Server(cfg.app);
 
-// server components
-var rootRoutes = require('../lib/routes/root.js');
-var packageRoutes = require('../lib/routes/package.js');
-var userRoutes = require('../lib/routes/user.js');
+    // server components
+    var rootRoutes = require('../lib/routes/root.js');
+    var packageRoutes = require('../lib/routes/package.js');
+    var userRoutes = require('../lib/routes/user.js');
 
-server.applyRoutes(rootRoutes);
-server.applyRoutes(packageRoutes, registry);
-server.applyRoutes(userRoutes, registry);
+    server.applyRoutes(rootRoutes);
+    server.applyRoutes(packageRoutes);
+    server.applyRoutes(userRoutes);
 
-server.start(cfg);
+    server.start(cfg);
+}, function (err) {
+    console.log('Error starting connection to DB');
+    console.log(err);
+}).done();

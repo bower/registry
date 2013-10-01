@@ -1,5 +1,4 @@
 var expect = require('expect.js');
-var Registry = require('../../lib/registry.js');
 
 var testHelper = require('../support/test-helper');
 var registry = testHelper.registry;
@@ -7,13 +6,10 @@ var registry = testHelper.registry;
 testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
 
 describe('Registry', function () {
+    describe('Object', function () {
 
-    describe('Constructor', function () {
-
-        describe('makes a registry object', function () {
-
-            it('should instanciate and create properties', function () {
-                expect(registry).to.be.a(Registry);
+        describe('should be a registry object', function () {
+            it('should have properties', function () {
                 expect(registry).to.have.property('couch');
             });
 
@@ -35,11 +31,8 @@ describe('Registry', function () {
                 expect(registry.attachment).to.have.property('get');
             });
 
-            it('should resolve with correct database', function (done) {
-                registry.promise.then(function (db) {
-                    expect(db.config.db).to.eql(testHelper.opts.db.name);
-                    done();
-                });
+            it('should resolve with correct database', function () {
+                expect(registry.db.config.db).to.eql(testHelper.opts.db.name);
             });
 
         });
