@@ -51,14 +51,20 @@ describe('Package', function () {
                 expect(pkg).to.have.property('save');
             });
 
-            it('should have a \'destroy\' prototype method', function () {
-                expect(pkg).to.have.property('destroy');
-            });
-
             it('should have normal exposed props', function () {
                 expect(pkg.model).to.be.a(Object);
             });
 
+        });
+
+        describe('Static members', function () {
+            it('Package should have a \'destroy\' method', function () {
+                expect(Package).to.have.property('destroy');
+            });
+
+            it('Package should have a \'search\' method', function () {
+                expect(Package).to.have.property('search');
+            });
         });
 
         describe('Property initialization and retrieval', function () {
