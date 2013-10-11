@@ -61,7 +61,7 @@ describe('User', function () {
 
             it('should not have private properties', function () {
                 var obj = user.toObject();
-                expect(obj.resource).to.be(undefined);
+                expect(obj.resource).to.be('users');
             });
 
         });

@@ -123,7 +123,7 @@ describe('Package', function () {
             it('should have public properties', function () {
                 var obj = pkg.toObject();
 
-                expect(_.size(obj)).to.eql(7);
+                expect(_.size(obj)).to.eql(8);
 
                 expect(obj.name).to.eql(pkg.get('name'));
                 expect(obj.description).to.eql(pkg.get('description'));
@@ -131,11 +131,12 @@ describe('Package', function () {
                 expect(obj.versions).to.eql(pkg.get('versions'));
                 expect(obj.keywords).to.eql(pkg.get('keywords'));
                 expect(obj.url).to.eql(pkg.get('url'));
+                expect(obj.resource).to.eql(pkg.get('resource'));
             });
 
             it('should not have private properties', function () {
                 var obj = pkg.toObject();
-                expect(obj.resource).to.be(undefined);
+                expect(obj.resource).to.be('packages');
             });
 
         });
