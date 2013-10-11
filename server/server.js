@@ -18,7 +18,9 @@ module.exports = function Server(options) {
         app.use(setOptions());
         app.use(passport.initialize());
         app.use(setAuth(passport));
-        app.use(express.bodyParser());
+        app.use(express.bodyParser({
+            keepExtensions: true
+        }));
         app.use(express.compress());
         app.use(express.methodOverride());
         app.use(app.router);

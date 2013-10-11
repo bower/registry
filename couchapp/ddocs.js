@@ -44,6 +44,25 @@ var docs = [{
             }
         }
     }
+},
+{
+    _id: '_design/archives',
+    views: {
+        all: {
+            map: function (doc) {
+                if (doc.resource === 'archives') {
+                    emit(doc._id, doc);
+                }
+            }
+        },
+        by_name: {
+            map: function (doc) {
+                if (doc.resource === 'archives') {
+                    emit(doc._id, doc);
+                }
+            }
+        }
+    }
 }];
 
 module.exports = docs;

@@ -22,10 +22,12 @@ registry.configure(cfg)
     var rootRoutes = require('../lib/routes/root.js');
     var packageRoutes = require('../lib/routes/package.js');
     var userRoutes = require('../lib/routes/user.js');
+    var archiveRoutes = require('../lib/routes/archive.js');
 
     server.applyRoutes(rootRoutes);
     server.applyRoutes(packageRoutes);
     server.applyRoutes(userRoutes);
+    server.applyRoutes(archiveRoutes);
 
     server.start(cfg);
 }, function (err) {
