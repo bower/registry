@@ -1,37 +1,39 @@
 {
-    "name": "bower-registry",
-    "description": "bower registry with couchdb persistence layer",
-    "version": "0.0.1",
-    "author": "Sven Lito <me@svenlito.com>",
-    "main": "./bin/app",
-    "private": true,
-    "dependencies": {
-        "express": "3.0.x",
-        "konphyg": "~1.2.0",
-        "validotron": "~0.3.0",
-        "nano": "4.1.1",
-        "lodash": "~1.2.1",
-        "q": "~0.9.6",
-        "bcrypt": "~0.7.6",
-        "passport-http": "~0.2.2",
-        "passport": "~0.1.17"
-    },
-    "scripts": {
-        "test": "grunt test --verbose",
-        "start": "node bin/app"
-    },
-    "devDependencies": {
-        "grunt-contrib-jshint": "0.1.1",
-        "grunt-contrib-watch": "0.2.0",
-        "grunt": "0.4.1",
-        "couchapp": "0.10.0",
-        "mocha": "1.6.0",
-        "nock": "~0.18.2",
-        "expect.js": "~0.2.0",
-        "grunt-simple-mocha": "~0.4.0",
-        "request": "~2.25.0"
-    },
-    "engine": {
-        "node": ">= 0.8.x"
-    }
+  "name": "bower-registry",
+  "description": "bower registry with couchdb persistence layer",
+  "version": "0.0.1",
+  "author": "Sven Lito <me@svenlito.com>",
+  "main": "./bin/app",
+  "private": true,
+  "dependencies": {
+    "express": "3.0.x",
+    "konphyg": "~1.2.0",
+    "validotron": "~0.3.0",
+    "nano": "4.1.1",
+    "lodash": "~1.2.1",
+    "q": "~0.9.6",
+    "bcrypt": "~0.7.6",
+    "passport-http": "~0.2.2",
+    "passport": "~0.1.17"
+  },
+  "scripts": {
+    "test": "grunt test --verbose",
+    "start": "node bin/app"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "0.1.1",
+    "grunt-contrib-watch": "0.2.0",
+    "grunt": "0.4.1",
+    "couchapp": "0.10.0",
+    "mocha": "1.6.0",
+    "nock": "~0.18.2",
+    "expect.js": "~0.2.0",
+    "grunt-simple-mocha": "~0.4.0",
+    "request": "~2.25.0",
+    "grunt-exec": "~0.4.2",
+    "istanbul": "~0.1.44"
+  },
+  "engine": {
+    "node": ">= 0.8.x"
+  }
 }
