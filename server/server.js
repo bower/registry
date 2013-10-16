@@ -4,11 +4,10 @@ var fs        = require('fs');
 var path      = require('path');
 var http      = require('http');
 var https     = require('https');
-var passport  = require('passport');
 
+var passport  = require('../lib/helpers/passport');
 var setHeaders = require('../lib/middleware/headers');
 var setOptions = require('../lib/middleware/options');
-var setAuth = require('../lib/helpers/passport');
 
 module.exports = function Server(options) {
     var app = express();
@@ -17,10 +16,7 @@ module.exports = function Server(options) {
         app.use(setHeaders());
         app.use(setOptions());
         app.use(passport.initialize());
-        app.use(setAuth(passport));
-        app.use(express.bodyParser({
-            keepExtensions: true
-        }));
+        app.use(express.json());
         app.use(express.compress());
         app.use(express.methodOverride());
         app.use(app.router);
