@@ -1,6 +1,14 @@
 module.exports = function (grunt) {
 
     grunt.initConfig({
+        concurrent: {
+            dev: {
+                tasks: ['nodemon', 'watch'],
+                options: {
+                    logConcurrentOutput: true
+                }
+            }
+        },
 
         jshint: {
             files: [
@@ -12,6 +20,10 @@ module.exports = function (grunt) {
             options: {
                 jshintrc: '.jshintrc'
             }
+        },
+
+        nodemon: {
+            dev: {}
         },
 
         simplemocha: {
@@ -33,6 +45,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-simple-mocha');
+    grunt.loadNpmTasks('grunt-nodemon');
+    grunt.loadNpmTasks('grunt-concurrent');
 
     // Default task.
     grunt.registerTask('default', ['jshint', 'simplemocha:full']);
