@@ -14,7 +14,8 @@
         "q": "~0.9.6",
         "bcrypt": "~0.7.6",
         "passport-http": "~0.2.2",
-        "passport": "~0.1.17"
+        "passport": "~0.1.17",
+        "lunr": "~0.4.2"
     },
     "scripts": {
         "test": "grunt test --verbose",
