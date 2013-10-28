@@ -1,83 +1,62 @@
 var User = require('../../lib/models/user');
 var expect = require('expect.js');
 
-var testHelper = require('../support/test-helper');
+User.prototype.database = {}; // Mock!
 
-var registry = testHelper.registry;
-var mockData = new testHelper.factories.User();
-
-testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
-
-describe('User', function () {
-    describe('Model', function () {
-        var user;
-
-        beforeEach(function () {
-            user = new User(mockData);
+describe('User model', function () {
+    it('accepts valid properties in the constructor', function () {
+        var user = new User({
+            name: 'testuser',
+            email: 'test@example.com',
+            url: 'http://example.com',
+            hash: '0123456789abcdef'
         });
 
-        describe('Constructor', function () {
-
-            it('should be an instance of User', function () {
-                expect(user).to.be.a(User);
-            });
-
-            it('should have normal exposed props', function () {
-                expect(user.model).to.be.a(Object);
-            });
-
-        });
-
-        describe('Property initialization and retrieval', function () {
-
-            it('should happen on construction', function () {
-                expect(user.get('name')).to.eql(mockData.name);
-                expect(user.get('password')).to.eql(mockData.password);
-                expect(user.get('email')).to.eql(mockData.email);
-                expect(user.get('url')).to.eql(mockData.url);
-            });
-
-        });
-
-        describe('Property assignment', function () {
-
-            it('should work using .set()', function () {
-                user.set('email', 'some@email.com');
-                expect(user.get('email')).to.eql('some@email.com');
-            });
-
-        });
-
-        describe('toObject', function () {
-
-            it('should have public properties', function () {
-                var obj = user.toObject();
-
-                expect(obj.name).to.eql(user.get('name'));
-                expect(obj.password).to.eql(user.get('password'));
-                expect(obj.email).to.eql(user.get('email'));
-                expect(obj.url).to.eql(user.get('url'));
-            });
-
-            it('should not have private properties', function () {
-                var obj = user.toObject();
-                expect(obj.resource).to.be('users');
-            });
-
-        });
-
-        describe('toJSON', function () {
-
-            it('should be the same as toObject', function () {
-                var obj = user.toObject();
-                var json = user.toJSON();
-
-                expect(JSON.parse(json)).to.eql(obj);
-            });
-
-        });
-
+        expect(user.name).to.be('testuser');
+        expect(user.email).to.be('test@example.com');
+        expect(user.url).to.be('http://example.com');
+        expect(user.hash).to.be('0123456789abcdef');
     });
 
-});
+    it('ignores junk properties in the constructor', function () {
+        var user = new User({
+            dave: 'testuser',
+            unicorns: 'UNICRONS!!!',
+            password: 'hunter12',
+            packages: ['jquery', 'underscore']
+        });
 
+        expect(user.dave).to.be(undefined);
+        expect(user.unicorns).to.be(undefined);
+        expect(user.password).to.be(undefined);
+        expect(user.packages).to.be(undefined);
+    });
+
+    it('should not leak the password hash', function () {
+        var user = new User();
+        user.hash = 'foo';
+
+        expect(user.toClient().hash).to.be(undefined);
+    });
+
+    it('hashes the password', function (done) {
+        var user = new User();
+        user.setPassword('foo')
+        .then(function () {
+            expect(user.hash.length).to.be(60);
+        })
+        .done(done);
+    });
+
+    it('fails if the password is blank', function (done) {
+        var user = new User();
+        user.setPassword('')
+        .then(function () {
+            expect.fail('blank password was accepted');
+        }, function (error) {
+            expect(error).to.be.an(Error);
+            expect(error.message).to.be('Password cannot be blank');
+        })
+        .done(done);
+    });
+});

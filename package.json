@@ -3,36 +3,37 @@
     "description": "bower registry with couchdb persistence layer",
     "version": "0.0.1",
     "author": "Sven Lito <me@svenlito.com>",
-    "main": "./bin/app",
+    "main": "./bin/bower-registry",
     "private": true,
     "dependencies": {
-        "express": "3.0.x",
-        "konphyg": "~1.2.0",
-        "validotron": "~0.3.0",
-        "nano": "4.1.1",
-        "lodash": "~1.2.1",
-        "q": "~0.9.6",
         "bcrypt": "~0.7.6",
-        "passport-http": "~0.2.2",
+        "express": "3.0.x",
+        "glob": "~3.2.6",
+        "konphyg": "~1.2.0",
+        "lodash": "~1.2.1",
+        "lunr": "~0.4.2",
+        "nano": "4.1.1",
+        "nopt": "~2.1.2",
         "passport": "~0.1.17",
-        "lunr": "~0.4.2"
+        "passport-http": "~0.2.2",
+        "q": "~0.9.6",
+        "validotron": "~0.3.0"
     },
     "scripts": {
-        "test": "grunt test --verbose",
-        "start": "node bin/app"
+        "start": "node bin/bower-registry",
+        "test": "grunt test --verbose"
     },
     "devDependencies": {
-        "grunt-contrib-jshint": "0.1.1",
-        "grunt-contrib-watch": "0.2.0",
-        "grunt": "0.4.1",
-        "couchapp": "0.10.0",
-        "mocha": "1.6.0",
-        "nock": "~0.18.2",
         "expect.js": "~0.2.0",
+        "grunt": "~0.4.1",
+        "grunt-concurrent": "~0.4.1",
+        "grunt-contrib-jshint": "~0.6.4",
+        "grunt-contrib-watch": "~0.5.3",
+        "grunt-nodemon": "~0.1.1",
         "grunt-simple-mocha": "~0.4.0",
-        "request": "~2.25.0",
-        "grunt-concurrent": "~0.4.0",
-        "grunt-nodemon": "~0.1.1"
+        "mocha": "~1.13.0",
+        "nock": "~0.22.1",
+        "request": "~2.27.0"
     },
     "engine": {
         "node": ">= 0.8.x"

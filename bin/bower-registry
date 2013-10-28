@@ -1,8 +1,7 @@
+#!/usr/bin/env node
+
+// TODO: allow config override with command-line
 var config = require('../lib/helpers/config');
-
-var factories = require('./factories');
-var mocks = require('./couch-mocks');
-
 var Server = require('../server/server.js');
 var server = new Server(config.app);
 
@@ -18,8 +17,3 @@ server.applyRoutes(userRoutes);
 server.applyRoutes(archiveRoutes);
 
 server.start(config);
-
-module.exports = {
-    factories: factories,
-    mocks: mocks,
-};

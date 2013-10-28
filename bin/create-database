@@ -1,0 +1,61 @@
+#!/usr/bin/env node
+var nopt = require('nopt');
+var path = require('path');
+var nano = require('nano');
+var glob = require('glob');
+var fs = require('fs');
+var config = require('../lib/helpers/config');
+
+var availableOptions = {
+    'couch': String,
+    'database': String,
+    'design-docs': path,
+    'force': Boolean
+};
+
+var shortcuts = {
+    'c': ['--couch'],
+    'd': ['--database'],
+    'f': ['--force']
+};
+
+var parsed = nopt(availableOptions, shortcuts);
+
+config.update(parsed);
+
+var docsPath = parsed['design-docs'] || path.resolve(__dirname, '../couch-docs');
+docsPath = path.normalize(path.resolve(process.cwd(), docsPath));
+
+console.log('Creating database');
+console.log('-----------------');
+console.log('       Server: ' + config.couch);
+console.log('     Database: ' + config.database);
+console.log('  Design docs: ' + docsPath);
+
+var couch = nano(config.couch);
+var docs = glob.sync(docsPath + '/*.json');
+
+console.log(docsPath + '/*.json', docs);
+
+var createDatabase = function (error, result) {
+    couch.db.create(config.database, function (error, body) {
+        if (error) {
+            throw error;
+        }
+
+        var db = couch.use(config.database);
+        docs.forEach(function (filename) {
+            console.log('=> Adding ' + filename);
+            var doc = fs.readFileSync(filename);
+            db.insert(doc);
+        });
+    });
+};
+
+if (parsed.force) {
+    couch.db.destroy(config.database, createDatabase);
+} else {
+    createDatabase();
+}
+
+

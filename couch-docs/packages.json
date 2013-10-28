@@ -1,0 +1,12 @@
+{
+    "_id": "_design/packages",
+    "language": "javascript",
+    "views": {
+        "by-owner": {
+            "map": "function (doc) {\n     if (doc.documentType === 'package') {\n          doc.owners.forEach(function (owner) {\n                emit(owner, doc.name);\n          });\n     }\n}"
+        },
+        "all": {
+            "map": "function (doc) {\n     if (doc.documentType === 'package') {\n          emit(doc.name, doc);\n     }\n}"
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "_id": "_design/users",
+    "language": "javascript",
+    "views": {
+        "all": {
+            "map": "function(doc) {\n    if (doc.documentType === 'user') {\n        emit(doc.name, doc);\n    }\n}"
+        }
+    }
+}

@@ -21,7 +21,7 @@ module.exports = function Server(options) {
         app.use(express.methodOverride());
         app.use(app.router);
         app.use(function (err, req, res, next) {
-            console.dir(err.stack);
+            console.log(err.stack);
             res.send(500, 'Something broke!');
         });
     });
