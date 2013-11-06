@@ -3,12 +3,15 @@
 
 ## Create package
 ```bash
-curl http://bower.heroku.com/packages -v -F 'name=jquery' -F 'url=git://github.com/jquery/jquery.git'
+curl http://bower.herokuapp.com/packages -v -F 'name=jquery' -F 'url=git://github.com/jquery/jquery.git'
 ```
 ## Find package
 ```bash
-curl http://bower.heroku.com/packages/jquery
-  {"name":"jquery","url":"git://github.com/jquery/jquery.git"}
+curl http://bower.herokuapp.com/packages/jquery
+```
+Response
+```json
+{"name":"jquery","url":"git://github.com/jquery/jquery.git"}
 ```
 ## Unregister package
 
@@ -17,6 +20,6 @@ package be unregistered](https://github.com/bower/bower/issues/120).
 
 ## License
 
-Copyright 2012 Twitter, Inc.
+Copyright 2013 Twitter, Inc.
 
 Licensed under the MIT License
