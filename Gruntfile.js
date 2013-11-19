@@ -15,6 +15,7 @@ module.exports = function (grunt) {
                 'Gruntfile.js',
                 'index.js',
                 'lib/**/*.js',
+                'server/*',
                 'test/**/*.js'
             ],
             options: {
@@ -32,7 +33,7 @@ module.exports = function (grunt) {
                 NODE_ENV: 'testing',
                 ignoreLeaks: true
             },
-            full: { src: ['test/**/*-test.js'] }
+            full: { src: ['test/**/*-spec.js'] }
         },
 
         watch: {

@@ -3,7 +3,7 @@ var expect = require('expect.js');
 var testHelper = require('../support/test-helper');
 var registry = testHelper.registry;
 
-testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
+testHelper.mocks('http://localhost:3333/', testHelper.opts, testHelper.ddocs);
 
 describe('Registry', function () {
     describe('Object', function () {
@@ -29,10 +29,6 @@ describe('Registry', function () {
                 expect(registry).to.have.property('attachment');
                 expect(registry.attachment).to.have.property('insert');
                 expect(registry.attachment).to.have.property('get');
-            });
-
-            it('should resolve with correct database', function () {
-                expect(registry.db.config.db).to.eql(testHelper.opts.db.name);
             });
 
         });

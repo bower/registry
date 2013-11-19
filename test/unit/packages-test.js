@@ -1,17 +1,13 @@
-//
-// test/unit/packages-test
-//
 var expect = require('expect.js');
 
 var Packages = require('../../lib/collections/packages');
 var Package = require('../../lib/models/package');
 
 var testHelper = require('../support/test-helper');
-var registry = testHelper.registry;
 
 var mockData = new testHelper.factories.Packages(2);
 
-testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
+testHelper.mocks('http://localhost:3333/', testHelper.opts, testHelper.ddocs);
 
 describe('Packages', function () {
     describe('Collection', function () {

@@ -3,11 +3,10 @@ var _ = require('lodash');
 
 var Package = require('../../lib/models/package');
 var testHelper = require('../support/test-helper');
-var registry = testHelper.registry;
 
 var mockData = new testHelper.factories.Package();
 
-testHelper.mocks(registry.url(), testHelper.opts, testHelper.ddocs);
+testHelper.mocks('http://localhost:3333/', testHelper.opts, testHelper.ddocs);
 
 describe('Package', function () {
     describe('Model', function () {
