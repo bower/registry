@@ -1,6 +1,6 @@
 var expect = require('expect.js');
 
-var Packages = require('../../lib/collections/packages');
+var Packages = require('../../lib/collections/package');
 var Package = require('../../lib/models/package');
 
 var testHelper = require('../support/test-helper');

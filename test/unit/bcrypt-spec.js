@@ -5,6 +5,7 @@ var pwd = null;
 var fakePwd = 'XOqLEXgvnIw.brWa9BQZzuY9s';
 
 describe('bcrypt Helper', function () {
+
     describe('Methods', function () {
         it('exposes a generate method', function () {
             expect(helper).to.have.property('generate');

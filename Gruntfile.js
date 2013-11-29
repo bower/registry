@@ -33,7 +33,7 @@ module.exports = function (grunt) {
                 NODE_ENV: 'testing',
                 ignoreLeaks: true
             },
-            full: { src: ['test/**/*-spec.js'] }
+            full: { src: ['test/runner.js'] }
         },
 
         watch: {
