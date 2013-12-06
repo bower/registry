@@ -1,7 +1,7 @@
 # ==========================================
 # BOWER: Registry
 # ==========================================
-# Copyright 2012 Twitter, Inc
+# Copyright 2013 Twitter, Inc
 # Licensed under The MIT License
 # http://opensource.org/licenses/MIT
 # ==========================================
