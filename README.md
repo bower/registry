@@ -58,7 +58,7 @@ The views to add/verify on the database are in `couchapp/ddocs.js`.
 
 ## Bower Configuration ##
 
-In `.bowerrc`, set authentication and configuration.
+If your organization wishes to maintain a private registry, you may change the `.bowerrc`.
 
 ```json
 {
