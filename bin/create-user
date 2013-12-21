@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+
+var config = require('../lib/helpers/config');
+var nopt = require('nopt');
+var User = require('../lib/models/user');
+
+var availableOptions = {
+    'couch': String,
+    'database': String,
+    'username': String,
+    'password': String,
+    'email': String,
+    'url': String
+};
+
+var shortcuts = {
+    'c': ['--couch'],
+    'd': ['--database'],
+    'u': ['--username'],
+    'p': ['--password']
+};
+
+var parsed = nopt(availableOptions, shortcuts);
+
+var username = parsed.username || '';
+var password = parsed.password || '';
+var email = parsed.email || '';
+var url = parsed.url || '';
+
+delete(parsed.username);
+delete(parsed.password);
+delete(parsed.email);
+delete(parsed.url);
+config.update(parsed);
+
+if (!!username && !!password) {
+    var user = new User();
+    user.update({ 'name': username, 'email': email, 'url': url });
+    user.setPassword(password)
+    .then(function () {
+        return user.save();
+    })
+    .then(function () {
+        console.log('User ' + user.name + ' created');
+    });
+}else{
+    console.log('Username or password MUST NOT empty!');
+}
