@@ -19,48 +19,35 @@ git clone git@github.com:bower/registry.git -b node_rewrite
 cd registry
 npm install
 ```
+## create database ##
+
+Running `node bin/create-database` will create bower database.
+
+### create user ###
+
+Running `node bin/create-user -u username -p password` will create registry user.
 
 ## Starting your registry
 
-Running `node bin/app` will start the app using the testing.json settings
-file in the config directory. 
+Running `node bin/bower-registry` will start your registry.
 
-To use a different file, e.g., development.json,  in the config directory:
+## Registry Configuration
 
-```
-node bin/app development
-```
-
-To use any file:
-
-```bash
-node bin/app /path/to/the/settings/file.json
-```
-
-Or lastly, pass the JSON settings in directly:
-
-```bash
-node bin/app $(cat easier/than/typing/it.json)
-```
-
-## Configuration
+In `lib/helpers/config.js`
 
 ```json
 {
-  "app": {
-    "port": 3333,
-    "protocol": "http",
-    "host": "localhost"
-  },
-  "db": {
-    "port": 5984,
-    "protocol": "http",
-    "host": "localhost",
-    "password": "",
-    "username": "",
-    "name": "bower-registry",
-    "temporary": true
-  }
+    'app': {
+        'port': 3333,
+        'https': false,
+        'host': 'localhost',
+        'ssl': {
+            'key' : 'config/cert/key.pem',
+            'cert' : 'config/cert/certificate.pem'
+        }
+    },
+    'couch': 'http://localhost:5984',
+    'database': 'bower'
 }
 ```
 
@@ -69,17 +56,27 @@ the database upon exit or if it's present upon start.
 
 The views to add/verify on the database are in `couchapp/ddocs.js`.
 
+## Bower Configuration ##
+
+If your organization wishes to maintain a private registry, you may change the `.bowerrc`.
+
+```json
+{
+    "registry": "http://username:password@registry-server"
+}
+```
+
 ## Code Org Overview
 
-`bin/app` gets the settings data, creates a `Registry()` and passes that 
+`bin/bower-registry` creates a `Registry()` and passes that 
 instance into `server()` from `server/server.js`.
+
+`bin/create-database` creates a couchdb database.
+
+`bin/create-user -u username -p password` creates a registry user.
 
 `server` creates the express app, exposes routes and does the work of 
 calling the appropriate functions. Namely:
 
 `Packages` (`lib/collections/packages.js`) exposes the methods to retreive packages. It
 is an array of Package (`lib/collections/package.js`). 
-
-
-
-

@@ -16,7 +16,7 @@ module.exports = function Server(options) {
         app.use(setHeaders());
         app.use(setOptions());
         app.use(passport.initialize());
-        app.use(express.json());
+        app.use(express.bodyParser());
         app.use(express.compress());
         app.use(express.methodOverride());
         app.use(app.router);
