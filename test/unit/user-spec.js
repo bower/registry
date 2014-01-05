@@ -4,6 +4,7 @@ var expect = require('expect.js');
 User.prototype.database = {}; // Mock!
 
 describe('User model', function () {
+
     it('accepts valid properties in the constructor', function () {
         var user = new User({
             name: 'testuser',
