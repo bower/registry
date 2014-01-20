@@ -5,6 +5,8 @@ bower registry with couchdb persistence layer
 
 [![Build Status](https://travis-ci.org/bower/registry.png?branch=node_rewrite)](https://travis-ci.org/bower/registry)
 
+[Bower Registry API v2 design doc](https://docs.google.com/a/google.com/document/d/17Nzv7onwsFYQU2ompvzNI9cCBczVHntWMiAn4zDip1w/edit#heading=h.420zy9tff5g7)
+
 ## Installing
 
 You must have a couchdb service available to communicate with. This can be locally or with
