@@ -6,7 +6,7 @@ var pg = require('pg');
 pg.defaults.ssl = true;
 
 var app = express();
-var connectionString = process.env.SHARED_DATABASE_URL;
+var connectionString = process.env.DATABASE_URL;
 var serverStatus = {
 	errors: {
 		dbConnect: 0,
