@@ -4,7 +4,7 @@
   "description": "The bower registry",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/grunt"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -21,8 +21,9 @@
     "pg": "~2.11.1"
   },
   "devDependencies": {
-    "grunt": "^0.4.4",
-    "grunt-contrib-jshint": "^0.9.2",
-    "load-grunt-tasks": "^0.4.0"
+    "gulp": "~3.6.0",
+    "gulp-jshint": "^1.5.2",
+    "gulp-mocha": "^0.4.1",
+    "chai": "^1.9.1"
   }
 }
