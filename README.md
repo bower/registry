@@ -18,6 +18,18 @@ Response
 There is no direct way to unregister a package yet. For now, you can [request a
 package be unregistered](https://github.com/bower/bower/issues/120).
 
+### Unregistering (for owners)
+
+First, [Have access](https://dashboard.heroku.com/apps/bower/access), [Install toolbelt](https://toolbelt.heroku.com/), Then:
+```sh
+heroku run node --app=bower
+```
+```js
+d = require('./lib/database');
+function delete(name){ d.deletePackage(name, function (err, res) { console.log('error: ', err); console.log("result: ", res); }); }
+delete("package-name") // and repeat as neccessary
+```
+
 ## License
 
 Copyright 2013 Twitter, Inc.
