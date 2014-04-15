@@ -26,8 +26,8 @@ heroku run node --app=bower
 ```
 ```js
 d = require('./lib/database');
-function delete(name){ d.deletePackage(name, function (err, res) { console.log('error: ', err); console.log("result: ", res); }); }
-delete("package-name") // and repeat as neccessary
+function deletePkg(name){ d.deletePackage(name, function (err, res) { console.log('error: ', err); console.log("result: ", res); }); }
+deletePkg("package-name") // and repeat as neccessary
 ```
 
 ## License
