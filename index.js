@@ -16,3 +16,5 @@ app.listen(process.env.PORT);
 
 exports.app = app;
 require('./lib/routes');
+
+console.log('ready.');
