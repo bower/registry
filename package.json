@@ -19,5 +19,9 @@
     "express": "~3.4.8",
     "github": "~0.1.15",
     "pg": "~2.11.1"
-  }
+  },
+  "devDependencies": {
+     "mocha": "~1.18",
+     "request": "~2.36.0"
+ }
 }
