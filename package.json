@@ -4,7 +4,7 @@
   "description": "The bower registry",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,11 @@
     "express": "~3.4.8",
     "github": "~0.1.15",
     "pg": "~2.11.1"
+  },
+  "devDependencies": {
+    "gulp": "~3.6.0",
+    "gulp-jshint": "^1.5.2",
+    "gulp-mocha": "^0.4.1",
+    "chai": "^1.9.1"
   }
 }
