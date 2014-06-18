@@ -7,6 +7,7 @@ var PORT = 8080;
 describe('registry server', function(){
     var server = null;
     before(function(done){
+        process.env.DATABASE_URL = '0.0.0.0';
         process.env.PORT = PORT;
         server = spawn('node', ['index.js']);
         server.stdout.on('data', function(data){
