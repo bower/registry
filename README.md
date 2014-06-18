@@ -1,5 +1,4 @@
-# Bower registry
-
+# Bower registry [![Build Status](https://travis-ci.org/bower/registry.svg?branch=master)](https://travis-ci.org/bower/registry)
 
 ## Create package
 
