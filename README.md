@@ -49,6 +49,18 @@ function deletePkg(name){ d.deletePackage(name, function (err, res) { console.lo
 deletePkg("package-name") // and repeat as neccessary
 ```
 
+## Defaults
+
+If the `PORT` and/or `DATABASE_URL` environment variables are not set, the registry will use the following defaults:
+
+`PORT=3000` and/or `DATABASE_URL=0.0.0.0`.
+
+In order to change either variable, set them in your environment: (i.e. linux)
+
+```export PORT=[port]```
+
+```export DATABASE_URL=[url]```
+
 ## License
 
 Copyright 2014 Twitter, Inc.
