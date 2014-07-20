@@ -1,6 +1,7 @@
 'use strict';
 
 var express = require('express');
+var cors = require('./lib/cors');
 
 var app = express();
 
@@ -13,6 +14,7 @@ if (typeof process.env.DATABASE_URL === 'undefined') {
 }
 
 app.configure(function () {
+    app.use(cors);
     app.use(express.logger());
     app.use(express.compress());
     app.use(express.json());
