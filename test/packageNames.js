@@ -8,6 +8,10 @@ describe('package names', function(){
           return assert.isTrue(validName('jquery'));
       });
 
+      it('should not support names with unicode', function () {
+          return assert.isFalse(validName('ʎɹǝnbɾ'));
+      });
+
       it('should allow dots', function () {
           return assert.isTrue(validName('jquery.is.the.coolest'));
       });
