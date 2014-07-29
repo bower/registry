@@ -27,6 +27,7 @@
     "gulp-jshint": "^1.5.2",
     "gulp-mocha": "^0.4.1",
     "chai": "^1.9.1",
-    "request": "~2.36.0"
+    "request": "~2.36.0",
+    "form-data": "0.1.4"
   }
 }
