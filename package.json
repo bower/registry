@@ -18,6 +18,7 @@
   "dependencies": {
     "express": "~3.4.8",
     "github": "~0.1.15",
+    "newrelic": "~1.9.1",
     "pg": "~2.11.1",
     "ssh-url": "~0.1.5"
   },
