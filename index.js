@@ -23,6 +23,7 @@ app.configure(function () {
     app.use(express.compress());
     app.use(express.json());
     app.use(express.urlencoded());
+    app.use(express.multipart());
     app.use(app.router);
     app.use(express.errorHandler({
         dumpExceptions: true,
