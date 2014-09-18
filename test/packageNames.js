@@ -9,7 +9,7 @@ describe('package names', function(){
       });
 
       it('should not support names with unicode', function () {
-          return assert.isFalse(validName('ʎɹǝnbɾ'));
+          return assert.property(validName('ʎɹǝnbɾ'), 'error');
       });
 
       it('should allow dots', function () {
@@ -25,47 +25,47 @@ describe('package names', function(){
       });
 
       it('should not allow consecutive dots', function () {
-          return assert.isFalse(validName('jquery..is..the..coolest'));
+          return assert.property(validName('jquery..is..the..coolest'), 'error');
       });
 
       it('should not allow consecutive dashes', function () {
-          return assert.isFalse(validName('jquery--is--the--coolest'));
+          return assert.property(validName('jquery--is--the--coolest'), 'error');
       });
 
       it('should not allow consecutive underscores', function () {
-          return assert.isFalse(validName('jquery__is__the__coolest'));
+          return assert.property(validName('jquery__is__the__coolest'), 'error');
       });
 
       it('should not allow dots at the begining', function () {
-          return assert.isFalse(validName('.jquery'));
+          return assert.property(validName('.jquery'), 'error');
       });
 
       it('should not allow dots at the end', function () {
-          return assert.isFalse(validName('jquery.'));
+          return assert.property(validName('jquery.'), 'error');
       });
 
       it('should not allow dashes at the begining', function () {
-          return assert.isFalse(validName('-jquery'));
+          return assert.property(validName('-jquery'), 'error');
       });
 
       it('should not allow dashes at the end', function () {
-          return assert.isFalse(validName('jquery-'));
+          return assert.property(validName('jquery-'), 'error');
       });
 
       it('should not allow underscores at the begining', function () {
-          return assert.isFalse(validName('_jquery'));
+          return assert.property(validName('_jquery'), 'error');
       });
 
       it('should not allow underscores at the end', function () {
-          return assert.isFalse(validName('jquery_'));
+          return assert.property(validName('jquery_'), 'error');
       });
 
       it('should not allow uppercase letters', function () {
-          return assert.isFalse(validName('jQuery'));
+          return assert.property(validName('jQuery'), 'error');
       });
 
       it('should not allow names longer than 50 chars ', function () {
-          return assert.isFalse(validName('thisisastringthatsoverfiftycharacterslongforsomereason'));
+          return assert.property(validName('thisisastringthatsoverfiftycharacterslongforsomereason'), 'error');
       });
 
 });
