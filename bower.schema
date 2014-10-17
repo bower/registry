@@ -169,7 +169,8 @@ ALTER TABLE ONLY migrations
 --
 
 ALTER TABLE ONLY packages
-    ADD CONSTRAINT packages_name_key UNIQUE (name);
+    add constraint packages_name_key unique (name);
+    add constraint packages_url_key unique (url);
 
 
 --
