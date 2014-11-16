@@ -61,6 +61,10 @@ In order to change either variable, set them in your environment: (i.e. linux)
 
 ```export DATABASE_URL=[url]```
 
+Registry service has timezone set to `UTC` via environmental variable `TZ`.
+
+Postgres db `SERVER_ENCODING` is set to `UTF8`.
+
 ## License
 
 Copyright 2014 Twitter, Inc.
