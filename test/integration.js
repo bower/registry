@@ -47,7 +47,8 @@ describe('registry server', function(){
         });
 
         describe('/packages', function() {
-            it('should return 500/database error before psql is setup', function (done) {
+            // This test relied on race condition and failed on CI
+            it.skip('should return 500/database error before psql is setup', function (done) {
                 request.get(bowerServerUrl + '/packages', function (err, res, body){
                     expect(res.statusCode).to.equal(500);
                     done();
