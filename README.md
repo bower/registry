@@ -51,9 +51,17 @@ deletePkg("package-name") // and repeat as neccessary
 
 ## Defaults
 
-If the `PORT` and/or `DATABASE_URL` environment variables are not set, the registry will use the following defaults:
+If the `PORT` and/or `DATABASE_URL` environment variables are not set, the registry will use the following defaults for development environment:
 
-`PORT=3000` and/or `DATABASE_URL=0.0.0.0`.
+```
+PORT=3000 DATABASE_URL=127.0.0.1/registry_development
+```
+
+And following defaults for test environment:
+
+```
+PORT=3001 DATABASE_URL=127.0.0.1/registry_test
+```
 
 In order to change either variable, set them in your environment: (i.e. linux)
 
@@ -64,6 +72,8 @@ In order to change either variable, set them in your environment: (i.e. linux)
 Registry service has timezone set to `UTC` via environmental variable `TZ`.
 
 Postgres db `SERVER_ENCODING` is set to `UTF8`.
+
+Registry is using [node-config](https://github.com/lorenwest/node-config/wiki/Configuration-Files) package for configuration.
 
 ## License
 

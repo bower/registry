@@ -1,12 +1,15 @@
 /*jshint expr: true*/
 
+process.env.NODE_ENV = 'test';
+
 var request = require('request');
 var FormData = require('form-data');
 var expect = require('chai').expect;
 var spawn = require('child_process').spawn;
 
-var PORT = 3000;
-var bowerServerUrl = 'http://localhost:' + PORT;
+var config = require('config');
+
+var bowerServerUrl = 'http://localhost:' + config.get('port');
 
 describe('registry server', function(){
     var server = null;
@@ -14,13 +17,14 @@ describe('registry server', function(){
     before(function(done){
         // Ensure time for integration tests
         this.timeout(5000);
-        process.env.PORT = PORT;
+
         server = spawn('node', ['index.js']);
         server.stdout.on('data', function(data){
-            if (data.toString().match('ready')) {                
+            if (data.toString().match('ready')) {
                 done();
             }
         });
+
     });
 
     after(function(){

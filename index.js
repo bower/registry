@@ -6,16 +6,9 @@ if (process.env.NODE_ENV === 'production') {
 
 var express = require('express');
 var cors = require('./lib/cors');
+var config = require('config');
 
 var app = express();
-
-if (typeof process.env.PORT === 'undefined') {
-    process.env.PORT = 3000;
-}
-
-if (typeof process.env.DATABASE_URL === 'undefined') {
-    process.env.DATABASE_URL = '0.0.0.0';
-}
 
 app.configure(function () {
     app.use(cors);
@@ -31,13 +24,16 @@ app.configure(function () {
     }));
 });
 
-app.listen(process.env.PORT);
+app.listen(config.get('port'));
 
 exports.app = app;
 
 require('./lib/routes');
 
-console.log('This app is using port ' + process.env.PORT + ' and the database url is ' + process.env.DATABASE_URL + '.');
+console.log(
+    'This app is using port ' + config.get('port') +
+    ' and the database url is ' + config.get('database.url') + '.'
+);
 
 //Tests look for this string to make sure the server is loaded
 console.log('ready.');

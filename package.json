@@ -16,6 +16,7 @@
     "url": "https://github.com/bower/registry/issues"
   },
   "dependencies": {
+    "config": "^1.10.0",
     "express": "~3.4.8",
     "github": "~0.1.15",
     "newrelic": "~1.9.1",
