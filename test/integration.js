@@ -1,5 +1,6 @@
 /*jshint expr: true*/
 
+delete require.cache[require.resolve('config')];
 process.env.NODE_ENV = 'test';
 
 var request = require('request');
@@ -20,7 +21,6 @@ describe('registry server', function(){
 
         server = spawn('node', ['index.js']);
         server.stdout.on('data', function(data){
-            console.log(data.toString());
             if (data.toString().match('ready')) {
                 done();
             }
