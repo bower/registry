@@ -20,6 +20,7 @@ describe('registry server', function(){
 
         server = spawn('node', ['index.js']);
         server.stdout.on('data', function(data){
+            console.log(data.toString());
             if (data.toString().match('ready')) {
                 done();
             }

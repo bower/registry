@@ -75,7 +75,7 @@ gulp.task('db:rollback', function () {
 
 gulp.task('migration', function () {
     if (!options.name) {
-        throw "--name flag is required";
+        throw '--name flag is required';
     }
 
     return execute(function (knex) {
@@ -85,18 +85,18 @@ gulp.task('migration', function () {
 
 gulp.task('db:create', function (cb) {
     if (!parsedUrl.database) {
-        throw "Correct DATABASE_URL is required";
+        throw 'Correct DATABASE_URL is required';
     }
 
-    return executeAdmin("CREATE DATABASE " + parsedUrl.database);
+    return executeAdmin('CREATE DATABASE ' + parsedUrl.database);
 });
 
 gulp.task('db:drop', function (cb) {
     if (!parsedUrl.database) {
-        throw "Correct DATABASE_URL is required";
+        throw 'Correct DATABASE_URL is required';
     }
 
-    return executeAdmin("DROP DATABASE " + parsedUrl.database);
+    return executeAdmin('DROP DATABASE ' + parsedUrl.database);
 });
 
 gulp.task('default', ['lint', 'test']);

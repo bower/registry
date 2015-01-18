@@ -21,7 +21,7 @@ exports.up = function(knex, Promise) {
                     table.text('url').notNullable();
                     table.timestamp('created_at', true);
                     table.integer('hits').default(0);
-                })
+                });
             })
         ]);
     });
