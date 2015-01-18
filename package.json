@@ -19,17 +19,21 @@
     "config": "^1.10.0",
     "express": "~3.4.8",
     "github": "~0.1.15",
+    "knex": "^0.7.3",
     "newrelic": "~1.9.1",
     "pg": "~4.2.0",
     "pg-native": "^1.7.3",
     "ssh-url": "~0.1.5"
   },
   "devDependencies": {
-    "gulp": "~3.6.0",
+    "bluebird": "^2.7.1",
+    "chai": "^1.9.1",
+    "form-data": "0.1.4",
+    "gulp": "^3.8.10",
     "gulp-jshint": "^1.5.2",
     "gulp-mocha": "^0.4.1",
-    "chai": "^1.9.1",
-    "request": "~2.36.0",
-    "form-data": "0.1.4"
+    "minimist": "^1.1.0",
+    "parse-database-url": "^0.2.2",
+    "request": "~2.36.0"
   }
 }
