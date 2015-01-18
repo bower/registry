@@ -49,6 +49,30 @@ function deletePkg(name){ d.deletePackage(name, function (err, res) { console.lo
 deletePkg("package-name") // and repeat as neccessary
 ```
 
+## Installation
+
+1. Install PostgreSQL database on your system and configure connections in `config` directory.
+2. Create database and run migrations:
+
+```
+gulp db:create
+gulp db:migrate
+```
+
+3. Run server:
+
+```
+node index.js
+```
+
+## Testing
+
+Make sure you installed PostgreSQL and properly configured `config/test.js`, and then:
+
+```
+mocha
+```
+
 ## Defaults
 
 If the `PORT` and/or `DATABASE_URL` environment variables are not set, the registry will use the following defaults for development environment:
