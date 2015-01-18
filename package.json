@@ -4,7 +4,7 @@
   "description": "The bower registry",
   "main": "index.js",
   "scripts": {
-    "test": "gulp"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",

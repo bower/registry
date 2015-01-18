@@ -9,6 +9,7 @@ var expect = require('chai').expect;
 var spawn = require('child_process').spawn;
 
 var config = require('config');
+var database = require('../lib/database');
 
 var bowerServerUrl = 'http://localhost:' + config.get('port');
 
@@ -19,13 +20,22 @@ describe('registry server', function(){
         // Ensure time for integration tests
         this.timeout(5000);
 
-        server = spawn('node', ['index.js']);
-        server.stdout.on('data', function(data){
-            if (data.toString().match('ready')) {
-                done();
-            }
-        });
+        database.dropDatabase().then(function () {
+            return database.createDatabase();
+        }).then(function () {
+            return database.migrate();
+        }).then(function () {
+            server = spawn('node', ['index.js']);
+            server.stdout.on('data', function(data){
+                if (data.toString().match('ready')) {
+                    done();
+                }
+            });
+        }, done);
+    });
 
+    beforeEach(function (done) {
+        database.truncate(done);
     });
 
     after(function(){
@@ -52,10 +62,46 @@ describe('registry server', function(){
         });
 
         describe('/packages', function() {
-            it('should return 500/database error before psql is setup', function (done) {
+            beforeEach(function (done) {
+                database.insertPackage('jquery', 'git://github.com/jquery/jquery', done);
+            });
+
+            it('shound properly setup database so status is 200', function (done) {
                 request.get(bowerServerUrl + '/packages', function (err, res, body){
-                    expect(res.statusCode).to.equal(500);
+                    expect(res.statusCode).to.equal(200);
                     done();
+                });
+            });
+
+            it('shound properly fetch packages list', function (done) {
+                request.get(bowerServerUrl + '/packages', function (err, res, body){
+                    expect(JSON.parse(res.body)).to.eql(
+                        [{"name":"jquery","url":"git://github.com/jquery/jquery","hits":0}]
+                    );
+
+                    done();
+                });
+            });
+
+            it('shound properly fetch one package', function (done) {
+                request.get(bowerServerUrl + '/packages/jquery', function (err, res, body){
+                    expect(JSON.parse(res.body)).to.eql(
+                        {"name":"jquery","url":"git://github.com/jquery/jquery","hits":0}
+                    );
+
+                    done();
+                });
+            });
+
+            it('shound properly bump hit count on single package', function (done) {
+                request.get(bowerServerUrl + '/packages/jquery', function (err, res, body){
+                    request.get(bowerServerUrl + '/packages/jquery', function (err, res, body){
+                        expect(JSON.parse(res.body)).to.eql(
+                            {"name":"jquery","url":"git://github.com/jquery/jquery","hits":1}
+                        );
+
+                        done();
+                    });
                 });
             });
         });

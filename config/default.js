@@ -4,7 +4,7 @@ module.exports = {
     database: {
         url: process.env.DATABASE_URL,
         poolSize: 6,
-        ssl: true
+        ssl: false
     },
 
     // optional: github team id of registry editors
