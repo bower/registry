@@ -1,6 +1,9 @@
 module.exports = {
     port: process.env.PORT,
 
+    skipValidation: false,
+    skipNormalization: false,
+
     database: {
         url: process.env.DATABASE_URL,
         poolSize: 6,

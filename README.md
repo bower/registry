@@ -73,7 +73,7 @@ Make sure you installed PostgreSQL and properly configured `config/test.js`, and
 mocha
 ```
 
-## Defaults
+## Configuration
 
 If the `PORT` and/or `DATABASE_URL` environment variables are not set, the registry will use the following defaults for development environment:
 
@@ -98,6 +98,22 @@ Registry service has timezone set to `UTC` via environmental variable `TZ`.
 Postgres db `SERVER_ENCODING` is set to `UTF8`.
 
 Registry is using [node-config](https://github.com/lorenwest/node-config/wiki/Configuration-Files) package for configuration.
+
+## Private registry
+
+For private registry you might be interesed in turning off options in `config/default.js`:
+
+
+```
+{
+    // Skip URL validation? (i.e. skip checking repo via git)
+    skipValidation: false,
+
+    // Skip URL normalization? (e.g. leave ssh urls as is)
+    skipNormalization: false,
+}
+```
+
 
 ## License
 
