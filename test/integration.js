@@ -17,21 +17,23 @@ describe('registry server', function(){
     var server = null;
 
     before(function(done){
-        // Ensure time for integration tests
-        this.timeout(5000);
-
         database.dropDatabase().then(function () {
             return database.createDatabase();
         }).then(function () {
             return database.migrate();
         }).then(function () {
             server = spawn('node', ['index.js']);
-            server.stdout.on('data', function(data){
-                if (data.toString().match('ready')) {
+
+            server.stderr.on('data', function(data){
+                console.error(data.toString());
+            });
+
+            server.stdout.on('data', function(data) {
+                if (data.toString().match('ready\.')) {
                     done();
                 }
             });
-        }, done);
+        });
     });
 
     beforeEach(function (done) {
@@ -75,9 +77,11 @@ describe('registry server', function(){
 
             it('shound properly fetch packages list', function (done) {
                 request.get(bowerServerUrl + '/packages', function (err, res, body){
-                    expect(JSON.parse(res.body)).to.eql(
-                        [{"name":"jquery","url":"git://github.com/jquery/jquery","hits":0}]
-                    );
+                    expect(JSON.parse(body)).to.eql([{
+                        'name': 'jquery',
+                        'url': 'git://github.com/jquery/jquery',
+                        'hits': 0
+                    }]);
 
                     done();
                 });
@@ -85,23 +89,66 @@ describe('registry server', function(){
 
             it('shound properly fetch one package', function (done) {
                 request.get(bowerServerUrl + '/packages/jquery', function (err, res, body){
-                    expect(JSON.parse(res.body)).to.eql(
-                        {"name":"jquery","url":"git://github.com/jquery/jquery","hits":0}
-                    );
+                    expect(JSON.parse(body)).to.eql({
+                        'name': 'jquery',
+                        'url': 'git://github.com/jquery/jquery',
+                        'hits': 0
+                    });
 
                     done();
                 });
             });
 
             it('shound properly bump hit count on single package', function (done) {
-                request.get(bowerServerUrl + '/packages/jquery', function (err, res, body){
+                request.get(bowerServerUrl + '/packages/jquery', function (err, res){
                     request.get(bowerServerUrl + '/packages/jquery', function (err, res, body){
-                        expect(JSON.parse(res.body)).to.eql(
-                            {"name":"jquery","url":"git://github.com/jquery/jquery","hits":1}
-                        );
+                        expect(JSON.parse(body)).to.eql({
+                            'name': 'jquery',
+                            'url': 'git://github.com/jquery/jquery',
+                            'hits': 1
+                        });
 
                         done();
                     });
+                });
+            });
+
+            it('should allow searches by GETting /packages/search/:name', function (done) {
+                var url = bowerServerUrl + '/packages/search/jquery';
+
+                request.get(url, function (err, res, body) {
+                    expect(res.statusCode).to.eq(200);
+                    expect(JSON.parse(res.body)).to.eql(
+                        [{'name':'jquery','url':'git://github.com/jquery/jquery'}]
+                    )
+                    done();
+                });
+            });
+
+            it('should not create a package when an invalid URL is provided', function (done) {
+                request.post(bowerServerUrl + '/packages', {
+                    form: { 'name': 'jquery', 'url': 'jquery.com' }
+                }, function (err, res, body){
+                    expect(res.statusCode).to.eq(400);
+                    done();
+                });
+            });
+
+            it('should create a package when POSTing to /packages', function (done) {
+                request.post(bowerServerUrl + '/packages', {
+                    form: { 'name': 'loom', 'url': 'git://github.com/rpflorence/loom.git' }
+                }, function (err, res, body){
+                    expect(res.statusCode).to.eq(201);
+                    done();
+                });
+            });
+
+            it('should error when a package has already been registered', function (done) {
+                request.post(bowerServerUrl + '/packages', {
+                    form: { 'name': 'jquery', 'url': 'git://github.com/jquery/jquery.git' }
+                }, function (err, res, body) {
+                    expect(res.statusCode).to.eq(403);
+                    done();
                 });
             });
         });
