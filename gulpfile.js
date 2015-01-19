@@ -1,7 +1,6 @@
 var Promise = require('bluebird');
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
-var mocha = require('gulp-mocha');
 var config = require('config');
 var minimist = require('minimist');
 
