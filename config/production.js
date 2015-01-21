@@ -1,6 +1,6 @@
 module.exports = {
     database: {
-        pool: 6,
+        pool: 10,
         ssl: true
     }
 };
