@@ -33,12 +33,12 @@
     "parse-database-url": "^0.2.2",
     "pg": "~4.2.0",
     "pg-native": "^1.7.3",
+    "request": "~2.36.0",
     "ssh-url": "~0.1.5"
   },
   "devDependencies": {
     "chai": "^1.9.1",
     "form-data": "0.1.4",
-    "request": "~2.36.0",
     "mocha": "^2.1.0"
   }
 }
