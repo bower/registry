@@ -60,9 +60,9 @@ describe('package names', function(){
           return assert.property(validName('jquery_'), 'error');
       });
 
-      it('should not allow uppercase letters', function () {
-          return assert.property(validName('jQuery'), 'error');
-      });
+      // it('should not allow uppercase letters', function () {
+      //     return assert.property(validName('jQuery'), 'error');
+      // });
 
       it('should not allow names longer than 50 chars ', function () {
           return assert.property(validName('thisisastringthatsoverfiftycharacterslongforsomereason'), 'error');
