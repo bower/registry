@@ -20,20 +20,18 @@ Response
 
 ## Unregister package
 
-Package unregistering will be available via `bower unregister <package>` soon, but for now, you can unregister packages yourself using `curl`, if the package is hosted on GitHub and you're an owner or collaborator.
+You can unregister packages with [`bower unregister`](http://bower.io/docs/api/#unregister). You first need to authenticate with GitHub with [`bower login`](http://bower.io/docs/api/#login) to confirm you are a contributor to the package repo.
 
-```sh
-curl -X DELETE "https://bower.herokuapp.com/packages/PACKAGE?access_token=TOKEN"
+``` bash
+bower login
+# enter username and password
+? Username:
+? Password:
+# unregister packages after successful login
+bower unregister <package>
 ```
 
-* Where `PACKAGE` is the package name you want to delete and `TOKEN` is GitHub's Personal Access Token that you can fetch from here: https://github.com/settings/applications
-* A default GitHub Personal Access Token will work -- no permissions necessary
-* You need to be an owner or [collaborator](https://developer.github.com/v3/repos/collaborators/) of the repo and URL needs to be OK. 
-* You'll likely want to `bower cache clean` after your change.
-* Please remember it is generally considered bad behavior to remove versions of a library that others are depending on. Think twice :)
-
-If the above doesn't work for you, you can [request a
-package be unregistered](https://github.com/bower/bower/issues/120)
+You'll likely want to [`bower cache clean`](http://bower.io/docs/api#cache-clean) after your change. Please remember it is generally considered bad behavior to remove versions of a library that others are depending on. Think twice :) If the above doesn't work for you, you can [request a package be unregistered manually](https://github.com/bower/registry/issues/).
 
 ### Unregistering (for owners)
 
