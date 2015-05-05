@@ -29,7 +29,7 @@ app.listen(config.get('port'));
 
 exports.app = app;
 
-require('./lib/routes');
+require('./lib/routes')(app);
 
 app.use(errorHandler({ log: true }));
 
