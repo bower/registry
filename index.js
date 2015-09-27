@@ -16,6 +16,8 @@ var serverDomain = require('domain').create();
 
 var app = express();
 
+app.enable('strict routing');
+
 app.use(cors);
 app.use(morgan('combined'));
 app.use(compression());
