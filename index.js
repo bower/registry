@@ -19,7 +19,11 @@ var app = express();
 app.enable('strict routing');
 
 app.use(cors);
-app.use(morgan('combined'));
+app.use(morgan('combined', {
+    skip: function (req, res) {
+        return res.statusCode === 200 && req.method === 'GET' && (/\/packages\//).test(req.url)
+    }
+}));
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
