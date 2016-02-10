@@ -11,7 +11,7 @@ module.exports = {
     },
 
     // optional: github team id of registry editors
-    registryEditorsID: process.env.REGISTRY_EDITORS_ID,
+    registryEditors: process.env.REGISTRY_EDITORS,
 
     memcached: {
         servers: ['127.0.0.1:11211'],
