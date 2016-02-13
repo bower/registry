@@ -19,7 +19,7 @@ app.enable('strict routing');
 app.use(cors);
 app.use(morgan('combined', {
     skip: function (req, res) {
-        return res.statusCode === 200 && req.method === 'GET' && (/\/packages\//).test(req.url);
+        return res.statusCode === 200;
     }
 }));
 app.use(compression());
