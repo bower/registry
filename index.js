@@ -11,7 +11,6 @@ var multer  = require('multer');
 var morgan = require('morgan');
 var compression = require('compression');
 var bodyParser = require('body-parser');
-var serverDomain = require('domain').create();
 
 var app = express();
 
