@@ -17,10 +17,10 @@
   },
   "dependencies": {
     "bluebird": "^3.3.1",
-    "body-parser": "^1.10.1",
+    "body-parser": "^1.15.0",
     "compression": "^1.6.1",
     "config": "^1.10.0",
-    "express": "~4.11.0",
+    "express": "^4.13.4",
     "github": "~0.1.15",
     "gulp": "^3.8.10",
     "gulp-jshint": "^1.5.2",
