@@ -16,7 +16,7 @@
     "url": "https://github.com/bower/registry/issues"
   },
   "dependencies": {
-    "bluebird": "^2.7.1",
+    "bluebird": "^3.3.1",
     "body-parser": "^1.10.1",
     "compression": "^1.6.1",
     "config": "^1.10.0",
