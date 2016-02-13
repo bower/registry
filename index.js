@@ -7,6 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 var express = require('express');
 var cors = require('./lib/cors');
 var config = require('config');
+var multer  = require('multer');
 var morgan = require('morgan');
 var compression = require('compression');
 var bodyParser = require('body-parser');
@@ -24,6 +25,7 @@ app.use(morgan('combined', {
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer({ dest: './uploads/'}));
 
 app.listen(config.get('port'));
 
