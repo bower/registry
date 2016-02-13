@@ -15,17 +15,21 @@ var onFinished = require('on-finished');
 
 var app = express();
 
-var lastUsage = 0;
+var firstMemory = undefined;
 
 if (typeof global.gc === 'function') {
     app.use(function (req, res, next) {
+        if (firstMemory === undefined) {
+            firstMemory = process.memoryUsage().rss * 2;
+        }
+
         onFinished(res, function (err, res) {
-            var usage = process.memoryUsage().heapUsed;
+            var usage = process.memoryUsage().rss;
 
             // Collect garbage only if we need to
-            if (usage > lastUsage * 2) {
+            if (usage > firstMemory * 2) {
+                console.log('COLLECTING GARBAGE!');
                 global.gc();
-                lastUsage = process.memoryUsage().heapUsed;
             };
         });
 
