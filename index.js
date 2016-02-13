@@ -11,7 +11,6 @@ var multer  = require('multer');
 var morgan = require('morgan');
 var compression = require('compression');
 var bodyParser = require('body-parser');
-var errorHandler = require('errorhandler');
 var serverDomain = require('domain').create();
 
 var app = express();
@@ -34,8 +33,6 @@ app.listen(config.get('port'));
 exports.app = app;
 
 require('./lib/routes')(app);
-
-app.use(errorHandler({ log: true }));
 
 console.log(
     'This app is using port ' + config.get('port') +
