@@ -31,6 +31,7 @@
     "morgan": "^1.5.1",
     "multer": "^1.1.0",
     "newrelic": "~1.9.1",
+    "on-finished": "^2.3.0",
     "parse-database-url": "^0.2.2",
     "pg": "^4.4.4",
     "pg-native": "^1.10.0",

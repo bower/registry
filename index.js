@@ -11,8 +11,29 @@ var multer  = require('multer')({ limits: { files : 0 } });
 var morgan = require('morgan');
 var compression = require('compression');
 var bodyParser = require('body-parser');
+var onFinished = require('on-finished');
 
 var app = express();
+
+var lastUsage = 0;
+
+if (typeof global.gc === 'function') {
+    app.use(function (req, res, next) {
+        onFinished(res, function (err, res) {
+            var usage = process.memoryUsage().heapUsed;
+
+            // Collect garbage only if we need to
+            if (usage > lastUsage * 2) {
+                global.gc();
+                lastUsage = process.memoryUsage().heapUsed;
+            };
+        });
+
+        next();
+    });
+} else {
+    console.log('Garbage collector not exposed!');
+}
 
 app.enable('strict routing');
 app.enable('trust proxy');
