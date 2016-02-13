@@ -21,6 +21,7 @@
     "compression": "^1.6.1",
     "config": "^1.10.0",
     "express": "^4.13.4",
+    "express-rate-limit": "^2.1.0",
     "github": "~0.1.15",
     "gulp": "^3.8.10",
     "gulp-jshint": "^1.5.2",

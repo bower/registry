@@ -15,6 +15,7 @@ var bodyParser = require('body-parser');
 var app = express();
 
 app.enable('strict routing');
+app.enable('trust proxy');
 
 app.use(cors);
 app.use(morgan('combined', {
