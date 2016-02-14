@@ -23,19 +23,15 @@ if (typeof global.gc === 'function') {
             firstMemory = process.memoryUsage().rss * 2;
         }
 
-        if(req.url === '/packages') {
-            onFinished(res, function (err, res) {
-                var usage = process.memoryUsage().rss;
+        onFinished(res, function (err, res) {
+            var usage = process.memoryUsage().rss;
 
-                // Collect garbage only if we need to
-                if (usage > firstMemory * 2) {
-                    console.log('COLLECTING GARBAGE!');
-                    setTimeout(function() {
-                        global.gc();
-                    });
-                };
-            });
-        }
+            // Collect garbage only if we need to
+            if (usage > firstMemory * 2) {
+                console.log('COLLECTING GARBAGE!');
+                global.gc();
+            };
+        });
 
         next();
     });
