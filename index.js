@@ -18,23 +18,27 @@ var app = express();
 var firstMemory = undefined;
 
 if (typeof global.gc === 'function') {
-    app.use(function (req, res, next) {
-        if (firstMemory === undefined) {
-            firstMemory = process.memoryUsage().rss * 2;
-        }
+    setInterval(function () {
+        console.log('COLLECTING GARBAGE!');
+        global.gc();
+    }, 10000);
+    // app.use(function (req, res, next) {
+    //     if (firstMemory === undefined) {
+    //         firstMemory = process.memoryUsage().rss * 2;
+    //     }
 
-        onFinished(res, function (err, res) {
-            var usage = process.memoryUsage().rss;
+    //     onFinished(res, function (err, res) {
+    //         var usage = process.memoryUsage().rss;
 
-            // Collect garbage only if we need to
-            if (usage > firstMemory * 2) {
-                console.log('COLLECTING GARBAGE!');
-                global.gc();
-            };
-        });
+    //         // Collect garbage only if we need to
+    //         if (usage > firstMemory * 2) {
+    //             console.log('COLLECTING GARBAGE!');
+    //             global.gc();
+    //         };
+    //     });
 
-        next();
-    });
+    //     next();
+    // });
 } else {
     console.log('Garbage collector not exposed!');
 }
