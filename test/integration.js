@@ -79,8 +79,7 @@ describe('registry server', function(){
                 request.get(bowerServerUrl + '/packages', function (err, res, body){
                     expect(JSON.parse(body)).to.eql([{
                         'name': 'jquery',
-                        'url': 'git://github.com/jquery/jquery',
-                        'hits': 0
+                        'url': 'git://github.com/jquery/jquery'
                     }]);
 
                     done();
@@ -92,7 +91,6 @@ describe('registry server', function(){
                     expect(JSON.parse(body)).to.eql({
                         'name': 'jquery',
                         'url': 'git://github.com/jquery/jquery',
-                        'hits': 0
                     });
 
                     done();
@@ -104,8 +102,7 @@ describe('registry server', function(){
                     request.get(bowerServerUrl + '/packages/jquery', function (err, res, body){
                         expect(JSON.parse(body)).to.eql({
                             'name': 'jquery',
-                            'url': 'git://github.com/jquery/jquery',
-                            'hits': 1
+                            'url': 'git://github.com/jquery/jquery'
                         });
 
                         done();
