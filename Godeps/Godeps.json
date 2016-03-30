@@ -12,6 +12,18 @@
 			"ImportPath": "github.com/jackc/pgx",
 			"Comment": "v2.8.1-2-g04e9fbc",
 			"Rev": "04e9fbcc55fe2865bdef4d96f18042f214ada36f"
+		},
+		{
+			"ImportPath": "github.com/pquerna/ffjson/ffjson",
+			"Rev": "a4cf0d628f2b6d823c648db52670b87a4f610a67"
+		},
+		{
+			"ImportPath": "github.com/pquerna/ffjson/fflib/v1",
+			"Rev": "a4cf0d628f2b6d823c648db52670b87a4f610a67"
+		},
+		{
+			"ImportPath": "github.com/pquerna/ffjson/fflib/v1/internal",
+			"Rev": "a4cf0d628f2b6d823c648db52670b87a4f610a67"
 		}
 	]
 }
