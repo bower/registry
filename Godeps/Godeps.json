@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/bower/registry-go",
+	"ImportPath": "github.com/bower/registry",
 	"GoVersion": "go1.6",
 	"GodepVersion": "v60",
 	"Deps": [
