@@ -1,10 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/elazarl/goproxy"
 	"github.com/jackc/pgx"
+	"github.com/pquerna/ffjson/ffjson"
 	"log"
 	"net/http"
 	"os"
@@ -95,7 +95,7 @@ func main() {
 			switch err {
 			case nil:
 				result := map[string]string{"name": name, "url": url}
-				resultByteArray, _ := json.Marshal(result)
+				resultByteArray, _ := ffjson.Marshal(result)
 				return r, goproxy.NewResponse(r, "application/json", http.StatusOK, string(resultByteArray))
 			case pgx.ErrNoRows:
 				return r, goproxy.NewResponse(r, "text/html", http.StatusNotFound, "Package not found")
