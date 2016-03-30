@@ -23,11 +23,14 @@ func main() {
 		port = "3000"
 	}
 
+	fmt.Println(port)
 	binary, err := exec.LookPath("node")
 	fmt.Println(binary)
 
 	cmd := exec.Command(binary, "--expose_gc", "index.js")
-	cmd.Env = []string{"PORT=3001"}
+	env := os.Environ()
+	env = append([]string{"PORT=3001"}, env...)
+	cmd.Env = env
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Start()
