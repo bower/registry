@@ -1,5 +1,5 @@
 module.exports = {
-    port: process.env.PORT,
+    port: process.env.PORT || "3000",
 
     skipValidation: false,
     skipNormalization: false,
