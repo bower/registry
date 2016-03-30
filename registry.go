@@ -21,7 +21,7 @@ func checkError(err error) {
 
 func UrlHasPrefix(prefix string) goproxy.ReqConditionFunc {
 	return func(req *http.Request, ctx *goproxy.ProxyCtx) bool {
-		return req.Method == http.MethodGet && strings.HasPrefix(req.URL.Path, prefix)
+		return req.Method == http.MethodGet && strings.HasPrefix(req.URL.Path, prefix) && !strings.HasPrefix(req.URL.Path, "/packages/search/")
 	}
 }
 
