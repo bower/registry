@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/bmizerany/mc"
 	"github.com/elazarl/goproxy"
 	"github.com/jackc/pgx"
 	"github.com/pquerna/ffjson/ffjson"
@@ -24,6 +25,12 @@ func UrlHasPrefix(prefix string) goproxy.ReqConditionFunc {
 	}
 }
 
+func PathIs(path string) goproxy.ReqConditionFunc {
+	return func(req *http.Request, ctx *goproxy.ProxyCtx) bool {
+		return req.Method == http.MethodGet && req.URL.Path == path
+	}
+}
+
 var pool *pgx.ConnPool
 
 func afterConnect(conn *pgx.Conn) (err error) {
@@ -38,8 +45,28 @@ func afterConnect(conn *pgx.Conn) (err error) {
 }
 
 func main() {
-
 	var err error
+
+	memcached_url := os.Getenv("MEMCACHEDCLOUD_SERVERS")
+	memcached_username := os.Getenv("MEMCACHEDCLOUD_USERNAME")
+	memcached_password := os.Getenv("MEMCACHEDCLOUD_PASSWORD")
+
+	if memcached_url == "" {
+		memcached_url = "localhost:11211"
+	}
+
+	cn, err := mc.Dial("tcp", memcached_url)
+	if err != nil {
+		log.Fatalf("Memcached connection error: %s", err)
+	}
+
+	if memcached_url != "" && memcached_password != "" {
+		err = cn.Auth(memcached_username, memcached_password)
+		if err != nil {
+			log.Fatalf("Memcached auth error: %s", err)
+		}
+	}
+
 	pgxcfg, err := pgx.ParseURI(os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatalf("Parse URI error: %s", err)
@@ -84,6 +111,23 @@ func main() {
 		req.URL.Host = "localhost:3001"
 		proxy.ServeHTTP(w, req)
 	})
+
+	proxy.OnRequest(PathIs("/packages")).DoFunc(
+		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
+			var val string
+
+			val, _, _, err = cn.Get("packages")
+
+			switch err {
+			case nil:
+				fmt.Println("MEMCACHED FROM GO SERVER")
+				return r, goproxy.NewResponse(r, "application/json", http.StatusOK, val)
+			default:
+				return r, nil
+			}
+
+			return r, nil
+		})
 
 	proxy.OnRequest(UrlHasPrefix("/packages/")).DoFunc(
 		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
