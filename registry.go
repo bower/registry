@@ -73,7 +73,7 @@ func main() {
 	}
 	pool, err = pgx.NewConnPool(pgx.ConnPoolConfig{
 		ConnConfig:     pgxcfg,
-		MaxConnections: 10,
+		MaxConnections: 20,
 		AfterConnect:   afterConnect,
 	})
 	if err != nil {
