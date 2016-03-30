@@ -7,6 +7,11 @@
 			"ImportPath": "github.com/elazarl/goproxy",
 			"Comment": "v1.0-78-gf3332c8",
 			"Rev": "f3332c8f2afcea085efab6519d91ccc2ac1251f1"
+		},
+		{
+			"ImportPath": "github.com/jackc/pgx",
+			"Comment": "v2.8.1-2-g04e9fbc",
+			"Rev": "04e9fbcc55fe2865bdef4d96f18042f214ada36f"
 		}
 	]
 }
