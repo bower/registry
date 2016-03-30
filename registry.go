@@ -22,7 +22,7 @@ func main() {
 	proxy.NonproxyHandler = http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		req.Host = "bower.herokuapp.com"
 		req.URL.Scheme = "http"
-		req.URL.Host = "bower.herokuapp.com"
+		req.URL.Host = "localhost:80"
 		proxy.ServeHTTP(w, req)
 	})
 
