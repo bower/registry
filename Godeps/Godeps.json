@@ -1,0 +1,12 @@
+{
+	"ImportPath": "github.com/bower/registry-go",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v60",
+	"Deps": [
+		{
+			"ImportPath": "github.com/elazarl/goproxy",
+			"Comment": "v1.0-78-gf3332c8",
+			"Rev": "f3332c8f2afcea085efab6519d91ccc2ac1251f1"
+		}
+	]
+}
