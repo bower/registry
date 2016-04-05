@@ -65,7 +65,7 @@ describe('registry server', function(){
 
         describe('/packages', function() {
             beforeEach(function (done) {
-                database.insertPackage('jquery', 'git://github.com/jquery/jquery', done);
+                database.insertPackage('jquery', 'https://github.com/jquery/jquery', done);
             });
 
             it('shound properly setup database so status is 200', function (done) {
@@ -79,7 +79,7 @@ describe('registry server', function(){
                 request.get(bowerServerUrl + '/packages', function (err, res, body){
                     expect(JSON.parse(body)).to.eql([{
                         'name': 'jquery',
-                        'url': 'git://github.com/jquery/jquery'
+                        'url': 'https://github.com/jquery/jquery'
                     }]);
 
                     done();
@@ -90,7 +90,7 @@ describe('registry server', function(){
                 request.get(bowerServerUrl + '/packages/jquery', function (err, res, body){
                     expect(JSON.parse(body)).to.eql({
                         'name': 'jquery',
-                        'url': 'git://github.com/jquery/jquery',
+                        'url': 'https://github.com/jquery/jquery',
                     });
 
                     done();
@@ -102,7 +102,7 @@ describe('registry server', function(){
                     request.get(bowerServerUrl + '/packages/jquery', function (err, res, body){
                         expect(JSON.parse(body)).to.eql({
                             'name': 'jquery',
-                            'url': 'git://github.com/jquery/jquery'
+                            'url': 'https://github.com/jquery/jquery'
                         });
 
                         done();
@@ -116,7 +116,7 @@ describe('registry server', function(){
                 request.get(url, function (err, res, body) {
                     expect(res.statusCode).to.eq(200);
                     expect(JSON.parse(res.body)).to.eql(
-                        [{'name':'jquery','url':'git://github.com/jquery/jquery'}]
+                        [{'name':'jquery','url':'https://github.com/jquery/jquery'}]
                     )
                     done();
                 });
@@ -133,7 +133,7 @@ describe('registry server', function(){
 
             it('should create a package when POSTing to /packages', function (done) {
                 request.post(bowerServerUrl + '/packages', {
-                    form: { 'name': 'loom', 'url': 'git://github.com/rpflorence/loom.git' }
+                    form: { 'name': 'loom', 'url': 'https://github.com/rpflorence/loom.git' }
                 }, function (err, res, body){
                     expect(res.statusCode).to.eq(201);
                     done();
@@ -142,7 +142,7 @@ describe('registry server', function(){
 
             it('should error when a package has already been registered', function (done) {
                 request.post(bowerServerUrl + '/packages', {
-                    form: { 'name': 'jquery', 'url': 'git://github.com/jquery/jquery.git' }
+                    form: { 'name': 'jquery', 'url': 'https://github.com/jquery/jquery.git' }
                 }, function (err, res, body) {
                     expect(res.statusCode).to.eq(403);
                     done();

@@ -1,6 +1,6 @@
 var assert = require('chai').assert;
 var normalizeURL = require('../lib/normalizeURL');
-var normalizedURL = 'git://github.com/bower/Bower.git';
+var normalizedURL = 'https://github.com/bower/Bower.git';
 
 
 describe('package names', function(){
@@ -50,7 +50,7 @@ describe('package names', function(){
     });
 
     it('should support urls with dots in the name and an extension', function () {
-        return assert.equal(normalizeURL('https://github.com/bower/Bower.js.git'), 'git://github.com/bower/Bower.js.git');
+        return assert.equal(normalizeURL('https://github.com/bower/Bower.js.git'), 'https://github.com/bower/Bower.js.git');
     });
 
     it('should not work on gists', function () {
