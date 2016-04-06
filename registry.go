@@ -19,7 +19,7 @@ var (
 	proxy *goproxy.ProxyHttpServer
 )
 
-func UrlHasPrefix(prefix string) goproxy.ReqConditionFunc {
+func urlHasPrefix(prefix string) goproxy.ReqConditionFunc {
 	return func(req *http.Request, ctx *goproxy.ProxyCtx) bool {
 		isGET := req.Method == http.MethodGet
 		hasPrefix := strings.HasPrefix(req.URL.Path, prefix)
@@ -28,7 +28,7 @@ func UrlHasPrefix(prefix string) goproxy.ReqConditionFunc {
 	}
 }
 
-func PathIs(path string) goproxy.ReqConditionFunc {
+func pathIs(path string) goproxy.ReqConditionFunc {
 	return func(req *http.Request, ctx *goproxy.ProxyCtx) bool {
 		return req.Method == http.MethodGet && req.URL.Path == path
 	}
@@ -43,16 +43,16 @@ func getEnv(key, def string) string {
 }
 
 func main() {
-	memcachedUrl := getEnv("MEMCACHEDCLOUD_SERVERS", "localhost:11211")
+	memcachedURL := getEnv("MEMCACHEDCLOUD_SERVERS", "localhost:11211")
 	var err error
-	cn, err = mc.Dial("tcp", memcachedUrl)
+	cn, err = mc.Dial("tcp", memcachedURL)
 	if err != nil {
 		log.Fatalf("Memcached connection error: %s", err)
 	}
 
 	memcachedUsername := os.Getenv("MEMCACHEDCLOUD_USERNAME")
 	memcachedPassword := os.Getenv("MEMCACHEDCLOUD_PASSWORD")
-	if memcachedUrl != "" && memcachedPassword != "" {
+	if memcachedURL != "" && memcachedPassword != "" {
 		if err := cn.Auth(memcachedUsername, memcachedPassword); err != nil {
 			log.Fatalf("Memcached auth error: %s", err)
 		}
@@ -97,16 +97,16 @@ func main() {
 
 	proxy = goproxy.NewProxyHttpServer()
 	proxy.Verbose = false
-	proxy.NonproxyHandler = http.HandlerFunc(NonProxy)
-	proxy.OnRequest(PathIs("/packages")).DoFunc(ListPackages)
-	proxy.OnRequest(UrlHasPrefix("/packages/")).DoFunc(GetPackage)
+	proxy.NonproxyHandler = http.HandlerFunc(nonProxy)
+	proxy.OnRequest(pathIs("/packages")).DoFunc(listPackages)
+	proxy.OnRequest(urlHasPrefix("/packages/")).DoFunc(getPackage)
 
 	port := getEnv("PORT", "3000")
 	log.Println("Starting web server at port", port)
 	log.Fatal(http.ListenAndServe(":"+port, proxy))
 }
 
-func NonProxy(w http.ResponseWriter, req *http.Request) {
+func nonProxy(w http.ResponseWriter, req *http.Request) {
 	req.Host = "bower.herokuapp.com"
 	req.URL.Scheme = "http"
 	req.URL.Host = "localhost:3001"
@@ -118,7 +118,7 @@ type Package struct {
 	URL  string `json:"url"`
 }
 
-func GetPackage(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
+func getPackage(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 	elements := strings.Split(r.URL.Path, "/")
 	packageName := elements[len(elements)-1]
 
@@ -137,7 +137,7 @@ func GetPackage(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Re
 	return r, goproxy.NewResponse(r, "application/json", http.StatusOK, string(data))
 }
 
-func ListPackages(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
+func listPackages(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 	val, _, _, err := cn.Get("packages")
 	if err != nil {
 		return r, nil
