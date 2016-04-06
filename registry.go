@@ -52,7 +52,7 @@ func main() {
 
 	memcachedUsername := os.Getenv("MEMCACHEDCLOUD_USERNAME")
 	memcachedPassword := os.Getenv("MEMCACHEDCLOUD_PASSWORD")
-	if memcachedURL != "" && memcachedPassword != "" {
+	if memcachedUsername != "" && memcachedPassword != "" {
 		if err := cn.Auth(memcachedUsername, memcachedPassword); err != nil {
 			log.Fatalf("Memcached auth error: %s", err)
 		}
