@@ -89,8 +89,7 @@ func main() {
 	if err := cmd.Start(); err != nil {
 		log.Fatalf("Could not start node: %s", err)
 	}
-	// TODO: Does defer even work here?
-	defer func() {
+	go func() {
 		if err := cmd.Wait(); err != nil {
 			log.Fatalf("Node process failed: %s", err)
 		}
