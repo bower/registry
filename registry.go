@@ -1,23 +1,23 @@
 package main
 
 import (
-	"fmt"
-	"github.com/bmizerany/mc"
-	"github.com/elazarl/goproxy"
-	"github.com/jackc/pgx"
-	"github.com/pquerna/ffjson/ffjson"
 	"log"
 	"net/http"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/bmizerany/mc"
+	"github.com/elazarl/goproxy"
+	"github.com/jackc/pgx"
+	"github.com/pquerna/ffjson/ffjson"
 )
 
-func checkError(err error) {
-	if err != nil {
-		log.Fatalf("Error: %s", err)
-	}
-}
+var (
+	cn    *mc.Conn
+	pool  *pgx.ConnPool
+	proxy *goproxy.ProxyHttpServer
+)
 
 func UrlHasPrefix(prefix string) goproxy.ReqConditionFunc {
 	return func(req *http.Request, ctx *goproxy.ProxyCtx) bool {
@@ -31,38 +31,26 @@ func PathIs(path string) goproxy.ReqConditionFunc {
 	}
 }
 
-var pool *pgx.ConnPool
-
-func afterConnect(conn *pgx.Conn) (err error) {
-	_, err = conn.Prepare("getPackage", `
-		SELECT name, url FROM packages WHERE name = $1
-  `)
-	if err != nil {
-		return
+func getEnv(key, def string) string {
+	k := os.Getenv(key)
+	if k == "" {
+		return def
 	}
-
-	return
+	return k
 }
 
 func main() {
+	memcachedUrl := getEnv("MEMCACHEDCLOUD_SERVERS", "localhost:11211")
 	var err error
-
-	memcached_url := os.Getenv("MEMCACHEDCLOUD_SERVERS")
-	memcached_username := os.Getenv("MEMCACHEDCLOUD_USERNAME")
-	memcached_password := os.Getenv("MEMCACHEDCLOUD_PASSWORD")
-
-	if memcached_url == "" {
-		memcached_url = "localhost:11211"
-	}
-
-	cn, err := mc.Dial("tcp", memcached_url)
+	cn, err = mc.Dial("tcp", memcachedUrl)
 	if err != nil {
 		log.Fatalf("Memcached connection error: %s", err)
 	}
 
-	if memcached_url != "" && memcached_password != "" {
-		err = cn.Auth(memcached_username, memcached_password)
-		if err != nil {
+	memcachedUsername := os.Getenv("MEMCACHEDCLOUD_USERNAME")
+	memcachedPassword := os.Getenv("MEMCACHEDCLOUD_PASSWORD")
+	if memcachedUrl != "" && memcachedPassword != "" {
+		if err := cn.Auth(memcachedUsername, memcachedPassword); err != nil {
 			log.Fatalf("Memcached auth error: %s", err)
 		}
 	}
@@ -74,82 +62,78 @@ func main() {
 	pool, err = pgx.NewConnPool(pgx.ConnPoolConfig{
 		ConnConfig:     pgxcfg,
 		MaxConnections: 20,
-		AfterConnect:   afterConnect,
+		AfterConnect: func(conn *pgx.Conn) error {
+			_, err := conn.Prepare("getPackage", `SELECT name, url FROM packages WHERE name = $1`)
+			return err
+		},
 	})
 	if err != nil {
 		log.Fatalf("Connection error: %s", err)
 	}
 	defer pool.Close()
 
-	port := os.Getenv("PORT")
-
-	if port == "" {
-		port = "3000"
+	binary, err := exec.LookPath("node")
+	if err != nil {
+		log.Fatalf("Could not lookup node path: %s", err)
 	}
 
-	binary, err := exec.LookPath("node")
-	checkError(err)
 	cmd := exec.Command(binary, "--expose_gc", "index.js")
 	env := os.Environ()
 	env = append([]string{"PORT=3001"}, env...)
 	cmd.Env = env
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	err = cmd.Start()
-	checkError(err)
+	if err := cmd.Start(); err != nil {
+		log.Fatalf("Could not start node: %s", err)
+	}
+	// TODO: Does defer even work here?
 	defer func() {
-		err = cmd.Wait()
-		checkError(err)
+		if err := cmd.Wait(); err != nil {
+			log.Fatalf("Node process failed: %s", err)
+		}
 	}()
 
-	proxy := goproxy.NewProxyHttpServer()
-
+	proxy = goproxy.NewProxyHttpServer()
 	proxy.Verbose = false
+	proxy.NonproxyHandler = http.HandlerFunc(NonProxy)
+	proxy.OnRequest(PathIs("/packages")).DoFunc(ListPackages)
+	proxy.OnRequest(UrlHasPrefix("/packages/")).DoFunc(GetPackage)
 
-	proxy.NonproxyHandler = http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		req.Host = "bower.herokuapp.com"
-		req.URL.Scheme = "http"
-		req.URL.Host = "localhost:3001"
-		proxy.ServeHTTP(w, req)
-	})
-
-	proxy.OnRequest(PathIs("/packages")).DoFunc(
-		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
-			var val string
-
-			val, _, _, err = cn.Get("packages")
-
-			switch err {
-			case nil:
-				fmt.Println("MEMCACHED FROM GO SERVER")
-				return r, goproxy.NewResponse(r, "application/json", http.StatusOK, val)
-			default:
-				return r, nil
-			}
-
-			return r, nil
-		})
-
-	proxy.OnRequest(UrlHasPrefix("/packages/")).DoFunc(
-		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
-			var name string
-			var url string
-			elements := strings.Split(r.URL.Path, "/")
-			packageName := elements[len(elements)-1]
-			err := pool.QueryRow("getPackage", packageName).Scan(&name, &url)
-			switch err {
-			case nil:
-				result := map[string]string{"name": name, "url": url}
-				resultByteArray, _ := ffjson.Marshal(result)
-				return r, goproxy.NewResponse(r, "application/json", http.StatusOK, string(resultByteArray))
-			case pgx.ErrNoRows:
-				return r, goproxy.NewResponse(r, "text/html", http.StatusNotFound, "Package not found")
-			default:
-				return r, goproxy.NewResponse(r, "text/html", http.StatusInternalServerError, "Internal server error")
-			}
-		})
-
-	fmt.Println("Starting web server at port", port)
-
+	port := getEnv("PORT", "3000")
+	log.Println("Starting web server at port", port)
 	log.Fatal(http.ListenAndServe(":"+port, proxy))
+}
+
+func NonProxy(w http.ResponseWriter, req *http.Request) {
+	req.Host = "bower.herokuapp.com"
+	req.URL.Scheme = "http"
+	req.URL.Host = "localhost:3001"
+	proxy.ServeHTTP(w, req)
+}
+
+func GetPackage(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
+	elements := strings.Split(r.URL.Path, "/")
+	packageName := elements[len(elements)-1]
+
+	var name, url string
+	if err := pool.QueryRow("getPackage", packageName).Scan(&name, &url); err != nil {
+		if err == pgx.ErrNoRows {
+			return r, goproxy.NewResponse(r, "text/html", http.StatusNotFound, "Package not found")
+		}
+		return r, goproxy.NewResponse(r, "text/html", http.StatusInternalServerError, "Internal server error")
+	}
+
+	// TODO: Why use a map[string]string instead of a struct?
+	result := map[string]string{"name": name, "url": url}
+	resultByteArray, _ := ffjson.Marshal(result)
+	return r, goproxy.NewResponse(r, "application/json", http.StatusOK, string(resultByteArray))
+}
+
+func ListPackages(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
+	val, _, _, err := cn.Get("packages")
+	if err != nil {
+		return r, nil
+	}
+	log.Println("MEMCACHED FROM GO SERVER")
+	return r, goproxy.NewResponse(r, "application/json", http.StatusOK, val)
 }
