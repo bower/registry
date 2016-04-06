@@ -138,7 +138,6 @@ func main() {
 			err := pool.QueryRow("getPackage", packageName).Scan(&name, &url)
 			switch err {
 			case nil:
-				result := map[string]string{"name": name, "url": url}
 				json := `{"name":` + name + `,"url":` + url + `}`
 				return r, goproxy.NewResponse(r, "application/json", http.StatusOK, json)
 			case pgx.ErrNoRows:
