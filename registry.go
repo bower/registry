@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"os"
@@ -10,7 +11,6 @@ import (
 	"github.com/bmizerany/mc"
 	"github.com/elazarl/goproxy"
 	"github.com/jackc/pgx"
-	"github.com/pquerna/ffjson/ffjson"
 )
 
 var (
@@ -111,6 +111,11 @@ func NonProxy(w http.ResponseWriter, req *http.Request) {
 	proxy.ServeHTTP(w, req)
 }
 
+type Package struct {
+	Name string `json:"name"`
+	URL  string `json:"url"`
+}
+
 func GetPackage(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 	elements := strings.Split(r.URL.Path, "/")
 	packageName := elements[len(elements)-1]
@@ -123,10 +128,11 @@ func GetPackage(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Re
 		return r, goproxy.NewResponse(r, "text/html", http.StatusInternalServerError, "Internal server error")
 	}
 
-	// TODO: Why use a map[string]string instead of a struct?
-	result := map[string]string{"name": name, "url": url}
-	resultByteArray, _ := ffjson.Marshal(result)
-	return r, goproxy.NewResponse(r, "application/json", http.StatusOK, string(resultByteArray))
+	data, err := json.Marshal(Package{Name: name, URL: url})
+	if err != nil {
+		return r, goproxy.NewResponse(r, "text/html", http.StatusInternalServerError, "Internal server error")
+	}
+	return r, goproxy.NewResponse(r, "application/json", http.StatusOK, string(data))
 }
 
 func ListPackages(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
