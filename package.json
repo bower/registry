@@ -35,7 +35,7 @@
     "parse-database-url": "^0.2.2",
     "pg": "^4.4.4",
     "pg-native": "^1.10.0",
-    "request": "~2.36.0",
+    "request": "~2.74.0",
     "ssh-url": "~0.1.5"
   },
   "devDependencies": {
