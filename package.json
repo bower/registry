@@ -4,7 +4,8 @@
   "description": "The bower registry",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "format": "prettier --trailing-comma es5 --single-quote --write index.js 'lib/**/*.js'"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
   "devDependencies": {
     "chai": "^1.9.1",
     "form-data": "0.1.4",
-    "mocha": "^2.1.0"
+    "mocha": "^2.1.0",
+    "prettier": "^0.22.0"
   }
 }
