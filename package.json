@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "format": "prettier --trailing-comma es5 --single-quote --write index.js 'lib/**/*.js'"
+    "format": "prettier --trailing-comma es5 --single-quote --write index.js 'lib/**/*.js'",
+    "precommit": "lint-staged"
   },
   "repository": {
     "type": "git",
@@ -28,7 +29,6 @@
     "gulp": "^3.8.10",
     "gulp-jshint": "^1.5.2",
     "knex": "^0.7.3",
-    "lint-staged": "^3.4.0",
     "memjs": "^0.9.0",
     "minimist": "^1.1.0",
     "morgan": "^1.5.1",
@@ -44,6 +44,8 @@
   "devDependencies": {
     "chai": "^1.9.1",
     "form-data": "0.1.4",
+    "husky": "^0.13.2",
+    "lint-staged": "^3.4.0",
     "mocha": "^2.1.0",
     "prettier": "^0.22.0"
   },
