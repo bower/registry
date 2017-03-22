@@ -54,8 +54,6 @@ require('./lib/routes')(app);
 console.log(
   'This app is using port ' +
     config.get('port') +
-    ' and the database url is ' +
-    config.get('database.url') +
     '.'
 );
 
