@@ -1,0 +1,15 @@
+CREATE TABLE packages_raw(data json);
+COPY packages_raw FROM PROGRAM 'curl https://bower.herokuapp.com/packages';
+
+INSERT INTO packages
+
+WITH raw_packages_json AS (SELECT json_array_elements(data) AS package FROM packages_raw)
+
+SELECT trunc(random() * 999999999 + 1),
+package->>'name' as name,
+package->>'url' as url,
+(SELECT now()::TIMESTAMP WITHOUT TIME ZONE) as created_at,
+cast(package->>'hits' as int)
+FROM raw_packages_json;
+
+drop table packages_raw;
