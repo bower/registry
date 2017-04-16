@@ -41,6 +41,8 @@
   "devDependencies": {
     "chai": "^1.9.1",
     "form-data": "0.1.4",
-    "mocha": "^2.1.0"
+    "mocha": "^2.1.0",
+    "sinon": "^1.13.0",
+    "sinon-chai": "^2.7.0"
   }
 }
