@@ -115,6 +115,6 @@ For private registry you might be interesed in turning off options in `config/de
 
 ## License
 
-Copyright 2016 Twitter, Inc.
+Copyright 2018 Twitter, Inc.
 
 Licensed under the MIT License
