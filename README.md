@@ -3,13 +3,13 @@
 ## Create package
 
 ```bash
-curl http://bower.herokuapp.com/packages -v -F 'name=jquery' -F 'url=git://github.com/jquery/jquery.git'
+curl https://registry.bower.io/packages -v -F 'name=jquery' -F 'url=git://github.com/jquery/jquery.git'
 ```
 
 ## Find package
 
 ```bash
-curl http://bower.herokuapp.com/packages/jquery
+curl https://registry.bower.io/packages/jquery
 ```
 
 Response

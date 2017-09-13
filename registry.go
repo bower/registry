@@ -107,7 +107,7 @@ func main() {
 }
 
 func nonProxy(w http.ResponseWriter, req *http.Request) {
-	req.Host = "bower.herokuapp.com"
+	req.Host = "registry.bower.io"
 	req.URL.Scheme = "http"
 	req.URL.Host = "localhost:3001"
 	proxy.ServeHTTP(w, req)
