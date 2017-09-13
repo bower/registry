@@ -134,9 +134,7 @@ func getPackage(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Re
 	if err != nil {
 		return r, goproxy.NewResponse(r, "text/html", http.StatusInternalServerError, "Internal server error")
 	}
-	response := goproxy.NewResponse(r, "application/json", http.StatusOK, string(data))
-	response.Header.Add("Cache-Control", "max-age=10")
-	return r, response
+	return r, goproxy.NewResponse(r, "application/json", http.StatusOK, string(data))
 }
 
 func listPackages(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
@@ -145,7 +143,5 @@ func listPackages(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.
 		return r, nil
 	}
 	log.Println("MEMCACHED FROM GO SERVER")
-	response := goproxy.NewResponse(r, "application/json", http.StatusOK, val)
-	response.Header.Add("Cache-Control", "max-age=10")
-	return r, response
+	return r, goproxy.NewResponse(r, "application/json", http.StatusOK, val)
 }
