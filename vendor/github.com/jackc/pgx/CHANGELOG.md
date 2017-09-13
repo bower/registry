@@ -1,3 +1,139 @@
+# 3.0.1 (August 12, 2017)
+
+## Fixes
+
+* Fix compilation on 32-bit platform
+* Fix invalid MarshalJSON of types with status Undefined
+* Fix pid logging
+
+# 3.0.0 (July 24, 2017)
+
+## Changes
+
+* Pid to PID in accordance with Go naming conventions.
+* Conn.Pid changed to accessor method Conn.PID()
+* Conn.SecretKey removed
+* Remove Conn.TxStatus
+* Logger interface reduced to single Log method.
+* Replace BeginIso with BeginEx. BeginEx adds support for read/write mode and deferrable mode.
+* Transaction isolation level constants are now typed strings instead of bare strings.
+* Conn.WaitForNotification now takes context.Context instead of time.Duration for cancellation support.
+* Conn.WaitForNotification no longer automatically pings internally every 15 seconds.
+* ReplicationConn.WaitForReplicationMessage now takes context.Context instead of time.Duration for cancellation support.
+* Reject scanning binary format values into a string (e.g. binary encoded timestamptz to string). See https://github.com/jackc/pgx/issues/219 and https://github.com/jackc/pgx/issues/228
+* No longer can read raw bytes of any value into a []byte. Use pgtype.GenericBinary if this functionality is needed.
+* Remove CopyTo (functionality is now in CopyFrom)
+* OID constants moved from pgx to pgtype package
+* Replaced Scanner, Encoder, and PgxScanner interfaces with pgtype system
+* Removed ValueReader
+* ConnPool.Close no longer waits for all acquired connections to be released. Instead, it immediately closes all available connections, and closes acquired connections when they are released in the same manner as ConnPool.Reset.
+* Removed Rows.Fatal(error)
+* Removed Rows.AfterClose()
+* Removed Rows.Conn()
+* Removed Tx.AfterClose()
+* Removed Tx.Conn()
+* Use Go casing convention for OID, UUID, JSON(B), ACLItem, CID, TID, XID, and CIDR
+* Replaced stdlib.OpenFromConnPool with DriverConfig system
+
+## Features
+
+* Entirely revamped pluggable type system that supports approximately 60 PostgreSQL types.
+* Types support database/sql interfaces and therefore can be used with other drivers
+* Added context methods supporting cancellation where appropriate
+* Added simple query protocol support
+* Added single round-trip query mode
+* Added batch query operations
+* Added OnNotice
+* github.com/pkg/errors used where possible for errors
+* Added stdlib.DriverConfig which directly allows full configuration of underlying pgx connections without needing to use a pgx.ConnPool
+* Added AcquireConn and ReleaseConn to stdlib to allow acquiring a connection from a database/sql connection.
+
+# 2.11.0 (June 5, 2017)
+
+## Fixes
+
+* Fix race with concurrent execution of stdlib.OpenFromConnPool (Terin Stock)
+
+## Features
+
+* .pgpass support (j7b)
+* Add missing CopyFrom delegators to Tx and ConnPool (Jack Christensen)
+* Add ParseConnectionString (James Lawrence)
+
+## Performance
+
+* Optimize HStore encoding (René Kroon)
+
+# 2.10.0 (March 17, 2017)
+
+## Fixes
+
+* database/sql driver created through stdlib.OpenFromConnPool closes connections when requested by database/sql rather than release to underlying connection pool.
+
+# 2.11.0 (June 5, 2017)
+
+## Fixes
+
+* Fix race with concurrent execution of stdlib.OpenFromConnPool (Terin Stock)
+
+## Features
+
+* .pgpass support (j7b)
+* Add missing CopyFrom delegators to Tx and ConnPool (Jack Christensen)
+* Add ParseConnectionString (James Lawrence)
+
+## Performance
+
+* Optimize HStore encoding (René Kroon)
+
+# 2.10.0 (March 17, 2017)
+
+## Fixes
+
+* Oid underlying type changed to uint32, previously it was incorrectly int32 (Manni Wood)
+* Explicitly close checked-in connections on ConnPool.Reset, previously they were closed by GC
+
+## Features
+
+* Add xid type support (Manni Wood)
+* Add cid type support (Manni Wood)
+* Add tid type support (Manni Wood)
+* Add "char" type support (Manni Wood)
+* Add NullOid type (Manni Wood)
+* Add json/jsonb binary support to allow use with CopyTo
+* Add named error ErrAcquireTimeout (Alexander Staubo)
+* Add logical replication decoding (Kris Wehner)
+* Add PgxScanner interface to allow types to simultaneously support database/sql and pgx (Jack Christensen)
+* Add CopyFrom with schema support (Jack Christensen)
+
+## Compatibility
+
+* jsonb now defaults to binary format. This means passing a []byte to a jsonb column will no longer work.
+* CopyTo is now deprecated but will continue to work.
+
+# 2.9.0 (August 26, 2016)
+
+## Fixes
+
+* Fix *ConnPool.Deallocate() not deleting prepared statement from map
+* Fix stdlib not logging unprepared query SQL (Krzysztof Dryś)
+* Fix Rows.Values() with varchar binary format
+* Concurrent ConnPool.Acquire calls with Dialer timeouts now timeout in the expected amount of time (Konstantin Dzreev)
+
+## Features
+
+* Add CopyTo
+* Add PrepareEx
+* Add basic record to []interface{} decoding
+* Encode and decode between all Go and PostgreSQL integer types with bounds checking
+* Decode inet/cidr to net.IP
+* Encode/decode [][]byte to/from bytea[]
+* Encode/decode named types whose underlying types are string, int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64
+
+## Performance
+
+* Substantial reduction in memory allocations
+
 # 2.8.1 (March 24, 2016)
 
 ## Features

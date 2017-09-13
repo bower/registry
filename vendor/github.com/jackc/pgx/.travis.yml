@@ -1,8 +1,7 @@
 language: go
 
 go:
-  - 1.6.0
-  - 1.5.2
+  - 1.8
   - tip
 
 # Derived from https://github.com/lib/pq/blob/master/.travis.yml
@@ -19,26 +18,49 @@ before_install:
   - echo "host      all         pgx_md5     127.0.0.1/32          md5"      >> /etc/postgresql/$PGVERSION/main/pg_hba.conf
   - echo "host      all         pgx_pw      127.0.0.1/32          password" >> /etc/postgresql/$PGVERSION/main/pg_hba.conf
   - echo "hostssl   all         pgx_ssl     127.0.0.1/32          md5"      >> /etc/postgresql/$PGVERSION/main/pg_hba.conf
+  - echo "host      replication pgx_replication 127.0.0.1/32      md5"      >> /etc/postgresql/$PGVERSION/main/pg_hba.conf
+  - echo "host      pgx_test pgx_replication 127.0.0.1/32      md5"      >> /etc/postgresql/$PGVERSION/main/pg_hba.conf
+  - sudo chmod 777 /etc/postgresql/$PGVERSION/main/postgresql.conf
+  - "[[ $PGVERSION < 9.6 ]] || echo \"wal_level='logical'\"     >> /etc/postgresql/$PGVERSION/main/postgresql.conf"
+  - "[[ $PGVERSION < 9.6 ]] || echo \"max_wal_senders=5\"       >> /etc/postgresql/$PGVERSION/main/postgresql.conf"
+  - "[[ $PGVERSION < 9.6 ]] || echo \"max_replication_slots=5\" >> /etc/postgresql/$PGVERSION/main/postgresql.conf"
   - sudo /etc/init.d/postgresql restart
 
 env:
+  global:
+    - PGX_TEST_DATABASE=postgres://pgx_md5:secret@127.0.0.1/pgx_test
   matrix:
+    - PGVERSION=9.6
     - PGVERSION=9.5
     - PGVERSION=9.4
     - PGVERSION=9.3
     - PGVERSION=9.2
-    - PGVERSION=9.1
 
+# The tricky test user, below, has to actually exist so that it can be used in a test
+# of aclitem formatting. It turns out aclitems cannot contain non-existing users/roles.
 before_script:
   - mv conn_config_test.go.travis conn_config_test.go
   - psql -U postgres -c 'create database pgx_test'
-  - "[[ \"${PGVERSION}\" = '9.0' ]] && psql -U postgres -f /usr/share/postgresql/9.0/contrib/hstore.sql pgx_test || psql -U postgres pgx_test -c 'create extension hstore'"
+  - psql -U postgres pgx_test -c 'create extension hstore'
   - psql -U postgres -c "create user pgx_ssl SUPERUSER PASSWORD 'secret'"
   - psql -U postgres -c "create user pgx_md5 SUPERUSER PASSWORD 'secret'"
   - psql -U postgres -c "create user pgx_pw  SUPERUSER PASSWORD 'secret'"
+  - psql -U postgres -c "create user pgx_replication with replication password 'secret'"
+  - psql -U postgres -c "create user \" tricky, ' } \"\" \\ test user \" superuser password 'secret'"
+
+install:
+  - go get -u github.com/shopspring/decimal
+  - go get -u gopkg.in/inconshreveable/log15.v2
+  - go get -u github.com/jackc/fake
+  - go get -u github.com/lib/pq
+  - go get -u github.com/hashicorp/go-version
+  - go get -u github.com/satori/go.uuid
+  - go get -u github.com/sirupsen/logrus
+  - go get -u github.com/pkg/errors
+  - go get -u go.uber.org/zap
 
 script:
-  - go test -v -race -short ./...
+  - go test -v -race ./...
 
 matrix:
   allow_failures:
