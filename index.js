@@ -19,7 +19,6 @@ var firstMemory = undefined;
 
 if (typeof global.gc === 'function') {
     setInterval(function () {
-        console.log('COLLECTING GARBAGE!');
         global.gc();
     }, 10000);
 } else {

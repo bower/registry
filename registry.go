@@ -144,7 +144,6 @@ func listPackages(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.
 	if err != nil {
 		return r, nil
 	}
-	log.Println("MEMCACHED FROM GO SERVER")
 	response := goproxy.NewResponse(r, "application/json", http.StatusOK, val)
 	response.Header.Add("Cache-Control", "public, max-age=3600")
 	return r, response
