@@ -98,6 +98,21 @@ func main() {
 	proxy = goproxy.NewProxyHttpServer()
 	proxy.Verbose = false
 	proxy.NonproxyHandler = http.HandlerFunc(nonProxy)
+	proxy.OnRequest().DoFunc(
+		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
+			if r.Method == "GET" && r.Host != "registry.bower.io" {
+				response := goproxy.NewResponse(r, "application/json", http.StatusPermanentRedirect, "")
+				target := "https://registry.bower.io" + r.URL.Path
+				if len(r.URL.RawQuery) > 0 {
+					target += "?" + r.URL.RawQuery
+				}
+				response.Header.Set("Location", target)
+				return r, response
+			}
+
+			return r, nil
+		})
+
 	proxy.OnRequest(pathIs("/packages")).DoFunc(listPackages)
 	proxy.OnRequest(urlHasPrefix("/packages/")).DoFunc(getPackage)
 
@@ -107,7 +122,6 @@ func main() {
 }
 
 func nonProxy(w http.ResponseWriter, req *http.Request) {
-	req.Host = "registry.bower.io"
 	req.URL.Scheme = "http"
 	req.URL.Host = "localhost:3001"
 	proxy.ServeHTTP(w, req)
