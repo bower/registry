@@ -82,7 +82,7 @@ func main() {
 
 	cmd := exec.Command(binary, "--expose_gc", "index.js")
 	env := os.Environ()
-	env = append([]string{"PORT=3001"}, env...)
+	env = append(env, "PORT=3001")
 	cmd.Env = env
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -100,13 +100,8 @@ func main() {
 	proxy.NonproxyHandler = http.HandlerFunc(nonProxy)
 	proxy.OnRequest().DoFunc(
 		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
-			if r.Method == "GET" && r.Host != "registry.bower.io" && r.Host != "components.bower.io" {
-				response := goproxy.NewResponse(r, "application/json", http.StatusPermanentRedirect, "")
-				target := "https://registry.bower.io" + r.URL.Path
-				if len(r.URL.RawQuery) > 0 {
-					target += "?" + r.URL.RawQuery
-				}
-				response.Header.Set("Location", target)
+			if r.Host != "registry.bower.io" && r.Host != "components.bower.io" {
+				response := goproxy.NewResponse(r, "application/json", http.StatusGone, "You are using legacy Bower version that does not support new registry location. Please update Bower (at least patch version). For example: npm install -g bower\n")
 				return r, response
 			}
 
