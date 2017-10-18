@@ -82,7 +82,7 @@ func main() {
 
 	cmd := exec.Command(binary, "--expose_gc", "index.js")
 	env := os.Environ()
-	env = append([]string{"PORT=3001"}, env...)
+	env = append(env, "PORT=3001")
 	cmd.Env = env
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
