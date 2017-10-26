@@ -103,6 +103,13 @@ func main() {
 		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 			if r.Method == "GET" && r.Host != "registry.bower.io" && r.Host != "components.bower.io" {
 				time.Sleep(time.Second)
+				response := goproxy.NewResponse(r, "application/json", http.StatusPermanentRedirect, "")
+				target := "https://registry.bower.io" + r.URL.Path
+				if len(r.URL.RawQuery) > 0 {
+					target += "?" + r.URL.RawQuery
+				}
+				response.Header.Set("Location", target)
+				return r, response
 			}
 
 			return r, nil
