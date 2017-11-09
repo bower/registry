@@ -102,7 +102,7 @@ func main() {
 	proxy.OnRequest().DoFunc(
 		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 			if r.Method == "GET" && r.Host != "registry.bower.io" && r.Host != "components.bower.io" {
-				time.Sleep(5 * time.Second)
+				time.Sleep(8 * time.Second)
 				response := goproxy.NewResponse(r, "application/json", http.StatusPermanentRedirect, "")
 				target := "https://registry.bower.io" + r.URL.Path
 				if len(r.URL.RawQuery) > 0 {
