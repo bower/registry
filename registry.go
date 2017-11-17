@@ -99,9 +99,15 @@ func main() {
 	proxy = goproxy.NewProxyHttpServer()
 	proxy.Verbose = false
 	proxy.NonproxyHandler = http.HandlerFunc(nonProxy)
+
 	proxy.OnRequest().DoFunc(
 		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 			if r.Method == "GET" && r.Host != "registry.bower.io" && r.Host != "components.bower.io" {
+				if strings.HasPrefix(r.URL.Path, "/packages/search/") {
+
+					response := goproxy.NewResponse(r, "application/json", http.StatusOK, `[{"name":"deprecated","url":"This bower version is deprecated. Please update it: npm update -g bower"}]`)
+					return r, response
+				}
 				time.Sleep(8 * time.Second)
 				response := goproxy.NewResponse(r, "application/json", http.StatusPermanentRedirect, "")
 				target := "https://registry.bower.io" + r.URL.Path
