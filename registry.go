@@ -102,7 +102,7 @@ func main() {
 
 	proxy.OnRequest().DoFunc(
 		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
-			if r.Method == "GET" && r.Host != "registry.bower.io" && r.Host != "components.bower.io" {
+			if r.Host != "registry.bower.io" && r.Host != "components.bower.io" {
 				if r.Method == "GET" {
 					if strings.HasPrefix(r.URL.Path, "/packages/search/") {
 
