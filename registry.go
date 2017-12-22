@@ -103,19 +103,24 @@ func main() {
 	proxy.OnRequest().DoFunc(
 		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 			if r.Method == "GET" && r.Host != "registry.bower.io" && r.Host != "components.bower.io" {
-				if strings.HasPrefix(r.URL.Path, "/packages/search/") {
+				if r.Method == "GET" {
+					if strings.HasPrefix(r.URL.Path, "/packages/search/") {
 
-					response := goproxy.NewResponse(r, "application/json", http.StatusOK, `[{"name":"deprecated","url":"This bower version is deprecated. Please update it: npm update -g bower"}]`)
+						response := goproxy.NewResponse(r, "application/json", http.StatusOK, `[{"name":"deprecated","url":"This bower version is deprecated. Please update it: npm update -g bower"}]`)
+						return r, response
+					}
+					time.Sleep(15 * time.Second)
+					response := goproxy.NewResponse(r, "application/json", http.StatusPermanentRedirect, "")
+					target := "https://registry.bower.io" + r.URL.Path
+					if len(r.URL.RawQuery) > 0 {
+						target += "?" + r.URL.RawQuery
+					}
+					response.Header.Set("Location", target)
+					return r, response
+				} else {
+					response := goproxy.NewResponse(r, "application/json", http.StatusBadGateway, "This Bower version is deprecated. Please upgrade")
 					return r, response
 				}
-				time.Sleep(15 * time.Second)
-				response := goproxy.NewResponse(r, "application/json", http.StatusPermanentRedirect, "")
-				target := "https://registry.bower.io" + r.URL.Path
-				if len(r.URL.RawQuery) > 0 {
-					target += "?" + r.URL.RawQuery
-				}
-				response.Header.Set("Location", target)
-				return r, response
 			}
 
 			return r, nil
