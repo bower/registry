@@ -109,6 +109,10 @@ func main() {
 						response := goproxy.NewResponse(r, "application/json", http.StatusOK, `[{"name":"deprecated","url":"This bower version is deprecated. Please update it: npm update -g bower"}]`)
 						return r, response
 					}
+					if r.URL.Path == "/packages" || r.URL.Path == "/packages/" {
+						response := goproxy.NewResponse(r, "application/json", http.StatusBadGateway, `This Bower version is deprecated. Please upgrade`)
+						return r, response
+					}
 					time.Sleep(15 * time.Second)
 					response := goproxy.NewResponse(r, "application/json", http.StatusPermanentRedirect, "")
 					target := "https://registry.bower.io" + r.URL.Path
