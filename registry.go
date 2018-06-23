@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"time"
 
 	"github.com/bmizerany/mc"
 	"github.com/elazarl/goproxy"
@@ -103,26 +102,16 @@ func main() {
 	proxy.OnRequest().DoFunc(
 		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 			if r.Host != "registry.bower.io" && r.Host != "components.bower.io" {
+				message := `This Bower version is deprecated. Please update it: npm install -g bower. The new registry address is https://registry.bower.io`
 				if r.Method == "GET" {
 					if strings.HasPrefix(r.URL.Path, "/packages/search/") {
-
-						response := goproxy.NewResponse(r, "application/json", http.StatusOK, `[{"name":"deprecated","url":"This bower version is deprecated. Please update it: npm update -g bower"}]`)
+						response := goproxy.NewResponse(r, "application/json", http.StatusOK, `[{"name":"deprecated","url":"`+message+`"}]`)
 						return r, response
 					}
-					if r.URL.Path == "/packages" || r.URL.Path == "/packages/" {
-						response := goproxy.NewResponse(r, "application/json", http.StatusBadGateway, `This Bower version is deprecated. Please upgrade`)
-						return r, response
-					}
-					time.Sleep(15 * time.Second)
-					response := goproxy.NewResponse(r, "application/json", http.StatusPermanentRedirect, "")
-					target := "https://registry.bower.io" + r.URL.Path
-					if len(r.URL.RawQuery) > 0 {
-						target += "?" + r.URL.RawQuery
-					}
-					response.Header.Set("Location", target)
+					response := goproxy.NewResponse(r, "application/json", http.StatusBadGateway, message)
 					return r, response
 				} else {
-					response := goproxy.NewResponse(r, "application/json", http.StatusBadGateway, "This Bower version is deprecated. Please upgrade")
+					response := goproxy.NewResponse(r, "application/json", http.StatusBadGateway, message)
 					return r, response
 				}
 			}
