@@ -1,13 +1,13 @@
 {
+  "private": true,
   "name": "bower-registry",
-  "version": "0.1.1",
   "description": "The bower registry",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "format": "prettier-standard --format",
     "lint": "prettier-standard --lint",
-    "test": true
+    "test": "true"
   },
   "repository": {
     "type": "git",
