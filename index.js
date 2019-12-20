@@ -11,12 +11,13 @@ let totalPackages = 0
 
 const tokenize = MiniSearch.getDefault('tokenize')
 
-let miniSearch = new MiniSearch({
+const miniSearch = new MiniSearch({
   fields: ['name', 'url'],
   storeFields: ['name', 'url'],
   tokenize: (term, _fieldName) => {
     if (_fieldName === 'url') {
       return tokenize(
+        // eslint-disable-next-line
         url
           .parse(term)
           .path.replace(/\.git$/, '')
@@ -47,7 +48,7 @@ app.get('/stats', function (req, res) {
 })
 
 app.get('/packages', (req, res) => {
-  res.set({'Cache-Control': 'public, max-age=2419200'})
+  res.set({ 'Cache-Control': 'public, max-age=2419200' })
   res.sendFile(path.resolve(__dirname, 'db', 'packages.json'))
 })
 
@@ -56,14 +57,14 @@ app.get('/packages/search/', (req, res) => {
 })
 
 app.get('/packages/:name', (req, res) => {
-  const package = packages[req.params.name]
+  const pkg = packages[req.params.name]
 
-  if (!package) {
+  if (!pkg) {
     return res.status(404).send('Package not found')
   }
 
-  res.set({'Cache-Control': 'public, max-age=2419200'})
-  return res.json({ name: req.params.name, url: package })
+  res.set({ 'Cache-Control': 'public, max-age=2419200' })
+  return res.json({ name: req.params.name, url: pkg })
 })
 
 app.get('/packages/search/:name', (req, res) => {
