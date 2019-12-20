@@ -30,6 +30,4 @@ Registry can be modified directly by editing `db/packages.json` file.
 
 ## License
 
-Copyright 2018 Twitter, Inc.
-
-Licensed under the MIT License
+Copyright Twitter, Inc. Licensed under the MIT License
