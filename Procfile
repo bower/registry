@@ -1,1 +1,1 @@
-web: registry
+web: npm start

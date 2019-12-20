@@ -1,8 +1,0 @@
-github.com/bmizerany/mc v0.0.0-20140411075201-eadf44dc7cb4 h1:DcAtVFtCmyffG0bHeCQxw0DtUBKH7rATZ/8wNCQUdYc=
-github.com/bmizerany/mc v0.0.0-20140411075201-eadf44dc7cb4/go.mod h1:ELaoyfvY8sW5J6I1pehzCBIPmKVDOdyZNS331TLZjcI=
-github.com/elazarl/goproxy v0.0.0-20170413182129-aacba83f36a5 h1:6hndtckUKiV+txASiPN72sRWuHJQycm6B9BI18YYmzs=
-github.com/elazarl/goproxy v0.0.0-20170413182129-aacba83f36a5/go.mod h1:/Zj4wYkgs4iZTTu3o/KG3Itv/qCCa8VVMlb3i9OVuzc=
-github.com/jackc/pgx v3.0.2-0.20170909160616-3e49ad8decfd+incompatible h1:agHeDTSjU00nm9a5oZ4KoffDIo8Fw95n5i9YU79wCLI=
-github.com/jackc/pgx v3.0.2-0.20170909160616-3e49ad8decfd+incompatible/go.mod h1:0ZGrqGqkRlliWnWB4zKnWtjbSWbGkVEFm4TeybAXq+I=
-github.com/pkg/errors v0.8.1-0.20170910134614-2b3a18b5f0fb h1:CKWls8QOVQs/qmuUuGOeHMpIqSx6f9S72udJ48vEeKo=
-github.com/pkg/errors v0.8.1-0.20170910134614-2b3a18b5f0fb/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=

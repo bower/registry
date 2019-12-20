@@ -1,50 +1,100 @@
-'use strict';
+const express = require('express')
+const compression = require('compression')
+const MiniSearch = require('minisearch')
+const path = require('path')
+const url = require('url')
 
-var express = require('express');
-var cors = require('./lib/cors');
-var config = require('config');
-var multer  = require('multer')({ limits: { files : 0 } });
-var morgan = require('morgan');
-var compression = require('compression');
-var bodyParser = require('body-parser');
-var onFinished = require('on-finished');
+const PORT = process.env.PORT || 5000
 
-var app = express();
+const packages = {}
+let totalPackages = 0
 
-var firstMemory = undefined;
+const tokenize = MiniSearch.getDefault('tokenize')
 
-if (typeof global.gc === 'function') {
-    setInterval(function () {
-        global.gc();
-    }, 10000);
-} else {
-    console.log('Garbage collector not exposed!');
-}
-
-app.enable('strict routing');
-app.enable('trust proxy');
-
-app.use(cors);
-app.use(morgan('combined', {
-    skip: function (req, res) {
-        return res.statusCode === 200;
+let miniSearch = new MiniSearch({
+  fields: ['name', 'url'],
+  storeFields: ['name', 'url'],
+  tokenize: (term, _fieldName) => {
+    if (_fieldName === 'url') {
+      return tokenize(
+        url
+          .parse(term)
+          .path.replace(/\.git$/, '')
+          .toLowerCase()
+      )
+    } else {
+      return tokenize(term.toLowerCase())
     }
-}));
-app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer.any());
+  }
+})
 
-app.listen(config.get('port'));
+require('./db/packages.json').forEach(p => {
+  packages[p.name] = p.url
+  totalPackages += 1
+  miniSearch.add(Object.assign({ id: totalPackages }, p))
+})
 
-exports.app = app;
+const app = express()
 
-require('./lib/routes')(app);
+app.use(compression())
 
-console.log(
-    'This app is using port ' + config.get('port') +
-    ' and the database url is ' + config.get('database.url') + '.'
-);
+app.get('/', function (req, res) {
+  res.redirect(302, 'http://bower.io/search/')
+})
 
-//Tests look for this string to make sure the server is loaded
-console.log('ready.');
+app.get('/stats', function (req, res) {
+  res.json({ packages: totalPackages })
+})
+
+app.get('/packages', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'db', 'packages.json'))
+})
+
+app.get('/packages/search/', (req, res) => {
+  res.json(defaultSearch)
+})
+
+app.get('/packages/:name', (req, res) => {
+  const package = packages[req.params.name]
+
+  if (!package) {
+    return res.status(404).send('Package not found')
+  }
+
+  return res.json({ name: req.params.name, url: package })
+})
+
+app.get('/packages/search/:name', (req, res) => {
+  res.json(
+    miniSearch
+      .search(req.params.name)
+      .slice(0, 30)
+      .map(p => ({
+        name: p.name,
+        url: p.url
+      }))
+  )
+})
+
+app.post('/packages', (req, res) => {
+  return res
+    .status(500)
+    .send(
+      'Adding new bower packages is not supported anymore. For emergencies please send pull-request against https://github.com/bower/registry'
+    )
+})
+
+app.delete('/packages/:name', (req, res) => {
+  return res
+    .status(500)
+    .send(
+      'Removing bower packages is not supported anymore. For emergencies please send pull-request against https://github.com/bower/registry'
+    )
+})
+
+const defaultSearch = require('./db/search-defaults.json').map(f => ({
+  name: f,
+  url: packages[f]
+}))
+
+app.listen(PORT, () => console.log(`Listening on ${PORT}`))
