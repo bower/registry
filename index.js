@@ -47,6 +47,7 @@ app.get('/stats', function (req, res) {
 })
 
 app.get('/packages', (req, res) => {
+  res.set({'Cache-Control': 'public, max-age=2419200'})
   res.sendFile(path.resolve(__dirname, 'db', 'packages.json'))
 })
 
@@ -61,6 +62,7 @@ app.get('/packages/:name', (req, res) => {
     return res.status(404).send('Package not found')
   }
 
+  res.set({'Cache-Control': 'public, max-age=2419200'})
   return res.json({ name: req.params.name, url: package })
 })
 
