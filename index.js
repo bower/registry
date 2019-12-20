@@ -83,7 +83,7 @@ app.post('/packages', (req, res) => {
   return res
     .status(500)
     .send(
-      'Adding new bower packages is not supported anymore. For emergencies please send pull-request against https://github.com/bower/registry'
+      'Registering bower package names is not supported anymore. You can install any bower package on github with command like "bower install jquery/jquery-dist --save"'
     )
 })
 
