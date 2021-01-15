@@ -1,5 +1,17 @@
 {
   "routes": [
+    { "src": "/packages", "dest": "/db/packages.json" },
     { "src": "/(.*)", "dest": "/api/index" }
+  ],
+  "headers": [
+    {
+      "source": "/db/packages.json",
+      "headers" : [
+        {
+          "key" : "Cache-Control",
+          "value" : "public, max-age=2419200"
+        }
+      ]
+    }
   ]
 }
