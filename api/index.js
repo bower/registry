@@ -49,7 +49,7 @@ app.get('/stats', function (req, res) {
 
 app.get('/packages', (req, res) => {
   res.set({ 'Cache-Control': 'public, max-age=2419200' })
-  res.sendFile(path.resolve(__dirname, 'db', 'packages.json'))
+  res.sendFile(path.resolve(__dirname, '..', 'db', 'packages.json'))
 })
 
 app.get('/packages/search/', (req, res) => {
